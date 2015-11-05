@@ -43,3 +43,8 @@
 ##其它注意事项
 
 * **遵循Java，Android编码规范**
+
+##Bmob
+账号：15603005716@163.com 
+
+密码：tramplemequickly
