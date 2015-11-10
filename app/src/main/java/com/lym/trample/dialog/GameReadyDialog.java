@@ -19,15 +19,6 @@ import com.lym.trample.R;
  */
 public class GameReadyDialog extends BaseDialog implements View.OnClickListener {
 
-    /**
-     * 用户选择开始游戏
-     */
-    public static final int START_GAME = 0;
-    /**
-     * 用户选择返回
-     */
-    public static final int GO_BACK = 1;
-
     private TextView number_of_participants = null;
     private TextView global_highest_score = null;
     private TextView my_highest_score = null;
@@ -70,11 +61,24 @@ public class GameReadyDialog extends BaseDialog implements View.OnClickListener 
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.start_game:
-                mListener.onDialogButtonClick(START_GAME);
+                mListener.onDialogButtonClick(OnGameReadyDialogListener.START_GAME);
                 break;
             case R.id.go_back:
-                mListener.onDialogButtonClick(GO_BACK);
+                mListener.onDialogButtonClick(OnGameReadyDialogListener.GO_BACK);
                 break;
         }
+    }
+
+    interface OnGameReadyDialogListener extends OnCustomDialogListener {
+        /**
+         * 用户选择开始游戏
+         */
+        int START_GAME = 0;
+        /**
+         * 用户选择返回
+         */
+        int GO_BACK = 1;
+
+        void onDialogButtonClick(int userChoose);
     }
 }

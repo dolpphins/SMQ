@@ -18,15 +18,6 @@ import com.lym.trample.R;
  */
 public class GamePauseDialog extends BaseDialog implements View.OnClickListener {
 
-    /**
-     * 用户选择终止游戏
-     */
-    public static final int TERMINATE = 2;
-    /**
-     * 用户选择继续游戏
-     */
-    public static final int RESUME = 3;
-
     private Button terminal = null;
     private Button resume = null;
 
@@ -65,11 +56,24 @@ public class GamePauseDialog extends BaseDialog implements View.OnClickListener 
         if (mListener == null) return;
         switch (v.getId()) {
             case R.id.terminate:
-                mListener.onDialogButtonClick(TERMINATE);
+                mListener.onDialogButtonClick(OnGamePauseDialogInterface.TERMINATE);
                 break;
             case R.id.resume:
-                mListener.onDialogButtonClick(RESUME);
+                mListener.onDialogButtonClick(OnGamePauseDialogInterface.RESUME);
                 break;
         }
+    }
+
+    interface OnGamePauseDialogInterface {
+        /**
+         * 用户选择终止游戏
+         */
+        int TERMINATE = 2;
+        /**
+         * 用户选择继续游戏
+         */
+        int RESUME = 3;
+
+        void onDialogButtonClick(int userChoose);
     }
 }

@@ -19,15 +19,6 @@ import com.lym.trample.R;
  */
 public class GameOverDialog extends BaseDialog implements View.OnClickListener {
 
-    /**
-     * 用户选择再玩一局
-     */
-    public static final int PLAY_AGAIN = 4;
-    /**
-     * 用户选择返回主界面
-     */
-    public static final int GO_TO_MAIN_ACTIVITY = 5;
-
     private TextView history_highest_score = null;
     private TextView current_score = null;
     private TextView score_change_tip = null;
@@ -82,11 +73,24 @@ public class GameOverDialog extends BaseDialog implements View.OnClickListener {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.play_again:
-                mListener.onDialogButtonClick(PLAY_AGAIN);
+                mListener.onDialogButtonClick(OnGameOverDialogListener.PLAY_AGAIN);
                 break;
             case R.id.go_to_main_activity:
-                mListener.onDialogButtonClick(GO_TO_MAIN_ACTIVITY);
+                mListener.onDialogButtonClick(OnGameOverDialogListener.GO_TO_MAIN_ACTIVITY);
                 break;
         }
+    }
+
+    interface OnGameOverDialogListener {
+        /**
+         * 用户选择再玩一局
+         */
+        int PLAY_AGAIN = 0;
+        /**
+         * 用户选择返回主界面
+         */
+        int GO_TO_MAIN_ACTIVITY = 1;
+
+        void onDialogButtonClick(int userChoose);
     }
 }
