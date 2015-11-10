@@ -63,7 +63,8 @@ public class ColorsActivity extends BaseActivity implements DropSurfaceView.OnDr
         colors_drop_main_surfaceview.setOnDrawSurfaceViewListener(this);
         colors_drop_main_surfaceview.setOnSurfaceViewTouchListener(this);
         colors_drop_main_surfaceview.setOnGameOverListener(this);
-        colors_drop_main_surfaceview.setSpeed(18);
+
+        colors_drop_main_surfaceview.setSpeed(18 * config.getRect().height() / 1920);
 
         //mColorGenerator = new RandomColorGenerator(ColorsKeeper.getColorsMap());
         mColorGenerator = new AverageColorGenerator(ColorsKeeper.getColorsMap());
@@ -73,11 +74,20 @@ public class ColorsActivity extends BaseActivity implements DropSurfaceView.OnDr
     public void onDrawSurfaceViewSquareItem(Canvas canvas, Square square, boolean started) {
         paint.reset();
         if(started) {
-            paint.setColor(Color.parseColor("#000000"));
+            paint.setColor(Color.BLACK);
             canvas.drawRect(square.toRect(), paint);
-            Bitmap bm = BitmapFactory.decodeResource(getResources(), R.mipmap.start_font_icon);
-            Rect rect = ImageUtil.getFillRectForBitmap(bm, square.toRect());
-            canvas.drawBitmap(bm, null, rect, null);
+//            Bitmap bm = BitmapFactory.decodeResource(getResources(), R.mipmap.start_font_icon);
+//            Rect rect = ImageUtil.getFillRectForBitmap(bm, square.toRect());
+//            canvas.drawBitmap(bm, null, rect, null);
+            Rect rect = TextUtil.getFillRectForText(square.toRect());
+            paint.setColor(Color.WHITE);
+            paint.setTextAlign(Paint.Align.CENTER);
+            paint.setTextSize(rect.width());
+            Paint.FontMetrics metrics = paint.getFontMetrics();
+            //注意metrics的所有值都是以基线(0)为参照
+            float baseline = (rect.top + rect.bottom -  metrics.ascent) / 2;
+            canvas.drawText("GO", (rect.left + rect.right) / 2, baseline, paint);
+
         } else {
             IColorGenerator.ColorMapEntry entry = castToColorMapEntryFromObject(square.getBundle());
             if(entry == null) {
@@ -93,12 +103,13 @@ public class ColorsActivity extends BaseActivity implements DropSurfaceView.OnDr
             canvas.drawRect(square.toRect(), paint);
 
             Rect rect = TextUtil.getFillRectForText(square.toRect());
+            paint.setTextAlign(Paint.Align.CENTER);
             paint.setColor(Color.parseColor("#ffffff"));
             paint.setTextSize(rect.width());
             Paint.FontMetrics metrics = paint.getFontMetrics();
             //注意metrics的所有值都是以基线(0)为参照
             float baseline = (rect.top + rect.bottom -  metrics.ascent) / 2;
-            canvas.drawText(entry.getText(), rect.left, baseline, paint);
+            canvas.drawText(entry.getText(), (rect.left + rect.right) / 2, baseline, paint);
 
         }
     }
@@ -143,7 +154,7 @@ public class ColorsActivity extends BaseActivity implements DropSurfaceView.OnDr
     @Override
     public boolean onIsGameOver(List<Square> squareList) {
         for(Square square : squareList) {
-            if(square.getStartY() > config.getRect().bottom - config.getSquareHeight() / 2) {
+            if(square.getStartY() > config.getRect().bottom) {
                 IColorGenerator.ColorMapEntry entry = castToColorMapEntryFromObject(square.getBundle());
                 if(entry != null && entry.isSame() && !entry.isAlreadyTouch()) {
                     colors_drop_main_surfaceview.setGameOverRect(square);

@@ -430,10 +430,27 @@ public class DropSurfaceView extends SurfaceView implements SurfaceHolder.Callba
         }
     }
 
+    //前进一步
     private void moveOneStep(List<Square> squareList) {
         for(Square square : squareList) {
             square.setStartY(square.getStartY() + mSpeed);
             square.setEndY(square.getEndY() + mSpeed);
+        }
+    }
+
+    //回退一步
+    private void backOneStep(List<Square> squareList) {
+        for(Square square : squareList) {
+            square.setStartY(square.getStartY() - mSpeed);
+            square.setEndY(square.getEndY() - mSpeed);
+        }
+    }
+
+    //指定距离回退一步,如果distance<0那么相当于前进
+    private void backOneStep(List<Square> squareList, int distance) {
+        for(Square square : squareList) {
+            square.setStartY(square.getStartY() - distance);
+            square.setEndY(square.getEndY() - distance);
         }
     }
 
@@ -625,6 +642,34 @@ public class DropSurfaceView extends SurfaceView implements SurfaceHolder.Callba
             return;
         }
         Canvas canvas = null;
+        //先回退
+        int rollbackDistance = 0;
+        int squareHeight = mDropViewConfiguration.getSquareHeight();
+        int stepDistance;
+        int backSpeed = squareHeight / 10;//回退速度
+        List<Square> squareList = getCurrentSquareList();
+        while(rollbackDistance < squareHeight) {
+            if(rollbackDistance + backSpeed > squareHeight) {
+                stepDistance = squareHeight - rollbackDistance;
+            } else {
+                stepDistance = backSpeed;
+            }
+            rollbackDistance += stepDistance;
+            try {
+                canvas = holder.lockCanvas();
+                clearCanvas(canvas);
+                drawBaseView(canvas);
+                backOneStep(squareList, stepDistance);
+                drawData(canvas, false);
+            } catch(Exception e) {
+                e.printStackTrace();
+            } finally {
+                if(canvas != null) {
+                    holder.unlockCanvasAndPost(canvas);
+                }
+            }
+        }
+
         Paint bgPaint = new Paint();
         bgPaint.setColor(mDropViewConfiguration.getCanvasColor());
         int count = fillAfter ? 2 * mGameOverTwinkleCount : 2 * mGameOverTwinkleCount + 1;
