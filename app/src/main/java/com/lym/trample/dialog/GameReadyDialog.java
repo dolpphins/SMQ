@@ -1,6 +1,5 @@
 package com.lym.trample.dialog;
 
-import android.app.AlertDialog;
 import android.content.Context;
 import android.view.View;
 import android.view.Window;
@@ -16,9 +15,9 @@ import com.lym.trample.R;
  * onDialogButtonClick事件的参数有以下两个取值：
  * GameReadyDialog.START_GAME表示用户选择开始游戏。
  * GameReadyDialog.GO_BACK表示用户选择返回。
- * Created by LPD on 2015/11/7.
+ * Created by 卢沛东 on 2015/11/7.
  */
-public class GameReadyDialog implements View.OnClickListener {
+public class GameReadyDialog extends BaseDialog implements View.OnClickListener {
 
     /**
      * 用户选择开始游戏
@@ -36,32 +35,16 @@ public class GameReadyDialog implements View.OnClickListener {
     private Button start_game = null;
     private Button go_back = null;
 
-    private OnCustomDialogListener mListener = null;
-    private AlertDialog mDialog = null;
-    private Context mContext = null;
-
     public GameReadyDialog(Context context) {
-        mDialog = new AlertDialog.Builder(context, R.style.customDialog).create();
-        mContext = context;
-        if (context instanceof OnCustomDialogListener) {
-            mListener = (OnCustomDialogListener)context;
-        }
+        super(context);
     }
 
     /**
      * 显示对话框
      */
     public void show() {
-        mDialog.setCanceledOnTouchOutside(false);
-        mDialog.show();
+        super.show();
         init();
-    }
-
-    /**
-     * 关闭对话框
-     */
-    public void dismiss() {
-        mDialog.dismiss();
     }
 
     private void init() {

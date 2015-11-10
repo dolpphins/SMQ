@@ -1,6 +1,5 @@
 package com.lym.trample.dialog;
 
-import android.app.AlertDialog;
 import android.content.Context;
 import android.view.View;
 import android.view.Window;
@@ -15,9 +14,9 @@ import com.lym.trample.R;
  * onDialogButtonClick事件的参数有以下两个取值：
  * GamePauseDialog.TERMINATE表示用户选择终止游戏。
  * GamePauseDialog.RESUME表示用户选择继续游戏。
- * Created by LPD on 2015/11/9.
+ * Created by 卢沛东 on 2015/11/9.
  */
-public class GamePauseDialog implements View.OnClickListener {
+public class GamePauseDialog extends BaseDialog implements View.OnClickListener {
 
     /**
      * 用户选择终止游戏
@@ -31,24 +30,15 @@ public class GamePauseDialog implements View.OnClickListener {
     private Button terminal = null;
     private Button resume = null;
 
-    private OnCustomDialogListener mListener = null;
-    private AlertDialog mDialog;
-    private Context mContext;
-
     public GamePauseDialog(Context context) {
-        mDialog = new AlertDialog.Builder(context, R.style.customDialog).create();
-        mContext = context;
-        if (context instanceof OnCustomDialogListener) {
-            mListener = (OnCustomDialogListener)context;
-        }
+        super(context);
     }
 
     /**
      * 显示对话框。
      */
     public void show() {
-        mDialog.setCanceledOnTouchOutside(false);
-        mDialog.show();
+        super.show();
         init();
     }
 

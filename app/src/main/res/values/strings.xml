@@ -14,9 +14,15 @@
     <string name="current_score">当前分数：</string>
     <string name="history_rank">历史排名：</string>
     <string name="current_rank">当前排名：</string>
+    <string name="break_record">打破记录了！</string>
+    <string name="ranking_up">排名上升了！</string>
+    <string name="no_change">记录不变！</string>
+    <string name="good_job">干得漂亮！</string>
+    <string name="work_hard">要加把劲哦！</string>
     <string name="play_again">再来一局</string>
     <string name="main_activity">主菜单</string>
     <string name="game_pause">游戏暂停</string>
     <string name="terminate">终止</string>
     <string name="resume">继续</string>
+
 </resources>
