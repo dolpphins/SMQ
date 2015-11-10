@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
+import android.widget.TextView;
 
 import com.lym.trample.R;
 import com.lym.trample.base.BaseActivity;
@@ -39,6 +40,9 @@ public class ColorsActivity extends BaseActivity implements DropSurfaceView.OnDr
 
     private IColorGenerator mColorGenerator;
 
+    private TextView colors_drop_main_scores;
+    private int mScores;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,6 +50,9 @@ public class ColorsActivity extends BaseActivity implements DropSurfaceView.OnDr
         setContentView(R.layout.app_colors_main_activity);
 
         colors_drop_main_surfaceview = (DropSurfaceView) findViewById(R.id.colors_drop_main_surfaceview);
+        colors_drop_main_scores = (TextView) findViewById(R.id.colors_drop_main_scores);
+
+        colors_drop_main_scores.setText(mScores + "");
         config = new DropViewConfiguration.Builder(this)
                                             .setPipeBorderColor(Color.parseColor("#0000ff"))
                                             .setPipeCount(4)
@@ -118,10 +125,14 @@ public class ColorsActivity extends BaseActivity implements DropSurfaceView.OnDr
         //开始
         if(entry == null) {
             colors_drop_main_surfaceview.start();
+            mScores = 0;
+            colors_drop_main_scores.setText(mScores + "");
         } else {
            if(entry.isSame() && !entry.isAlreadyTouch()) {
                entry.setAlreadyTouch(true);//设置为已点击
                //计算分数
+               mScores++;
+               colors_drop_main_scores.setText(mScores + "");
            } else {
                colors_drop_main_surfaceview.stop();
                colors_drop_main_surfaceview.performGameOverEffect(square);

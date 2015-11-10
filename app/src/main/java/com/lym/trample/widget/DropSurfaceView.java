@@ -111,7 +111,7 @@ public class DropSurfaceView extends SurfaceView implements SurfaceHolder.Callba
         mDropViewConfiguration = new DropViewConfiguration.Builder(mContext).build();
 
         //设置背景透明
-        setZOrderOnTop(true);
+        //setZOrderOnTop(true);
         mSurfaceHolder.setFormat(PixelFormat.TRANSLUCENT);
 
         mSquareList = new LinkedList<Square>();
@@ -333,6 +333,9 @@ public class DropSurfaceView extends SurfaceView implements SurfaceHolder.Callba
             Log.w(TAG, "mDropViewConfiguration's rect is null, drawBaseView fail!");
             return;
         }
+
+        canvas.drawColor(mDropViewConfiguration.getCanvasColor());
+
         int pipeCount = mDropViewConfiguration.getPipeCount();
         if(pipeCount <= 0) {
             Log.w(TAG, "mDropViewConfiguration's pipeCount is " + pipeCount + ", drawBaseView fail!");
@@ -473,7 +476,7 @@ public class DropSurfaceView extends SurfaceView implements SurfaceHolder.Callba
                     Square square = isTouchSquare(event);
                     if(square != null) {
                         handled = mSurfaceViewTouchListener.onSurfaceViewTouchSquareDown(event, square);
-                    } else {
+                    } else if(mStatus == Status.RUNNING) {
                         square = generateOutsideSquare(event);
                         handled = mSurfaceViewTouchListener.onSurfaceViewTouchOutsideDown(event, square);
                     }
