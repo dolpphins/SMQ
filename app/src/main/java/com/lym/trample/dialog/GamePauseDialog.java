@@ -1,0 +1,85 @@
+package com.lym.trample.dialog;
+
+import android.app.AlertDialog;
+import android.content.Context;
+import android.view.View;
+import android.view.Window;
+import android.widget.Button;
+
+import com.lym.trample.R;
+
+/**
+ * 游戏暂停对话框。
+ * 用户可以选择终止游戏或者继续游戏。
+ * 实现OnCustomDialogListener接口，即可监听用户的选择。
+ * onDialogButtonClick事件的参数有以下两个取值：
+ * GamePauseDialog.TERMINATE表示用户选择终止游戏。
+ * GamePauseDialog.RESUME表示用户选择继续游戏。
+ * Created by LPD on 2015/11/9.
+ */
+public class GamePauseDialog implements View.OnClickListener {
+
+    /**
+     * 用户选择终止游戏
+     */
+    public static final int TERMINATE = 2;
+    /**
+     * 用户选择继续游戏
+     */
+    public static final int RESUME = 3;
+
+    private Button terminal = null;
+    private Button resume = null;
+
+    private OnCustomDialogListener mListener = null;
+    private AlertDialog mDialog;
+    private Context mContext;
+
+    public GamePauseDialog(Context context) {
+        mDialog = new AlertDialog.Builder(context, R.style.customDialog).create();
+        mContext = context;
+        if (context instanceof OnCustomDialogListener) {
+            mListener = (OnCustomDialogListener)context;
+        }
+    }
+
+    /**
+     * 显示对话框。
+     */
+    public void show() {
+        mDialog.setCanceledOnTouchOutside(false);
+        mDialog.show();
+        init();
+    }
+
+    /**
+     * 关闭对话框
+     */
+    public void dismiss() {
+        mDialog.dismiss();
+    }
+
+    private void init() {
+        mDialog.setContentView(R.layout.dlg_game_pause);
+        Window window = mDialog.getWindow();
+
+        terminal = (Button)window.findViewById(R.id.terminate);
+        resume = (Button)window.findViewById(R.id.resume);
+
+        terminal.setOnClickListener(this);
+        resume.setOnClickListener(this);
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (mListener == null) return;
+        switch (v.getId()) {
+            case R.id.terminate:
+                mListener.onDialogButtonClick(TERMINATE);
+                break;
+            case R.id.resume:
+                mListener.onDialogButtonClick(RESUME);
+                break;
+        }
+    }
+}
