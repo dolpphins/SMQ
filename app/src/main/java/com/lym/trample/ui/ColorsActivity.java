@@ -19,6 +19,7 @@ import com.lym.trample.color.generator.IColorGenerator;
 import com.lym.trample.color.generator.impl.AverageColorGenerator;
 import com.lym.trample.color.generator.impl.RandomColorGenerator;
 import com.lym.trample.conf.ColorsKeeper;
+import com.lym.trample.dialog.GameOverDialog;
 import com.lym.trample.utils.ImageUtil;
 import com.lym.trample.utils.TextUtil;
 import com.lym.trample.widget.DropSurfaceView;
@@ -112,8 +113,7 @@ public class ColorsActivity extends BaseActivity implements DropSurfaceView.OnDr
         IColorGenerator.ColorMapEntry entry = new IColorGenerator.ColorMapEntry();
         entry.setValue("#ff0000");
         square.setBundle(entry);
-        colors_drop_main_surfaceview.stop();
-        colors_drop_main_surfaceview.performGameOverEffect(square, false);
+        colors_drop_main_surfaceview.stop(square, DropSurfaceView.OnGameOverListener.GAME_OVER_OUT_SQUARE_TYPE);
 
         return true;
     }
@@ -134,8 +134,7 @@ public class ColorsActivity extends BaseActivity implements DropSurfaceView.OnDr
                mScores++;
                colors_drop_main_scores.setText(mScores + "");
            } else {
-               colors_drop_main_surfaceview.stop();
-               colors_drop_main_surfaceview.performGameOverEffect(square);
+               colors_drop_main_surfaceview.stop(square, DropSurfaceView.OnGameOverListener.GAME_OVER_SQUARE_ERROR_TYPE);
            }
         }
         return false;
@@ -156,10 +155,11 @@ public class ColorsActivity extends BaseActivity implements DropSurfaceView.OnDr
     }
 
     @Override
-    public void onHandleGameOver(SurfaceHolder surfaceHolder, Square square) {
+    public void onHandleGameOver(Square square, int type) {
         Log.i(TAG, "onHandleGameOver");
-        colors_drop_main_surfaceview.stop();
-        colors_drop_main_surfaceview.performGameOverEffect(surfaceHolder, square, true);
+
+//        GameOverDialog gameOverDialog = new GameOverDialog(this);
+//        gameOverDialog.show();
     }
 
     private IColorGenerator.ColorMapEntry castToColorMapEntryFromObject(Object obj) {

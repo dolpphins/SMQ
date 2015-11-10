@@ -5,5 +5,7 @@ import com.lym.trample.base.BaseActivity;
 /**
  * Created by mao on 2015/11/5.
  */
-public class FruitsActivity extends BaseActivity {
+public class DigitsActivity extends BaseActivity {
+
+    
 }

@@ -6,4 +6,7 @@
     <dimen name="colors_drop_main_scores_marginTop">15dp</dimen>
     <dimen name="colors_drop_main_scores_textSize">50sp</dimen>
 
+    <dimen name="digits_drop_main_scores_marginTop">15dp</dimen>
+    <dimen name="digits_drop_main_scores_textSize">50sp</dimen>
+
 </resources>
