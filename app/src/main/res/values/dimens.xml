@@ -9,4 +9,11 @@
     <dimen name="digits_drop_main_scores_marginTop">15dp</dimen>
     <dimen name="digits_drop_main_scores_textSize">50sp</dimen>
 
+    <dimen name="words_drop_main_word_marginTop">15dp</dimen>
+    <dimen name="words_drop_main_word_textSize">30sp</dimen>
+
+    <dimen name="words_drop_main_scores_marginTop">15dp</dimen>
+    <dimen name="words_drop_main_scores_marginRight">40dp</dimen>
+    <dimen name="words_drop_main_scores_textSize">50sp</dimen>
+
 </resources>

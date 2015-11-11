@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+
+    <com.lym.trample.widget.DropSurfaceView
+        android:id="@+id/words_drop_main_surfaceview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/words_drop_main_word"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/words_drop_main_word_marginTop"
+            android:textSize="@dimen/words_drop_main_word_textSize"
+            android:layout_centerHorizontal="true"/>
+
+        <TextView
+            android:id="@+id/words_drop_main_scores"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/words_drop_main_scores_marginTop"
+            android:textSize="@dimen/words_drop_main_scores_textSize"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/words_drop_main_scores_marginRight"/>
+    </RelativeLayout>
+
+</FrameLayout>

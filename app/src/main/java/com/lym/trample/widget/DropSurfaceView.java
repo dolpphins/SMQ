@@ -465,6 +465,7 @@ public class DropSurfaceView extends SurfaceView implements SurfaceHolder.Callba
     private boolean isGoOutOfRect(Square square) {
         Rect rect = mDropViewConfiguration.getRect();
         if(square.getStartY() > rect.bottom + mDropViewConfiguration.getSquareHeight() / 4) {
+       // if(square.getStartY() > rect.bottom) {
             return true;
         } else {
             return false;

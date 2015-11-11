@@ -1,7 +1,5 @@
 package com.lym.trample.ui;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -17,7 +15,6 @@ import com.lym.trample.bean.Square;
 import com.lym.trample.digit.generator.BaseDigitGenerator;
 import com.lym.trample.digit.generator.IDigitGenerator;
 import com.lym.trample.digit.generator.impl.RandomDigitGenerator;
-import com.lym.trample.utils.ImageUtil;
 import com.lym.trample.utils.TextUtil;
 import com.lym.trample.widget.DropSurfaceView;
 import com.lym.trample.widget.DropViewConfiguration;
