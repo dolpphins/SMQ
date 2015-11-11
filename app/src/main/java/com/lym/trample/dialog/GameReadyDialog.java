@@ -7,26 +7,18 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.lym.trample.R;
+import com.lym.trample.base.BaseDialog;
 
 /**
  * 游戏开始前，给用户提供一些游戏相关信息的对话框。
  * 用户可以选择开始游戏或者返回主菜单。
  * 实现OnCustomDialogListener接口，即可监听用户的选择。
  * onDialogButtonClick事件的参数有以下两个取值：
- * GameReadyDialog.START_GAME表示用户选择开始游戏。
- * GameReadyDialog.GO_BACK表示用户选择返回。
+ * BaseDialog.OnCustomDialogListener.START_GAME表示用户选择开始游戏。
+ * BaseDialog.OnCustomDialogListener.GO_BACK表示用户选择返回。
  * Created by 卢沛东 on 2015/11/7.
  */
 public class GameReadyDialog extends BaseDialog implements View.OnClickListener {
-
-    /**
-     * 用户选择开始游戏
-     */
-    public static final int START_GAME = 0;
-    /**
-     * 用户选择返回
-     */
-    public static final int GO_BACK = 1;
 
     private TextView number_of_participants = null;
     private TextView global_highest_score = null;
@@ -39,9 +31,7 @@ public class GameReadyDialog extends BaseDialog implements View.OnClickListener 
         super(context);
     }
 
-    /**
-     * 显示对话框
-     */
+    @Override
     public void show() {
         super.show();
         init();
@@ -68,12 +58,13 @@ public class GameReadyDialog extends BaseDialog implements View.OnClickListener 
 
     @Override
     public void onClick(View view) {
+        if (mListener == null) return;
         switch (view.getId()) {
             case R.id.start_game:
-                mListener.onDialogButtonClick(START_GAME);
+                mListener.onDialogButtonClick(OnCustomDialogListener.GAME_READY_DIALOG_START_GAME);
                 break;
             case R.id.go_back:
-                mListener.onDialogButtonClick(GO_BACK);
+                mListener.onDialogButtonClick(OnCustomDialogListener.GAME_READY_DIALOG_GO_BACK);
                 break;
         }
     }

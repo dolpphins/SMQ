@@ -6,26 +6,18 @@ import android.view.Window;
 import android.widget.Button;
 
 import com.lym.trample.R;
+import com.lym.trample.base.BaseDialog;
 
 /**
  * 游戏暂停对话框。
  * 用户可以选择终止游戏或者继续游戏。
  * 实现OnCustomDialogListener接口，即可监听用户的选择。
  * onDialogButtonClick事件的参数有以下两个取值：
- * GamePauseDialog.TERMINATE表示用户选择终止游戏。
- * GamePauseDialog.RESUME表示用户选择继续游戏。
+ * BaseDialog.OnCustomDialogListener.TERMINATE表示用户选择终止游戏。
+ * BaseDialog.OnCustomDialogListener.RESUME表示用户选择继续游戏。
  * Created by 卢沛东 on 2015/11/9.
  */
 public class GamePauseDialog extends BaseDialog implements View.OnClickListener {
-
-    /**
-     * 用户选择终止游戏
-     */
-    public static final int TERMINATE = 2;
-    /**
-     * 用户选择继续游戏
-     */
-    public static final int RESUME = 3;
 
     private Button terminal = null;
     private Button resume = null;
@@ -34,19 +26,10 @@ public class GamePauseDialog extends BaseDialog implements View.OnClickListener 
         super(context);
     }
 
-    /**
-     * 显示对话框。
-     */
+    @Override
     public void show() {
         super.show();
         init();
-    }
-
-    /**
-     * 关闭对话框
-     */
-    public void dismiss() {
-        mDialog.dismiss();
     }
 
     private void init() {
@@ -65,10 +48,10 @@ public class GamePauseDialog extends BaseDialog implements View.OnClickListener 
         if (mListener == null) return;
         switch (v.getId()) {
             case R.id.terminate:
-                mListener.onDialogButtonClick(TERMINATE);
+                mListener.onDialogButtonClick(OnCustomDialogListener.GAME_PAUSE_DIALOG_TERMINATE);
                 break;
             case R.id.resume:
-                mListener.onDialogButtonClick(RESUME);
+                mListener.onDialogButtonClick(OnCustomDialogListener.GAME_PAUSE_DIALOG_RESUME);
                 break;
         }
     }

@@ -7,26 +7,18 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.lym.trample.R;
+import com.lym.trample.base.BaseDialog;
 
 /**
  * 游戏结束后，给用户提供本局游戏相关信息的对话框。
  * 用户可以选择再玩一局或者返回主菜单。
  * 实现OnCustomDialogListener接口，即可监听用户的选择。
  * onDialogButtonClick事件的参数有以下两个取值：
- * GameOverDialog.PLAY_AGAIN表示用户选择开始游戏。
- * GameOverDialog.GO_TO_MAIN_ACTIVITY表示用户选择返回主菜单。
+ * BaseDialog.OnCustomDialogListener.OnCustomDialogListener.PLAY_AGAIN表示用户选择开始游戏。
+ * BaseDialog.OnCustomDialogListener.GO_TO_MAIN_ACTIVITY表示用户选择返回主菜单。
  * Created by 卢沛东 on 2015/11/7.
  */
 public class GameOverDialog extends BaseDialog implements View.OnClickListener {
-
-    /**
-     * 用户选择再玩一局
-     */
-    public static final int PLAY_AGAIN = 4;
-    /**
-     * 用户选择返回主界面
-     */
-    public static final int GO_TO_MAIN_ACTIVITY = 5;
 
     private TextView history_highest_score = null;
     private TextView current_score = null;
@@ -38,16 +30,16 @@ public class GameOverDialog extends BaseDialog implements View.OnClickListener {
     private Button play_again = null;
     private Button go_to_main_activity = null;
 
-    private Context mContext;
+    private Context mContext = null;
+    private int mCurrentScore = 0;
 
-    public GameOverDialog(Context context) {
+    public GameOverDialog(Context context, int currentScore) {
         super(context);
         mContext = context;
+        mCurrentScore = currentScore;
     }
 
-    /**
-     * 显示对话框
-     */
+    @Override
     public void show() {
         super.show();
         init();
@@ -80,12 +72,13 @@ public class GameOverDialog extends BaseDialog implements View.OnClickListener {
 
     @Override
     public void onClick(View view) {
+        if (mListener == null) return;
         switch (view.getId()) {
             case R.id.play_again:
-                mListener.onDialogButtonClick(PLAY_AGAIN);
+                mListener.onDialogButtonClick(OnCustomDialogListener.GAME_OVER_DIALOG_PLAY_AGAIN);
                 break;
             case R.id.go_to_main_activity:
-                mListener.onDialogButtonClick(GO_TO_MAIN_ACTIVITY);
+                mListener.onDialogButtonClick(OnCustomDialogListener.GAME_OVER_DIALOG_GO_TO_MAIN_ACTIVITY);
                 break;
         }
     }
