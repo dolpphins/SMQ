@@ -13,10 +13,12 @@ import com.lym.trample.R;
 import com.lym.trample.ScoreManager;
 import com.lym.trample.base.BaseActivity;
 import com.lym.trample.conf.SpConfig;
+import com.lym.trample.dialog.GameReadyDialog;
+import com.lym.trample.dialog.OnCustomDialogListener;
 import com.lym.trample.utils.SharePreferencesManager;
 
 
-public class MainActivity extends BaseActivity implements OnClickListener{
+public class MainActivity extends BaseActivity implements OnClickListener,OnCustomDialogListener {
 
     /**
      * 怎么玩图标
@@ -40,6 +42,9 @@ public class MainActivity extends BaseActivity implements OnClickListener{
 
     private static final int FLING_MIN_DISTANCE = 80;
     private static final int FLING_MIN_VELOCITY = 100;
+
+
+    private GameReadyDialog mGameReadyDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,6 +99,8 @@ public class MainActivity extends BaseActivity implements OnClickListener{
         gameColor.setOnClickListener(this);
         gameFruit.setOnClickListener(this);
         gameWord.setOnClickListener(this);
+
+        mGameReadyDialog = new GameReadyDialog(this);
     }
 
 
@@ -112,6 +119,7 @@ public class MainActivity extends BaseActivity implements OnClickListener{
                 this.finish();
                 break;
             case R.id.menu_bt_colors:
+                mGameReadyDialog.show();
                 Intent gameColorsIntent = new Intent(MainActivity.this, ColorsActivity.class);
                 startActivity(gameColorsIntent);
                 break;
@@ -128,5 +136,11 @@ public class MainActivity extends BaseActivity implements OnClickListener{
         }
     }
 
-
+    @Override
+    public void onDialogButtonClick(int userChoose) {
+        switch (userChoose)
+        {
+            
+        }
+    }
 }
