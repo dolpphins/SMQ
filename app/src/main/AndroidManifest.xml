@@ -13,7 +13,7 @@
         android:theme="@style/AppTheme">
         <!-- 主界面Activity -->
         <activity
-            android:name=".ui.ColorsActivity"
+            android:name=".ui.MainActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -21,6 +21,27 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".ui.HelpActivity"
+            android:label="@string/app_name" >
+        </activity>
+        <activity
+            android:name=".ui.SettingsActivity"
+            android:label="@string/app_name" >
+        </activity>
+        <activity
+            android:name=".ui.ColorsActivity"
+            android:label="@string/app_name" >
+        </activity>
+        <activity
+            android:name=".ui.WordsActivity"
+            android:label="@string/app_name" >
+        </activity>
+        <activity
+            android:name=".ui.FruitsActivity"
+            android:label="@string/app_name" >
+        </activity>
     </application>
+
 
 </manifest>
