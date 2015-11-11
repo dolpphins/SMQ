@@ -18,8 +18,4 @@ public class RandomColorGenerator extends BaseColorGenerator{
         super(colorsMap);
     }
 
-    @Override
-    public ColorMapEntry generate() {
-        return super.generate();
-    }
 }

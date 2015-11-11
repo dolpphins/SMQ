@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+
+    <com.lym.trample.widget.DropSurfaceView
+        android:id="@+id/digits_drop_main_surfaceview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <TextView
+        android:id="@+id/digits_drop_main_scores"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/digits_drop_main_scores_marginTop"
+        android:textSize="@dimen/digits_drop_main_scores_textSize"/>
+</FrameLayout>

@@ -215,10 +215,26 @@ public class DropSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 
     /**
      * 停止绘制线程
+     *
+     * @param type 游戏结束类型
      * */
-    public void stop() {
+    public void stop(Square square, int type) {
         if(mStatus == Status.RUNNING) {
             mStatus = Status.STOPPED;
+        }
+        switch (type) {
+            case OnGameOverListener.GAME_OVER_NO_PRESS_TYPE:
+                performGameOverEffect(square, true);
+                break;
+            case OnGameOverListener.GAME_OVER_OUT_SQUARE_TYPE:
+                performGameOverEffect(square, false);
+                break;
+            case OnGameOverListener.GAME_OVER_SQUARE_ERROR_TYPE:
+                performGameOverEffect(square, true);
+                break;
+        }
+        if(mGameOverListener != null) {
+            mGameOverListener.onHandleGameOver(square, type);
         }
     }
 
@@ -354,6 +370,7 @@ public class DropSurfaceView extends SurfaceView implements SurfaceHolder.Callba
             endY[i] = r.top + pipeHeight;
         }
         Paint paint = new Paint();
+        paint.setStrokeWidth(mDropViewConfiguration.getPipeBorderWidth());
         paint.setColor(mDropViewConfiguration.getPipeBorderColor());
         try {
             canvas.drawLine(startX[0], startY[0], endX[0], endY[0], paint);
@@ -413,10 +430,27 @@ public class DropSurfaceView extends SurfaceView implements SurfaceHolder.Callba
         }
     }
 
+    //前进一步
     private void moveOneStep(List<Square> squareList) {
         for(Square square : squareList) {
             square.setStartY(square.getStartY() + mSpeed);
             square.setEndY(square.getEndY() + mSpeed);
+        }
+    }
+
+    //回退一步
+    private void backOneStep(List<Square> squareList) {
+        for(Square square : squareList) {
+            square.setStartY(square.getStartY() - mSpeed);
+            square.setEndY(square.getEndY() - mSpeed);
+        }
+    }
+
+    //指定距离回退一步,如果distance<0那么相当于前进
+    private void backOneStep(List<Square> squareList, int distance) {
+        for(Square square : squareList) {
+            square.setStartY(square.getStartY() - distance);
+            square.setEndY(square.getEndY() - distance);
         }
     }
 
@@ -431,6 +465,7 @@ public class DropSurfaceView extends SurfaceView implements SurfaceHolder.Callba
     private boolean isGoOutOfRect(Square square) {
         Rect rect = mDropViewConfiguration.getRect();
         if(square.getStartY() > rect.bottom + mDropViewConfiguration.getSquareHeight() / 4) {
+       // if(square.getStartY() > rect.bottom) {
             return true;
         } else {
             return false;
@@ -559,7 +594,7 @@ public class DropSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 
     public void handleGameOver() {
         if(mGameOverListener != null && mSurfaceHolder != null && mGameOverSquare != null) {
-            mGameOverListener.onHandleGameOver(mSurfaceHolder, mGameOverSquare);
+            stop(mGameOverSquare, OnGameOverListener.GAME_OVER_NO_PRESS_TYPE);
             mGameOverSquare = null;
         }
     }
@@ -608,8 +643,38 @@ public class DropSurfaceView extends SurfaceView implements SurfaceHolder.Callba
             return;
         }
         Canvas canvas = null;
+        //先回退
+        int rollbackDistance = 0;
+        int squareHeight = mDropViewConfiguration.getSquareHeight();
+        int stepDistance;
+        int backSpeed = squareHeight / 10;//回退速度
+        List<Square> squareList = getCurrentSquareList();
+        while(rollbackDistance < squareHeight) {
+            if(rollbackDistance + backSpeed > squareHeight) {
+                stepDistance = squareHeight - rollbackDistance;
+            } else {
+                stepDistance = backSpeed;
+            }
+            rollbackDistance += stepDistance;
+            try {
+                canvas = holder.lockCanvas();
+                clearCanvas(canvas);
+                drawBaseView(canvas);
+                backOneStep(squareList, stepDistance);
+                drawData(canvas, false);
+            } catch(Exception e) {
+                e.printStackTrace();
+            } finally {
+                if(canvas != null) {
+                    holder.unlockCanvasAndPost(canvas);
+                }
+            }
+        }
+
         Paint bgPaint = new Paint();
+        bgPaint.setColor(mDropViewConfiguration.getCanvasColor());
         int count = fillAfter ? 2 * mGameOverTwinkleCount : 2 * mGameOverTwinkleCount + 1;
+        square.setStartX(square.getStartX() + mDropViewConfiguration.getPipeBorderWidth());
         for(int i = 0; i < count; i++) {
             try {
                 Thread.sleep(100);
@@ -617,7 +682,6 @@ public class DropSurfaceView extends SurfaceView implements SurfaceHolder.Callba
                 canvas = holder.lockCanvas(square.toRect());
 
                 if(i % 2 == 0) {
-                    bgPaint.setColor(mDropViewConfiguration.getCanvasColor());
                     canvas.drawRect(square.toRect(), bgPaint);
                 } else {
                     if(mDrawSurfaceViewListener != null) {
@@ -727,6 +791,15 @@ public class DropSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 
     public interface OnGameOverListener {
 
+        /** 游戏结束类型：没有按下符合要求的方块 */
+        int GAME_OVER_NO_PRESS_TYPE = 0;
+
+        /** 游戏结束类型：按下了不符合要求的方块 */
+        int GAME_OVER_SQUARE_ERROR_TYPE = 1;
+
+        /** 游戏结束类型：按下方块以外区域 */
+        int GAME_OVER_OUT_SQUARE_TYPE = 2;
+
         /**
          * 判断游戏是否结束
          *
@@ -739,9 +812,9 @@ public class DropSurfaceView extends SurfaceView implements SurfaceHolder.Callba
         /**
          * 游戏结束处理方法，当游戏结束时会回调该方法
          *
-         * @param surfaceHolder
          * @param rect 游戏结束点所在区域
+         * @param type 游戏结束类型
          * */
-        void onHandleGameOver(SurfaceHolder surfaceHolder, Square square);
+        void onHandleGameOver(Square square, int type);
     }
 }

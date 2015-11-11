@@ -34,6 +34,8 @@ public class DropViewConfiguration {
     private int mCanvasColor;
     //每条道宽度
     private int mPipeWidth;
+    //每条道分割线宽度
+    private float mPipeBorderWidth;
 
     protected DropViewConfiguration(Builder builder){
         this.mRect = builder.mRect;
@@ -44,6 +46,7 @@ public class DropViewConfiguration {
         this.mSquareWidth = builder.mSquareWidth;
         this.mCanvasColor = builder.mCanvasColor;
         this.mPipeWidth = builder.mPipeWidth;
+        this.mPipeBorderWidth = builder.mPipeBorderWidth;
     }
 
     public Rect getRect() {
@@ -78,6 +81,10 @@ public class DropViewConfiguration {
         return mPipeWidth;
     }
 
+    public float getPipeBorderWidth() {
+        return mPipeBorderWidth;
+    }
+
     public static class Builder {
 
         private Rect mRect;
@@ -88,6 +95,7 @@ public class DropViewConfiguration {
         private int mSquareWidth;
         private int mCanvasColor;
         private int mPipeWidth;
+        private float mPipeBorderWidth;
 
         public Builder(Context context) {
 
@@ -104,6 +112,7 @@ public class DropViewConfiguration {
             mPipeWidth = mRect.width() / mPipeCount;
             mSquareWidth = mRect.width() / mPipeCount;//默认为每条道的宽度(注意每条道的宽度一定是相等的)
             mCanvasColor = Color.TRANSPARENT;
+            mPipeBorderWidth = 1.0f;//默认为1px
         }
 
         /**
@@ -187,6 +196,18 @@ public class DropViewConfiguration {
          * */
         public Builder setCanvasColor(int color) {
             mCanvasColor = color;
+            return this;
+        }
+
+        /**
+         * 设置分割线宽度
+         *
+         * @param width 指定的分割线宽度
+         *
+         * @return 返回当前对象
+         * */
+        public Builder setBorderWidth(float width) {
+            mPipeBorderWidth = width;
             return this;
         }
 
