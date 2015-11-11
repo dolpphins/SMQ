@@ -25,4 +25,32 @@
     <string name="terminate">终止</string>
     <string name="resume">继续</string>
 
+
+
+
+    <string name="game_color">踩颜色</string>
+    <string name="game_word">踩单词</string>
+    <string name="game_fruit">踩水果</string>
+
+    <string name="setting_about">关于</string>
+    <string name="setting_feedback">意见反馈</string>
+
+    <string name="help_play_colors_one">1、点击轨道上下落的方块，方块内的汉字所表示的颜色与方块背景色相同，加一分</string>
+    <string name="help_play_colors_two">2、所点击的方块内的汉字所表示的颜色与方块背景色不相同，游戏结束</string>
+    <string name="help_play_colors_three">3、错过正确的方块时，游戏结束</string>
+
+    <string name="help_play_fruits_one">1、连续踩到相同水果时，分数的增加以X2的方式递增，最大值为+32</string>
+    <string name="help_play_fruits_two">2、踩到不同的水果时，分数的增加从+1开始重新计算</string>
+    <string name="help_play_fruits_three">3、玩家踩到炸弹时游戏结束</string>
+    <string name="help_play_fruits_energy"> 能量条：踩中水果时，增加1点能量，如果连续踩中相同水果，则能量以X2
+     的方式递增，最大增加值为8。当能量条达到100能量时触发fever模式。</string>
+    <string name="help_play_fruits_fever">fever模式：触发fever模式后，下落的水果数量增多，
+        期间也不会出现炸弹，玩家可以尽情踩水果！能量条不增加能量。</string>
+
+    <string name="help_play_words_one">1、方块中的字母为单词所需的下一个字母，则成功拼接</string>
+    <string name="help_play_words_two">2、如果不是所需要的字母，则拼接错误，扣1条生命</string>
+    <string name="help_play_words_three">3、如果是所需要的字母，则加1分</string>
+    <string name="help_play_words_four">4、成功拼接为所需的单词，加10分</string>
+    <string name="help_play_words_five">5、当玩家生命为0时，如果再受到错误惩罚，则游戏结束，得出本局的最高分数</string>
+
 </resources>
