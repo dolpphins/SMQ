@@ -17,14 +17,19 @@ public class SpConfig {
 
     /**踩颜色中历史最高分*/
     public String colorScore = "ColorsScore";
+
     /**踩颜色历史最高排名*/
     public String colorRanking = "ColorsRanking";
-    /**踩水果中历史最高分*/
-    public String fruitScore = "FruitsScore";
-    /**踩水果历史最高排名*/
-    public String fruitRanking = "FruitsRanking";
+
+    /**踩数字中历史最高分*/
+    public String digitScore = "DigitsScore";
+
+    /**踩数字历史最高排名*/
+    public String digitRanking = "DigitsRanking";
+
     /**踩单词中历史最高分*/
     public String wordScore = "WordsScore";
+
     /**踩单词历史最高排名*/
     public String wordRanking = "WordsRanking";
 }

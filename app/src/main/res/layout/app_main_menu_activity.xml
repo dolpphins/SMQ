@@ -74,12 +74,12 @@
                 android:text="@string/game_color"
                 android:layout_width="120dp"
                 android:layout_height="wrap_content"
-                android:id="@+id/menu_bt_fruits" />
+                android:id="@+id/menu_bt_colors" />
             <Button
-                android:text="@string/game_fruit"
+                android:text="@string/game_digit"
                 android:layout_width="120dp"
                 android:layout_height="wrap_content"
-                android:id="@+id/menu_bt_colors"/>
+                android:id="@+id/menu_bt_digits"/>
             <Button
                 android:text="@string/game_word"
                 android:layout_width="120dp"

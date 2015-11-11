@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.lym.trample.R;
 import com.lym.trample.ScoreManager;
@@ -35,7 +34,7 @@ public class MainActivity extends BaseActivity implements OnClickListener,BaseDi
 
     private Button gameWord;
     private Button gameColor;
-    private Button gameFruit;
+    private Button gameDigit;
 
 
     private int mCurrentLayoutState = 0;
@@ -45,7 +44,7 @@ public class MainActivity extends BaseActivity implements OnClickListener,BaseDi
 
     private Boolean isClickColor;
     private Boolean isClickWord;
-    private Boolean isClickFruit;
+    private Boolean isClickDigit;
 
 
     private GameReadyDialog mGameReadyDialog;
@@ -65,8 +64,8 @@ public class MainActivity extends BaseActivity implements OnClickListener,BaseDi
             ScoreManager.getInstance().setColors(cScore,cRanking);
         else
             ScoreManager.getInstance().setColors(0,0);
-        int fScore = SharePreferencesManager.getInstance().getInt(this, SpConfig.getInstance().fruitScore,-1);
-        int fRanking = SharePreferencesManager.getInstance().getInt(this, SpConfig.getInstance().fruitRanking,-1);
+        int fScore = SharePreferencesManager.getInstance().getInt(this, SpConfig.getInstance().digitScore,-1);
+        int fRanking = SharePreferencesManager.getInstance().getInt(this, SpConfig.getInstance().digitRanking,-1);
         if(fScore!=-1&&fRanking!=-1)
             ScoreManager.getInstance().setColors(fScore,fRanking);
         else
@@ -80,7 +79,7 @@ public class MainActivity extends BaseActivity implements OnClickListener,BaseDi
 
 
         isClickColor = false;
-        isClickFruit = false;
+        isClickDigit = false;
         isClickWord = false;
 
 
@@ -97,11 +96,11 @@ public class MainActivity extends BaseActivity implements OnClickListener,BaseDi
         exit.setOnClickListener(this);
 
         gameWord = (Button) findViewById(R.id.menu_bt_words);
-        gameFruit = (Button) findViewById(R.id.menu_bt_fruits);
+        gameDigit = (Button) findViewById(R.id.menu_bt_digits);
         gameColor = (Button) findViewById(R.id.menu_bt_colors);
 
         gameColor.setOnClickListener(this);
-        gameFruit.setOnClickListener(this);
+        gameDigit.setOnClickListener(this);
         gameWord.setOnClickListener(this);
 
         mGameReadyDialog = new GameReadyDialog(this);
@@ -127,9 +126,9 @@ public class MainActivity extends BaseActivity implements OnClickListener,BaseDi
                 mGameReadyDialog.show();
                 isClickColor = true;
                 break;
-            case R.id.menu_bt_fruits:
+            case R.id.menu_bt_digits:
                 mGameReadyDialog.show();
-                isClickFruit = true;
+                isClickDigit = true;
                 break;
             case R.id.menu_bt_words:
                 mGameReadyDialog.show();
@@ -145,24 +144,27 @@ public class MainActivity extends BaseActivity implements OnClickListener,BaseDi
         switch (userChoose){
             case BaseDialog.OnCustomDialogListener.GAME_READY_DIALOG_GO_BACK:
                 mGameReadyDialog.dismiss();
+                isClickColor = false;
+                isClickDigit = false;
+                isClickWord = false;
                 break;
             case BaseDialog.OnCustomDialogListener.GAME_READY_DIALOG_START_GAME:
-                if(isClickFruit)
+                if(isClickColor)
                 {
-                    isClickFruit = false;
-                    Intent gameFruitsIntent = new Intent(MainActivity.this, FruitsActivity.class);
-                    startActivity(gameFruitsIntent);
-                }
-                if(isClickWord)
-                {
-                    isClickWord = false;
-                    Intent gameWordsIntent = new Intent(MainActivity.this, WordsActivity.class);
-                    startActivity(gameWordsIntent);
-                }
-                if(isClickColor){
                     isClickColor = false;
                     Intent gameColorsIntent = new Intent(MainActivity.this, ColorsActivity.class);
                     startActivity(gameColorsIntent);
+                }
+                if(isClickDigit)
+                {
+                    isClickDigit = false;
+                    Intent gameDigitsIntent = new Intent(MainActivity.this, DigitsActivity.class);
+                    startActivity(gameDigitsIntent);
+                }
+                if(isClickWord){
+                    isClickWord = false;
+                    Intent gameWordsIntent = new Intent(MainActivity.this, WordsActivity.class);
+                    startActivity(gameWordsIntent);
                 }
                 mGameReadyDialog.dismiss();
                 break;

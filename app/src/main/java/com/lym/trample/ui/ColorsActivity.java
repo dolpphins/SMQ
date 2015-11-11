@@ -169,8 +169,8 @@ public class ColorsActivity extends BaseActivity implements DropSurfaceView.OnDr
     public void onHandleGameOver(Square square, int type) {
         Log.i(TAG, "onHandleGameOver");
 
-//        GameOverDialog gameOverDialog = new GameOverDialog(this);
-//        gameOverDialog.show();
+        GameOverDialog gameOverDialog = new GameOverDialog(this, mScores);
+        gameOverDialog.show();
     }
 
     private IColorGenerator.ColorMapEntry castToColorMapEntryFromObject(Object obj) {
@@ -182,6 +182,15 @@ public class ColorsActivity extends BaseActivity implements DropSurfaceView.OnDr
         } catch (Exception e) {
             e.printStackTrace();
             return null;
+        }
+    }
+
+    
+    private static class GameOverDialogListener implements GameOverDialog.OnCustomDialogListener {
+
+        @Override
+        public void onDialogButtonClick(int userChoose) {
+
         }
     }
 }

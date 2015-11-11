@@ -30,7 +30,7 @@
 
     <string name="game_color">踩颜色</string>
     <string name="game_word">踩单词</string>
-    <string name="game_fruit">踩水果</string>
+    <string name="game_digit">踩数字</string>
 
     <string name="setting_about">关于</string>
     <string name="setting_feedback">意见反馈</string>

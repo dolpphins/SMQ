@@ -11,9 +11,11 @@ public class ScoreManager {
     /**初始化后保存踩颜色的历史最高分数和排名的map的key，
      * 通过这个key可以拿到踩颜色的ScoreEntry*/
     public static String defaultColorKey = "color";
+
     /**初始化后保存踩水果的历史最高分数和排名的map的key，
      * 通过这个key可以拿到踩水果的ScoreEntry*/
-    public static String defaultFruitKey = "fruit";
+    public static String defaultDigitKey = "fruit";
+
     /**初始化后保存踩单词的历史最高分数和排名的map的key，
      * 通过这个key可以拿到踩单词的ScoreEntry*/
     public static String defaultWordKey = "word";
@@ -21,7 +23,7 @@ public class ScoreManager {
     private static ScoreManager mScoresManeger = new ScoreManager();
 
     private static Map<String,ScoreEntry> colors = new HashMap<String, ScoreEntry>();
-    private static Map<String,ScoreEntry> fruits = new HashMap<String, ScoreEntry>();
+    private static Map<String,ScoreEntry> digits = new HashMap<String, ScoreEntry>();
     private static Map<String,ScoreEntry> words = new HashMap<String, ScoreEntry>();
 
 
@@ -64,13 +66,13 @@ public class ScoreManager {
         ScoreManager.colors = color;
     }
     /**
-     * 拿到保存踩水果历史最高分数和排名的键值对
+     * 拿到保存踩数字历史最高分数和排名的键值对
      * 通过ScoreManager.defaultFruitKey拿到值
      * @return
      */
-    public Map<String, ScoreEntry> getFruits()
+    public Map<String, ScoreEntry> getDigits()
     {
-        return fruits;
+        return digits;
     }
     /**
      * 设置color模式的数据
@@ -78,13 +80,13 @@ public class ScoreManager {
      * @param ranking 踩颜色模式的历史最高排名
      * @auther yao
      */
-    public void setFruits(int score,int ranking) {
+    public void setDigits(int score,int ranking) {
         Map<String, ScoreEntry> fruit = new HashMap<String, ScoreEntry>();
         ScoreEntry se = new ScoreEntry();
         se.setRanking(ranking);
         se.setScore(score);
-        fruit.put(defaultFruitKey,se);
-        ScoreManager.fruits = fruit;
+        fruit.put(defaultDigitKey,se);
+        ScoreManager.digits = fruit;
     }
     /**
      * 拿到保存踩单词历史最高分数和排名的键值对
