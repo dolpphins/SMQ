@@ -2,6 +2,7 @@ package com.lym.trample.bean;
 
 import android.graphics.Rect;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 /**
@@ -11,7 +12,7 @@ import java.util.Objects;
  *
  * @author 麦灿标
  */
-public class Square {
+public class Square implements Serializable{
 
     private float startX;
 

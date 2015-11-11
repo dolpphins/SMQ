@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.lym.trample.R;
 import com.lym.trample.base.BaseActivity;
+import com.lym.trample.base.BaseDialog;
 import com.lym.trample.bean.Square;
 import com.lym.trample.color.generator.IColorGenerator;
 import com.lym.trample.color.generator.impl.AverageColorGenerator;
@@ -170,6 +171,7 @@ public class ColorsActivity extends BaseActivity implements DropSurfaceView.OnDr
         Log.i(TAG, "onHandleGameOver");
 
         GameOverDialog gameOverDialog = new GameOverDialog(this, mScores);
+        gameOverDialog.setOnCustomDialogListener(new GameOverDialogListener());
         gameOverDialog.show();
     }
 
@@ -185,12 +187,26 @@ public class ColorsActivity extends BaseActivity implements DropSurfaceView.OnDr
         }
     }
 
+    private void restart() {
+        if(colors_drop_main_surfaceview != null) {
+            colors_drop_main_surfaceview.reset();
+        }
+    }
     
-    private static class GameOverDialogListener implements GameOverDialog.OnCustomDialogListener {
+    private class GameOverDialogListener implements GameOverDialog.OnCustomDialogListener {
 
         @Override
         public void onDialogButtonClick(int userChoose) {
-
+            switch (userChoose) {
+                //返回主菜单
+                case GameOverDialog.OnCustomDialogListener.GAME_OVER_DIALOG_GO_TO_MAIN_ACTIVITY:
+                    finish();
+                    break;
+                //再玩一次
+                case GameOverDialog.OnCustomDialogListener.GAME_OVER_DIALOG_PLAY_AGAIN:
+                    restart();
+                    break;
+            }
         }
     }
 }

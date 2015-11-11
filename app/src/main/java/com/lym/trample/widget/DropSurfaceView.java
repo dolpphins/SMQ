@@ -7,6 +7,9 @@ import android.graphics.Paint;
 import android.graphics.PixelFormat;
 import android.graphics.PorterDuff;
 import android.graphics.Rect;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -18,6 +21,7 @@ import com.lym.trample.generator.BaseSquareGenerator;
 import com.lym.trample.generator.SquareGeneratorConfiguration;
 import com.lym.trample.generator.impl.DefaultSquareGenerator;
 
+import java.sql.SQLClientInfoException;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -89,6 +93,8 @@ public class DropSurfaceView extends SurfaceView implements SurfaceHolder.Callba
     //游戏结束方块闪烁次数
     private int mGameOverTwinkleCount;
 
+    private Handler mSurfaceViewHandler;
+
     public DropSurfaceView(Context context) {
         this(context, null);
     }
@@ -123,6 +129,7 @@ public class DropSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 
         mGameOverTwinkleCount = 2;
 
+        mSurfaceViewHandler = new SurfaceViewHandler();
     }
 
     public void setConfiguration(DropViewConfiguration config) {
@@ -183,6 +190,24 @@ public class DropSurfaceView extends SurfaceView implements SurfaceHolder.Callba
     }
 
     /**
+     * 重置
+     * */
+    public void reset() {
+        if(mSquareList == null) {
+            mSquareList = new LinkedList<Square>();
+        } else {
+            mSquareList.clear();
+        }
+        if(mSquareListTemp == null) {
+            mSquareListTemp = new LinkedList<Square>();
+        } else {
+            mSquareListTemp.clear();
+        }
+        mStatus = Status.STOPPED;
+        mSpeed = 0;
+    }
+
+    /**
      * 开始执行绘制线程,只有在当前处于停止状态时才会执行绘制线程
      * */
     public void start() {
@@ -233,9 +258,13 @@ public class DropSurfaceView extends SurfaceView implements SurfaceHolder.Callba
                 performGameOverEffect(square, true);
                 break;
         }
-        if(mGameOverListener != null) {
-            mGameOverListener.onHandleGameOver(square, type);
-        }
+
+        Message msg = Message.obtain();
+        msg.what = SurfaceViewHandler.GAME_OVER_HANDLE_MESSAGE;
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("square", square);
+        bundle.putInt("type", type);
+        mSurfaceViewHandler.sendMessage(msg);
     }
 
     /**
@@ -816,5 +845,25 @@ public class DropSurfaceView extends SurfaceView implements SurfaceHolder.Callba
          * @param type 游戏结束类型
          * */
         void onHandleGameOver(Square square, int type);
+    }
+
+    private class SurfaceViewHandler extends Handler {
+
+        /** 游戏结束处理消息 */
+        private final static int GAME_OVER_HANDLE_MESSAGE = 1;
+
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case GAME_OVER_HANDLE_MESSAGE:
+                    if(mGameOverListener != null) {
+                        Bundle bundle = msg.getData();
+                        Square square = (Square) bundle.get("square");
+                        int type = bundle.getInt("type");
+                        mGameOverListener.onHandleGameOver(square, type);
+                    }
+                    break;
+            }
+        }
     }
 }
