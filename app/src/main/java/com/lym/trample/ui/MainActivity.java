@@ -12,13 +12,13 @@ import android.widget.Toast;
 import com.lym.trample.R;
 import com.lym.trample.ScoreManager;
 import com.lym.trample.base.BaseActivity;
+import com.lym.trample.base.BaseDialog;
 import com.lym.trample.conf.SpConfig;
 import com.lym.trample.dialog.GameReadyDialog;
-import com.lym.trample.dialog.OnCustomDialogListener;
 import com.lym.trample.utils.SharePreferencesManager;
 
 
-public class MainActivity extends BaseActivity implements OnClickListener,OnCustomDialogListener {
+public class MainActivity extends BaseActivity implements OnClickListener,BaseDialog.OnCustomDialogListener {
 
     /**
      * 怎么玩图标
@@ -42,6 +42,10 @@ public class MainActivity extends BaseActivity implements OnClickListener,OnCust
 
     private static final int FLING_MIN_DISTANCE = 80;
     private static final int FLING_MIN_VELOCITY = 100;
+
+    private Boolean isClickColor;
+    private Boolean isClickWord;
+    private Boolean isClickFruit;
 
 
     private GameReadyDialog mGameReadyDialog;
@@ -75,11 +79,11 @@ public class MainActivity extends BaseActivity implements OnClickListener,OnCust
             ScoreManager.getInstance().setColors(0,0);
 
 
-        ScoreManager.getInstance().setColors(100, 100);
+        isClickColor = false;
+        isClickFruit = false;
+        isClickWord = false;
 
-        int ran = ScoreManager.getInstance().getColors().get(ScoreManager.defaultColorKey).getRanking();
-        int sco = ScoreManager.getInstance().getColors().get(ScoreManager.defaultColorKey).getScore();
-        Toast.makeText(this,""+ran+" :"+sco,Toast.LENGTH_LONG).show();
+
     }
 
     public void initView() {
@@ -101,6 +105,7 @@ public class MainActivity extends BaseActivity implements OnClickListener,OnCust
         gameWord.setOnClickListener(this);
 
         mGameReadyDialog = new GameReadyDialog(this);
+        mGameReadyDialog.setOnCustomDialogListener(this);
     }
 
 
@@ -120,16 +125,15 @@ public class MainActivity extends BaseActivity implements OnClickListener,OnCust
                 break;
             case R.id.menu_bt_colors:
                 mGameReadyDialog.show();
-                Intent gameColorsIntent = new Intent(MainActivity.this, ColorsActivity.class);
-                startActivity(gameColorsIntent);
+                isClickColor = true;
                 break;
             case R.id.menu_bt_fruits:
-                Intent gameFruitsIntent = new Intent(MainActivity.this, FruitsActivity.class);
-                startActivity(gameFruitsIntent);
+                mGameReadyDialog.show();
+                isClickFruit = true;
                 break;
             case R.id.menu_bt_words:
-                Intent gameWordsIntent = new Intent(MainActivity.this, WordsActivity.class);
-                startActivity(gameWordsIntent);
+                mGameReadyDialog.show();
+                isClickWord = true;
                 break;
 
 
@@ -138,9 +142,30 @@ public class MainActivity extends BaseActivity implements OnClickListener,OnCust
 
     @Override
     public void onDialogButtonClick(int userChoose) {
-        switch (userChoose)
-        {
-            
+        switch (userChoose){
+            case BaseDialog.OnCustomDialogListener.GAME_READY_DIALOG_GO_BACK:
+                mGameReadyDialog.dismiss();
+                break;
+            case BaseDialog.OnCustomDialogListener.GAME_READY_DIALOG_START_GAME:
+                if(isClickFruit)
+                {
+                    isClickFruit = false;
+                    Intent gameFruitsIntent = new Intent(MainActivity.this, FruitsActivity.class);
+                    startActivity(gameFruitsIntent);
+                }
+                if(isClickWord)
+                {
+                    isClickWord = false;
+                    Intent gameWordsIntent = new Intent(MainActivity.this, WordsActivity.class);
+                    startActivity(gameWordsIntent);
+                }
+                if(isClickColor){
+                    isClickColor = false;
+                    Intent gameColorsIntent = new Intent(MainActivity.this, ColorsActivity.class);
+                    startActivity(gameColorsIntent);
+                }
+                mGameReadyDialog.dismiss();
+                break;
         }
     }
 }
