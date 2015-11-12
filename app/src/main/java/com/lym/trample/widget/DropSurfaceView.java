@@ -1,6 +1,7 @@
 package com.lym.trample.widget;
 
 import android.content.Context;
+import android.content.SyncStatusObserver;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -35,7 +36,7 @@ import java.util.List;
 public class DropSurfaceView extends SurfaceView implements SurfaceHolder.Callback{
 
     //DropSurfaceView状态枚举类
-    private enum Status{
+    public enum Status{
 
         /** 未开始 */
         STOPPED,
@@ -164,7 +165,7 @@ public class DropSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 
         //如果是暂停状态
         } else if(mStatus == Status.PAUSE) {
-            resume();
+            drawOnce();//绘制一次，否则会黑屏
         }
     }
 
@@ -236,6 +237,15 @@ public class DropSurfaceView extends SurfaceView implements SurfaceHolder.Callba
         if(mStatus == Status.PAUSE) {
             mStatus = Status.RUNNING;
         }
+    }
+
+    /**
+     * 获取游戏状态
+     *
+     * @return 返回游戏状态
+     * */
+    public Status getStatus() {
+        return mStatus;
     }
 
     /**
@@ -443,9 +453,10 @@ public class DropSurfaceView extends SurfaceView implements SurfaceHolder.Callba
             dstList.clear();
             copyList(srcList, dstList);
             srcList.clear();
-
+            System.out.println(222);
             //判断是否符合产生新方块的条件
             if(canGenerateSquare(dstList)) {
+                System.out.println(333);
                 //产生新的方块
                 BaseSquareGenerator generator = new DefaultSquareGenerator();
                 List<Square> generatedSquareList = generator.generate(mSquareGeneratorConfiguration);
@@ -494,7 +505,6 @@ public class DropSurfaceView extends SurfaceView implements SurfaceHolder.Callba
     private boolean isGoOutOfRect(Square square) {
         Rect rect = mDropViewConfiguration.getRect();
         if(square.getStartY() > rect.bottom + mDropViewConfiguration.getSquareHeight() / 4) {
-       // if(square.getStartY() > rect.bottom) {
             return true;
         } else {
             return false;
@@ -515,12 +525,15 @@ public class DropSurfaceView extends SurfaceView implements SurfaceHolder.Callba
     }
 
     private boolean canGenerateSquare(List<Square> squareList) {
+        Log.i(TAG, "size:" + squareList.size());
         int minYTemp = Integer.MAX_VALUE;
         for(Square square : squareList) {
             if(square.getStartY() < minYTemp) {
                 minYTemp = (int) square.getStartY();
             }
         }
+        Log.i(TAG, "minYTemp:" + minYTemp);
+        Log.i(TAG, "mMinY:" + mMinY);
         if(minYTemp >= mMinY) {
             return true;
         } else {
@@ -728,6 +741,25 @@ public class DropSurfaceView extends SurfaceView implements SurfaceHolder.Callba
         }
     }
 
+    private void drawOnce() {
+        Canvas canvas = null;
+        try {
+
+            canvas = mSurfaceHolder.lockCanvas();
+            clearCanvas(canvas);
+            drawBaseView(canvas);
+            updateData();
+            drawData(canvas, false);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (canvas != null) {
+                mSurfaceHolder.unlockCanvasAndPost(canvas);
+            }
+        }
+    }
+
     //绘制线程
     private class DropThread extends Thread {
 
@@ -752,25 +784,11 @@ public class DropSurfaceView extends SurfaceView implements SurfaceHolder.Callba
                 if (mStatus == Status.PAUSE) {
                     continue;
                 }
-
-                Canvas canvas = null;
-                try {
-                    canvas = mSurfaceHolder.lockCanvas();
-                    clearCanvas(canvas);
-                    drawBaseView(canvas);
-                    updateData();
-                    drawData(canvas, false);
-                    //判断是否游戏结束
-                    if(isGameOver()) {
-                        mIsGameOver = true;
-                        break;
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                } finally {
-                    if (canvas != null) {
-                        mSurfaceHolder.unlockCanvasAndPost(canvas);
-                    }
+                drawOnce();
+                //判断是否游戏结束
+                if(isGameOver()) {
+                    mIsGameOver = true;
+                    break;
                 }
             }
 

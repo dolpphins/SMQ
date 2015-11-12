@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.lym.trample.R;
 import com.lym.trample.base.BaseActivity;
+import com.lym.trample.base.BaseGameActivity;
 import com.lym.trample.bean.Square;
 import com.lym.trample.conf.WordsKeeper;
 import com.lym.trample.utils.TextUtil;
@@ -26,8 +27,12 @@ import java.util.List;
 
 /**
  * Created by mao on 2015/11/5.
+ *
+ * 踩单词游戏界面
+ *
+ * @author 麦灿标
  */
-public class WordsActivity extends BaseActivity implements DropSurfaceView.OnDrawSurfaceViewListener,
+public class WordsActivity extends BaseGameActivity implements DropSurfaceView.OnDrawSurfaceViewListener,
                                                     DropSurfaceView.OnSurfaceViewTouchListener, DropSurfaceView.OnGameOverListener{
 
     private final static String TAG = "WordsActivity";
