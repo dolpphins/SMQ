@@ -185,7 +185,7 @@ public class ColorsActivity extends BaseActivity implements DropSurfaceView.OnDr
         }
     }
 
-    
+
     private static class GameOverDialogListener implements GameOverDialog.OnCustomDialogListener {
 
         @Override
