@@ -6,20 +6,28 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.net.wifi.WifiConfiguration;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
+import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.lym.trample.R;
 import com.lym.trample.base.BaseActivity;
+import com.lym.trample.base.BaseDialog;
+import com.lym.trample.base.BaseGameActivity;
 import com.lym.trample.bean.Square;
 import com.lym.trample.color.generator.IColorGenerator;
 import com.lym.trample.color.generator.impl.AverageColorGenerator;
 import com.lym.trample.color.generator.impl.RandomColorGenerator;
 import com.lym.trample.conf.ColorsKeeper;
 import com.lym.trample.dialog.GameOverDialog;
+import com.lym.trample.dialog.GamePauseDialog;
+import com.lym.trample.dialog.GameReadyDialog;
 import com.lym.trample.utils.ImageUtil;
 import com.lym.trample.utils.TextUtil;
 import com.lym.trample.widget.DropSurfaceView;
@@ -29,44 +37,24 @@ import java.util.List;
 
 /**
  * Created by mao on 2015/11/5.
+ *
+ * 踩颜色游戏界面
+ *
+ * @author 麦灿标
  */
-public class ColorsActivity extends BaseActivity implements DropSurfaceView.OnDrawSurfaceViewListener,
-                                                    DropSurfaceView.OnSurfaceViewTouchListener, DropSurfaceView.OnGameOverListener{
+public class ColorsActivity extends BaseGameActivity {
 
     private final static String TAG = "ColorsActivity";
 
-    private DropSurfaceView colors_drop_main_surfaceview;
-    private DropViewConfiguration config;
     private Paint paint = new Paint();
 
     private IColorGenerator mColorGenerator;
-
-    private TextView colors_drop_main_scores;
-    private int mScores;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "onCreate");
-        setContentView(R.layout.app_colors_main_activity);
 
-        colors_drop_main_surfaceview = (DropSurfaceView) findViewById(R.id.colors_drop_main_surfaceview);
-        colors_drop_main_scores = (TextView) findViewById(R.id.colors_drop_main_scores);
-
-        colors_drop_main_scores.setText(mScores + "");
-        config = new DropViewConfiguration.Builder(this)
-                                            .setPipeBorderColor(Color.parseColor("#0000ff"))
-                                            .setPipeCount(4)
-                                            .setCanvasColor(Color.WHITE)
-                                            .build();
-        colors_drop_main_surfaceview.setConfiguration(config);
-        colors_drop_main_surfaceview.setOnDrawSurfaceViewListener(this);
-        colors_drop_main_surfaceview.setOnSurfaceViewTouchListener(this);
-        colors_drop_main_surfaceview.setOnGameOverListener(this);
-
-        colors_drop_main_surfaceview.setSpeed(18 * config.getRect().height() / 1920);
-
-        //mColorGenerator = new RandomColorGenerator(ColorsKeeper.getColorsMap());
         mColorGenerator = new AverageColorGenerator(ColorsKeeper.getColorsMap());
     }
 
@@ -76,9 +64,6 @@ public class ColorsActivity extends BaseActivity implements DropSurfaceView.OnDr
         if(started) {
             paint.setColor(Color.BLACK);
             canvas.drawRect(square.toRect(), paint);
-//            Bitmap bm = BitmapFactory.decodeResource(getResources(), R.mipmap.start_font_icon);
-//            Rect rect = ImageUtil.getFillRectForBitmap(bm, square.toRect());
-//            canvas.drawBitmap(bm, null, rect, null);
             Rect rect = TextUtil.getFillRectForText(square.toRect());
             paint.setColor(Color.WHITE);
             paint.setTextAlign(Paint.Align.CENTER);
@@ -124,7 +109,7 @@ public class ColorsActivity extends BaseActivity implements DropSurfaceView.OnDr
         IColorGenerator.ColorMapEntry entry = new IColorGenerator.ColorMapEntry();
         entry.setValue("#ff0000");
         square.setBundle(entry);
-        colors_drop_main_surfaceview.stop(square, DropSurfaceView.OnGameOverListener.GAME_OVER_OUT_SQUARE_TYPE);
+        getDropSurfaceview().stop(square, DropSurfaceView.OnGameOverListener.GAME_OVER_OUT_SQUARE_TYPE);
 
         return true;
     }
@@ -135,17 +120,15 @@ public class ColorsActivity extends BaseActivity implements DropSurfaceView.OnDr
         IColorGenerator.ColorMapEntry entry = castToColorMapEntryFromObject(square.getBundle());
         //开始
         if(entry == null) {
-            colors_drop_main_surfaceview.start();
-            mScores = 0;
-            colors_drop_main_scores.setText(mScores + "");
+            getDropSurfaceview().start();
+            updateScores(0);
         } else {
            if(entry.isSame() && !entry.isAlreadyTouch()) {
                entry.setAlreadyTouch(true);//设置为已点击
                //计算分数
-               mScores++;
-               colors_drop_main_scores.setText(mScores + "");
+               updateScores(getScores() + 1);
            } else {
-               colors_drop_main_surfaceview.stop(square, DropSurfaceView.OnGameOverListener.GAME_OVER_SQUARE_ERROR_TYPE);
+               getDropSurfaceview().stop(square, DropSurfaceView.OnGameOverListener.GAME_OVER_SQUARE_ERROR_TYPE);
            }
         }
         return false;
@@ -154,10 +137,10 @@ public class ColorsActivity extends BaseActivity implements DropSurfaceView.OnDr
     @Override
     public boolean onIsGameOver(List<Square> squareList) {
         for(Square square : squareList) {
-            if(square.getStartY() > config.getRect().bottom) {
+            if(square.getStartY() > getConfig().getRect().bottom) {
                 IColorGenerator.ColorMapEntry entry = castToColorMapEntryFromObject(square.getBundle());
                 if(entry != null && entry.isSame() && !entry.isAlreadyTouch()) {
-                    colors_drop_main_surfaceview.setGameOverRect(square);
+                    getDropSurfaceview().setGameOverRect(square);
                     return true;
                 }
             }
@@ -169,8 +152,7 @@ public class ColorsActivity extends BaseActivity implements DropSurfaceView.OnDr
     public void onHandleGameOver(Square square, int type) {
         Log.i(TAG, "onHandleGameOver");
 
-        GameOverDialog gameOverDialog = new GameOverDialog(this, mScores);
-        gameOverDialog.show();
+        showGameOverDialiog();
     }
 
     private IColorGenerator.ColorMapEntry castToColorMapEntryFromObject(Object obj) {
@@ -182,15 +164,6 @@ public class ColorsActivity extends BaseActivity implements DropSurfaceView.OnDr
         } catch (Exception e) {
             e.printStackTrace();
             return null;
-        }
-    }
-
-
-    private static class GameOverDialogListener implements GameOverDialog.OnCustomDialogListener {
-
-        @Override
-        public void onDialogButtonClick(int userChoose) {
-
         }
     }
 }

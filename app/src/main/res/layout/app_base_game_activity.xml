@@ -1,18 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+<!--
+    基本的游戏Activity界面
+
+    @author 麦灿标
+ -->
+
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="match_parent"
     android:id="@+id/drop_main_parent">
 
     <com.lym.trample.widget.DropSurfaceView
-        android:id="@+id/colors_drop_main_surfaceview"
+        android:id="@+id/drop_main_surfaceview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
     <TextView
-        android:id="@+id/colors_drop_main_scores"
+        android:id="@+id/drop_main_scores"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="@dimen/colors_drop_main_scores_marginTop"
-        android:textSize="@dimen/colors_drop_main_scores_textSize"/>
+        android:layout_marginTop="@dimen/drop_main_scores_marginTop"
+        android:textSize="@dimen/drop_main_scores_textSize"/>
 </FrameLayout>
+
