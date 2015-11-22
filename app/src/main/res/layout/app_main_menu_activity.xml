@@ -7,7 +7,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/bg_of_menu"
+    android:background="@color/gray_white"
     android:weightSum="6"
     android:orientation="vertical">
     <LinearLayout
@@ -71,19 +71,24 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
             <Button
+                style="@style/dialogButton"
                 android:text="@string/game_color"
-                android:layout_width="120dp"
+                android:layout_width="200dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/menu_bt_colors" />
             <Button
+                style="@style/dialogButton"
                 android:text="@string/game_digit"
-                android:layout_width="120dp"
+                android:layout_width="200dp"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="25dp"
                 android:id="@+id/menu_bt_digits"/>
             <Button
+                style="@style/dialogButton"
                 android:text="@string/game_word"
-                android:layout_width="120dp"
+                android:layout_width="200dp"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="25dp"
                 android:id="@+id/menu_bt_words"/>
         </LinearLayout>
     </LinearLayout>
