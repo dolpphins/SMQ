@@ -4,21 +4,19 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
 
-    <string name="number_of_participants">总排名人数：</string>
     <string name="global_highest_score">全球最高分：</string>
     <string name="my_highest_score">我的最高分：</string>
-    <string name="my_rank">我当前排名：</string>
     <string name="start_game">开始游戏</string>
     <string name="go_back">返回</string>
     <string name="history_highest_score">历史最高：</string>
+    <string name="history_highest_score_no_colon">历史</string>
     <string name="current_score">当前分数：</string>
-    <string name="history_rank">历史排名：</string>
-    <string name="current_rank">当前排名：</string>
-    <string name="break_record">打破记录了！</string>
-    <string name="ranking_up">排名上升了！</string>
+    <string name="current_score_no_colon">当前分数</string>
     <string name="no_change">记录不变！</string>
-    <string name="good_job">干得漂亮！</string>
-    <string name="work_hard">要加把劲哦！</string>
+    <string name="over_global_score">超越全球最高分了！！厉害！</string>
+    <string name="good_job">打破记录了,干得漂亮！</string>
+    <string name="not_far_to_break_record">好可惜，差点就可以打破记录了</string>
+    <string name="need_work_hard">要继续努力哦！</string>
     <string name="play_again">再来一局</string>
     <string name="main_activity">主菜单</string>
     <string name="game_pause">游戏暂停</string>

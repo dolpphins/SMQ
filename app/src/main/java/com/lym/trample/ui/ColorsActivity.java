@@ -169,7 +169,7 @@ public class ColorsActivity extends BaseActivity implements DropSurfaceView.OnDr
     public void onHandleGameOver(Square square, int type) {
         Log.i(TAG, "onHandleGameOver");
 
-        GameOverDialog gameOverDialog = new GameOverDialog(this, mScores);
+        GameOverDialog gameOverDialog = new GameOverDialog(this);
         gameOverDialog.show();
     }
 

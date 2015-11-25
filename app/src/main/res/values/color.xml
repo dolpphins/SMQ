@@ -5,6 +5,9 @@
     <color name="light_gray">#666666</color>
     <color name="light_orange">#FF6A33</color>
     <color name="deep_orange">#EA4100</color>
+    <color name="golden_yellow">#FFE20D</color>
+    <color name="light_yellow">#FFEC68</color>
+    <color name="cyan">#7FBCEC</color>
 
 
     <!--选择游戏模式的背景颜色-->
