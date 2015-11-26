@@ -22,6 +22,7 @@ public class BaseDialog {
      */
     public void show() {
         mDialog.setCanceledOnTouchOutside(false);
+        mDialog.setCancelable(false);
         mDialog.show();
     }
 

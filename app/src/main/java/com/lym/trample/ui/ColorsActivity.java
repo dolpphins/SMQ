@@ -9,9 +9,11 @@ import android.graphics.Rect;
 import android.net.wifi.WifiConfiguration;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.TextView;
@@ -53,7 +55,10 @@ public class ColorsActivity extends BaseGameActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.i(TAG, "onCreate");
+
+        int speed = 18 * getConfig().getRect().height() / 1920;
+        setInitSpeed(speed);
+        setSpeed(speed);
 
         mColorGenerator = new AverageColorGenerator(ColorsKeeper.getColorsMap());
     }
@@ -126,7 +131,10 @@ public class ColorsActivity extends BaseGameActivity {
            if(entry.isSame() && !entry.isAlreadyTouch()) {
                entry.setAlreadyTouch(true);//设置为已点击
                //计算分数
-               updateScores(getScores() + 1);
+               updateScores(getScores() + getSpeed());
+               //计算速度
+               int temp = calculateSpeed(getScores());
+               setSpeed(temp);
            } else {
                getDropSurfaceview().stop(square, DropSurfaceView.OnGameOverListener.GAME_OVER_SQUARE_ERROR_TYPE);
            }
@@ -165,6 +173,18 @@ public class ColorsActivity extends BaseGameActivity {
             e.printStackTrace();
             return null;
         }
+    }
+
+    private int calculateSpeed(int scores) {
+        if(scores < 400) {
+            return 18;
+        }
+        return (scores - 400) / 100 + 18;
+    }
+
+    @Override
+    protected String createColumnName() {
+        return "best_color_score";
     }
 }
 

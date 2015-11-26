@@ -33,9 +33,15 @@ public class DigitsActivity extends BaseGameActivity{
 
     private BaseDigitGenerator mDigitGenerator;
 
+    private int mMaxValue = 4;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        int speed = 18 * getConfig().getRect().height() / 1920;
+        setInitSpeed(speed);
+        setSpeed(speed);
 
         mDigitGenerator = new RandomDigitGenerator();
     }
@@ -59,7 +65,7 @@ public class DigitsActivity extends BaseGameActivity{
         } else {
             IDigitGenerator.DigitMapEntry entry = castToDigitMapEntryFromObject(square.getBundle());
             if(entry == null) {
-                entry = mDigitGenerator.generate();
+                entry = mDigitGenerator.generate(mMaxValue);
                 square.setBundle(entry);
             }
 
@@ -113,7 +119,13 @@ public class DigitsActivity extends BaseGameActivity{
                 getDropSurfaceview().stop(square, GAME_OVER_OUT_SQUARE_TYPE);
             } else {
                 entry.setNum(num);
-                updateScores(getScores() + 1);
+                updateScores(getScores() + getSpeed());
+                //计算速度
+                int speed = calculateSpeed(getScores());
+                setSpeed(speed);
+                //计算最大值
+                int maxValue = calculateMaxValue(getScores());
+                maxValue = maxValue;
             }
         }
         return true;
@@ -150,4 +162,22 @@ public class DigitsActivity extends BaseGameActivity{
         }
     }
 
+    private int calculateSpeed(int scores) {
+        if(scores < 400) {
+            return 18;
+        }
+        return (scores - 400) / 100 + 18;
+    }
+
+    private int calculateMaxValue(int scores) {
+        if(scores < 300) {
+            return 4;
+        }
+        return (scores - 300) / 100 + 4;
+    }
+
+    @Override
+    protected String createColumnName() {
+        return "best_digit_score";
+    }
 }
