@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MotionEvent;
 
 import com.lym.trample.ScoresManager;
@@ -30,6 +31,8 @@ public class SideActivity extends BaseGameActivity implements DropSurfaceView.On
 
     private final static String TAG = "SideActivity";
 
+    private final static int DISTANCE_SCORE_HEIGHT = 720;
+
     private Paint paint = new Paint();
 
     private int mScores;
@@ -50,6 +53,7 @@ public class SideActivity extends BaseGameActivity implements DropSurfaceView.On
         mBaseline = config.getRect().bottom - config.getSquareHeight() / 5;
 
         mInitSpeed = 18 * config.getRect().height() / 1920;
+        mInitSpeed = 3;
         setInitSpeed(mInitSpeed);
         setSpeed(mInitSpeed);
     }
@@ -112,7 +116,7 @@ public class SideActivity extends BaseGameActivity implements DropSurfaceView.On
         } else {
             //计算分数
             float distance = mBaseline - square.getEndY();
-            int scores = calculateScore(distance);
+            int scores = calculateScore((int) distance);
             mScores += scores;
             updateScores(mScores);
             entry.setAlreadyTouch(true);
@@ -126,7 +130,7 @@ public class SideActivity extends BaseGameActivity implements DropSurfaceView.On
     @Override
     public boolean onIsGameOver(List<Square> squareList) {
         for(Square square : squareList) {
-            if(square.getEndY() > mBaseline) {
+            if(square.getEndY() >= mBaseline) {
                 SideGenerator.SideMapEntry entry = castToIdiomMapEntryFromObject(square.getBundle());
                 if(entry != null && !entry.isAlreadyTouch()) {
                     getDropSurfaceview().setGameOverRect(square);
@@ -154,11 +158,17 @@ public class SideActivity extends BaseGameActivity implements DropSurfaceView.On
         }
     }
 
-    private int calculateScore(float distance) {
+    private int calculateScore(int distance) {
+        Log.i(TAG, "distance:" + distance);
         if(distance < 0) {
             return 0;
+        } else if(distance == 0) {
+            return 15;
+        } else if(distance < 15) {
+            return (int) ((DISTANCE_SCORE_HEIGHT) / 15);
+        } else {
+            return (int) ((DISTANCE_SCORE_HEIGHT) / distance);
         }
-        return (int) ((mBaseline - config.getRect().top) / distance);
     }
 
     private int calculateSpeed(int scores) {

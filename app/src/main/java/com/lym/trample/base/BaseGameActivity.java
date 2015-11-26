@@ -86,12 +86,12 @@ public abstract class BaseGameActivity extends BaseActivity implements DropSurfa
         if(drop_main_surfaceview != null
                 && DropSurfaceView.Status.PAUSE == drop_main_surfaceview.getStatus()) {
             if(!isShowingGamePauseDialog) {
-                showGamePauseDialog();
+                //showGamePauseDialog();
             }
         }
         if(isShowingGameOverDialog) {
             Log.i(TAG, "isShowingGameOverDialog");
-            mGameOverDialog.setRunningManPos();
+            mGameOverDialog.requestSetRunningManFillAfter();
         }
     }
 

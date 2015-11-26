@@ -31,6 +31,8 @@ import com.lym.trample.base.BaseDialog;
  */
 public class GameOverDialog extends BaseDialog implements View.OnClickListener {
 
+    private final static String TAG = "GameOverDialog";
+
     private TextView game_over_global_highest_score = null;
     private TextView game_over_my_highest_score = null;
     private TextView current_score = null;
@@ -51,6 +53,8 @@ public class GameOverDialog extends BaseDialog implements View.OnClickListener {
     /** 小人需要奔跑的距离 */
     int mDistance;
 
+    private boolean mRunningManFillAfter;
+
     public GameOverDialog(Context context) {
         super(context);
         mContext = context;
@@ -63,16 +67,22 @@ public class GameOverDialog extends BaseDialog implements View.OnClickListener {
         new RankingTask().execute();
     }
 
+    public void setRunningManPos() {
+        setRunningManPos(mDistance);
+    }
+
     /**
      * 设置小人停留在动画结束时的位置
      */
-    public void setRunningManPos() {
-        mLeft = ranking_progress.getLeft() + mDistance - running_man_layout.getWidth()/2;
+    public void setRunningManPos(int offsetX) {
+        mLeft = ranking_progress.getLeft() + offsetX - running_man_layout.getWidth()/2;
         mTop= running_man_layout.getTop();
         int width = running_man_layout.getWidth();
         int height = running_man_layout.getHeight();
         running_man_layout.clearAnimation();
         running_man_layout.layout(mLeft, mTop, mLeft + width, mTop + height);
+
+        Log.i(TAG, "setRunningManPos");
     }
 
     private void init() {
@@ -97,6 +107,23 @@ public class GameOverDialog extends BaseDialog implements View.OnClickListener {
         play_again.setOnClickListener(this);
         go_to_main_activity.setOnClickListener(this);
 
+        mRunningManFillAfter = false;
+        window.getDecorView().getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener(){
+
+            @Override
+            public boolean onPreDraw() {
+
+                if(mRunningManFillAfter) {
+                    setRunningManPos();
+                }
+                return true;
+            }
+        });
+
+    }
+
+    public void requestSetRunningManFillAfter() {
+        mRunningManFillAfter = true;
     }
 
     @Override
@@ -163,10 +190,11 @@ public class GameOverDialog extends BaseDialog implements View.OnClickListener {
 
                         @Override
                         public void onAnimationEnd(Animation animation) {
-                            setRunningManPos();
                             //开始提示文字动画
                             game_over_tip.setVisibility(View.VISIBLE);
                             game_over_tip.startAnimation(AnimationUtils.loadAnimation(mContext, R.anim.dialog_font_animation));
+
+                            requestSetRunningManFillAfter();
                         }
 
                         @Override
