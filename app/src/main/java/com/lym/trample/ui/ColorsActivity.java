@@ -19,6 +19,7 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.lym.trample.R;
+import com.lym.trample.ScoresManager;
 import com.lym.trample.base.BaseActivity;
 import com.lym.trample.base.BaseDialog;
 import com.lym.trample.base.BaseGameActivity;
@@ -52,13 +53,15 @@ public class ColorsActivity extends BaseGameActivity {
 
     private IColorGenerator mColorGenerator;
 
+    private int mInitSpeed;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        int speed = 18 * getConfig().getRect().height() / 1920;
-        setInitSpeed(speed);
-        setSpeed(speed);
+        mInitSpeed = 18 * getConfig().getRect().height() / 1920;
+        setInitSpeed(mInitSpeed);
+        setSpeed(mInitSpeed);
 
         mColorGenerator = new AverageColorGenerator(ColorsKeeper.getColorsMap());
     }
@@ -177,14 +180,21 @@ public class ColorsActivity extends BaseGameActivity {
 
     private int calculateSpeed(int scores) {
         if(scores < 400) {
-            return 18;
+            return mInitSpeed;
         }
-        return (scores - 400) / 100 + 18;
+        return (scores - 400) / 100 + mInitSpeed;
     }
 
     @Override
     protected String createColumnName() {
         return "best_color_score";
+    }
+
+    @Override
+    protected void setScores(GameOverDialog dialog) {
+        dialog.setGlobalHighestScoe(ScoresManager.bestColorScore);
+        dialog.setMyHighestScore(ScoresManager.bestUserColorScore);
+        dialog.setCurrentScore(getScores());
     }
 }
 

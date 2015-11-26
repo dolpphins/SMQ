@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import com.lym.trample.App;
 import com.lym.trample.R;
+import com.lym.trample.ScoresManager;
 import com.lym.trample.base.BaseActivity;
 import com.lym.trample.base.BaseDialog;
 import com.lym.trample.bean.UpdateBean;
@@ -129,14 +130,20 @@ public class MainActivity extends BaseActivity implements OnClickListener,BaseDi
                 confirmExit();
                 break;
             case R.id.menu_bt_colors:
+                mGameReadyDialog.setMyHighestScore(ScoresManager.bestUserColorScore);
+                mGameReadyDialog.setGlobalHighestScore(ScoresManager.bestColorScore);
                 mGameReadyDialog.show();
                 isClickColor = true;
                 break;
             case R.id.menu_bt_digits:
+                mGameReadyDialog.setMyHighestScore(ScoresManager.bestUserDigitScore);
+                mGameReadyDialog.setGlobalHighestScore(ScoresManager.bestDigitScore);
                 mGameReadyDialog.show();
                 isClickDigit = true;
                 break;
             case R.id.menu_bt_words:
+                mGameReadyDialog.setMyHighestScore(ScoresManager.bestUserLineScore);
+                mGameReadyDialog.setGlobalHighestScore(ScoresManager.bestLineScore);
                 mGameReadyDialog.show();
                 isClickWord = true;
                 break;

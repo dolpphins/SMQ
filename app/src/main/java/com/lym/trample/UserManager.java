@@ -27,33 +27,16 @@ public class UserManager {
 
 //        //所有用户
 //        ScoresManager.totalUserCount = sp.getInt(context, SpConfig.sTotalUserCount, 0);
-//        ScoresManager.bestColorScore = sp.getInt(context, SpConfig.sBestColorScore, 0);
-//        ScoresManager.bestDigitScore = sp.getInt(context, SpConfig.sBestDigitScore, 0);
-//        ScoresManager.bestLineScore = sp.getInt(context, SpConfig.sBestLineScore, 0);
+        ScoresManager.bestColorScore = sp.getInt(context, SpConfig.sBestColorScore, 0);
+        ScoresManager.bestDigitScore = sp.getInt(context, SpConfig.sBestDigitScore, 0);
+        ScoresManager.bestLineScore = sp.getInt(context, SpConfig.sBestLineScore, 0);
 //        //个人分数
-//        ScoresManager.bestUserColorScore = sp.getInt(context, SpConfig.sColorScore, 0);
-//        ScoresManager.bestUserDigitScore = sp.getInt(context, SpConfig.sDigitScore, 0);
-//        ScoresManager.bestUserDigitRank = sp.getInt(context, SpConfig.sLineScore, 0);
+        ScoresManager.bestUserColorScore = sp.getInt(context, SpConfig.sColorScore, 0);
+        ScoresManager.bestUserDigitScore = sp.getInt(context, SpConfig.sDigitScore, 0);
+        ScoresManager.bestUserLineScore = sp.getInt(context, SpConfig.sLineScore, 0);
         ScoresManager.guid = sp.getString(context, SpConfig.GUID, UUID.randomUUID().toString());
-//        //个人排名
-//        ScoresManager.bestUserColorRank = sp.getInt(context, SpConfig.sColorRanking, 0);
-//        ScoresManager.bestUserDigitRank = sp.getInt(context, SpConfig.sDigitRanking, 0);
-//        ScoresManager.bestUserLineRank = sp.getInt(context, SpConfig.sLineRanking, 0);
 
-
-//        //尝试保存
-//        sp.putInt(context, SpConfig.sTotalUserCount, ScoresManager.totalUserCount);
-//        sp.getInt(context, SpConfig.sBestColorScore, ScoresManager.bestColorScore);
-//        sp.getInt(context, SpConfig.sBestDigitScore, ScoresManager.bestDigitScore);
-//        sp.getInt(context, SpConfig.sBestLineScore, ScoresManager.bestLineScore);
-//
-//        sp.putInt(context, SpConfig.sColorScore, ScoresManager.bestUserColorScore);
-//        sp.putInt(context, SpConfig.sDigitScore, ScoresManager.bestUserDigitScore);
-//        sp.putInt(context, SpConfig.sLineScore, ScoresManager.bestUserDigitRank);
+        //尝试保存
         sp.putString(context, SpConfig.GUID, ScoresManager.guid);
-//
-//        sp.putInt(context, SpConfig.sColorRanking, ScoresManager.bestUserColorRank);
-//        sp.putInt(context, SpConfig.sDigitRanking, ScoresManager.bestUserDigitRank);
-//        sp.putInt(context, SpConfig.sLineRanking, ScoresManager.bestUserLineRank);
     }
 }

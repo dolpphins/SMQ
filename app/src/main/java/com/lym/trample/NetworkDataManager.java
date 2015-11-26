@@ -66,9 +66,9 @@ public class NetworkDataManager {
             }
         });
         //
-        query.max(new String[]{"best_color_score"});
-        query.groupby(new String[]{"createdAt"});
-        query.findStatistics(context, TUser.class, new FindStatisticsListener() {
+        BmobQuery<TUser> colorQuery = new BmobQuery<TUser>();
+        colorQuery.max(new String[]{"best_color_score"});
+        colorQuery.findStatistics(context, TUser.class, new FindStatisticsListener() {
 
             @Override
             public void onSuccess(Object result) {
@@ -90,8 +90,9 @@ public class NetworkDataManager {
             public void onFailure(int i, String s) {
             }
         });
-        query.max(new String[]{"best_digit_score"});
-        query.findStatistics(context, TUser.class, new FindStatisticsListener() {
+        BmobQuery<TUser> digitQuery = new BmobQuery<TUser>();
+        digitQuery.max(new String[]{"best_digit_score"});
+        digitQuery.findStatistics(context, TUser.class, new FindStatisticsListener() {
 
             @Override
             public void onSuccess(Object result) {
@@ -99,7 +100,6 @@ public class NetworkDataManager {
                 if (ary != null) {
                     try {
                         JSONObject obj = ary.getJSONObject(0);
-                        Log.i(TAG, obj.toString());
                         int maxscore = obj.getInt("_maxBest_digit_score");
                         if (maxscore >= 0) {
                             ScoresManager.bestDigitScore = maxscore;
@@ -114,8 +114,9 @@ public class NetworkDataManager {
             public void onFailure(int i, String s) {
             }
         });
-        query.max(new String[]{"best_line_score"});
-        query.findStatistics(context, TUser.class, new FindStatisticsListener() {
+        BmobQuery<TUser> lineQuery = new BmobQuery<TUser>();
+        lineQuery.max(new String[]{"best_line_score"});
+        lineQuery.findStatistics(context, TUser.class, new FindStatisticsListener() {
 
             @Override
             public void onSuccess(Object result) {
@@ -123,7 +124,6 @@ public class NetworkDataManager {
                 if (ary != null) {
                     try {
                         JSONObject obj = ary.getJSONObject(0);
-                        Log.i(TAG, obj.toString());
                         int maxscore = obj.getInt("_maxBest_line_score");
                         if (maxscore >= 0) {
                             ScoresManager.bestLineScore = maxscore;
@@ -157,55 +157,6 @@ public class NetworkDataManager {
 
             }
         });
-//        //历史排名
-//        //颜色
-//        BmobQuery<TUser> personalColorRankQuery = new BmobQuery<TUser>();
-//        personalColorRankQuery.addWhereGreaterThan("best_color_score", ScoresManager.bestUserColorScore);
-//        personalColorRankQuery.count(mContext, TUser.class, new CountListener() {
-//
-//            @Override
-//            public void onSuccess(int i) {
-//                if (i > 0) {
-//                    ScoresManager.bestUserColorRank = i;
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(int i, String s) {
-//            }
-//        });
-//        //数字
-//        BmobQuery<TUser> personalDigitRankQuery = new BmobQuery<TUser>();
-//        personalDigitRankQuery.addWhereGreaterThan("best_digit_score", ScoresManager.bestUserDigitScore);
-//        personalDigitRankQuery.count(mContext, TUser.class, new CountListener() {
-//
-//            @Override
-//            public void onSuccess(int i) {
-//                if(i > 0) {
-//                    ScoresManager.bestUserDigitRank = i;
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(int i, String s) {
-//            }
-//        });
-//        //边线
-//        BmobQuery<TUser> personalLineRankQuery = new BmobQuery<TUser>();
-//        personalLineRankQuery.addWhereGreaterThan("best_line_score", ScoresManager.bestUserLineScore);
-//        personalLineRankQuery.count(mContext, TUser.class, new CountListener() {
-//
-//            @Override
-//            public void onSuccess(int i) {
-//                if(i > 0) {
-//                    ScoresManager.bestUserLineRank = i;
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(int i, String s) {
-//            }
-//        });
     }
 
 

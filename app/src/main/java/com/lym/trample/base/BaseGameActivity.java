@@ -55,6 +55,10 @@ public abstract class BaseGameActivity extends BaseActivity implements DropSurfa
         setContentView(R.layout.app_base_game_activity);
 
         init();
+
+        //重新获取数据
+        NetworkDataManager ndm = new NetworkDataManager(getApplicationContext());
+        ndm.requestUpdateData();
     }
 
     private void init() {
@@ -101,25 +105,33 @@ public abstract class BaseGameActivity extends BaseActivity implements DropSurfa
     //显示游戏结束对话框
     public void showGameOverDialiog() {
         if(mGameOverDialog == null) {
-            mGameOverDialog = new GameOverDialog(this, mScores);
+            mGameOverDialog = new GameOverDialog(this);
             mGameOverDialog.setOnCustomDialogListener(new GameOverDialogListener());
         }
-        mGameOverDialog.show();
-        isShowingGameOverDialog = true;
-        //传递数据
-
-        //上传数据
         TUser user = new TUser();
         user.setBest_color_score(ScoresManager.bestUserColorScore);
         user.setBest_digit_score(ScoresManager.bestUserDigitScore);
         user.setBest_line_score(ScoresManager.bestUserLineScore);
         user.setGuid(ScoresManager.guid);
+        //上传数据
         int temp = user.getScore(createColumnName());
         if(mScores > temp) {
             user.setScore(mScores, createColumnName());
             NetworkDataManager ndm = new NetworkDataManager(getApplicationContext());
             ndm.updateOneUserToBmob(user);
         }
+        //更新数据
+        ScoresManager.updateUserScores(user);
+        //传递数据
+        setScores(mGameOverDialog);
+
+        mGameOverDialog.show();
+        isShowingGameOverDialog = true;
+
+        //更新数据
+        ScoresManager.updateBestScores(user);
+        //更新缓存
+        ScoresManager.updateCacheSp(this);
     }
 
     /**
@@ -128,6 +140,9 @@ public abstract class BaseGameActivity extends BaseActivity implements DropSurfa
      * @return 列名，不能为空
      */
     protected abstract String createColumnName();
+
+    protected void setScores(GameOverDialog dialog) {
+    }
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {

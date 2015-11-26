@@ -8,8 +8,10 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MotionEvent;
 
+import com.lym.trample.ScoresManager;
 import com.lym.trample.base.BaseGameActivity;
 import com.lym.trample.bean.Square;
+import com.lym.trample.dialog.GameOverDialog;
 import com.lym.trample.digit.generator.BaseDigitGenerator;
 import com.lym.trample.digit.generator.IDigitGenerator;
 import com.lym.trample.digit.generator.impl.RandomDigitGenerator;
@@ -35,13 +37,15 @@ public class DigitsActivity extends BaseGameActivity{
 
     private int mMaxValue = 4;
 
+    private int mInitSpeed;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        int speed = 18 * getConfig().getRect().height() / 1920;
-        setInitSpeed(speed);
-        setSpeed(speed);
+        mInitSpeed = 18 * getConfig().getRect().height() / 1920;
+        setInitSpeed(mInitSpeed);
+        setSpeed(mInitSpeed);
 
         mDigitGenerator = new RandomDigitGenerator();
     }
@@ -164,9 +168,9 @@ public class DigitsActivity extends BaseGameActivity{
 
     private int calculateSpeed(int scores) {
         if(scores < 400) {
-            return 18;
+            return mInitSpeed;
         }
-        return (scores - 400) / 100 + 18;
+        return (scores - 400) / 100 + mInitSpeed;
     }
 
     private int calculateMaxValue(int scores) {
@@ -179,5 +183,12 @@ public class DigitsActivity extends BaseGameActivity{
     @Override
     protected String createColumnName() {
         return "best_digit_score";
+    }
+
+    @Override
+    protected void setScores(GameOverDialog dialog) {
+        dialog.setGlobalHighestScoe(ScoresManager.bestDigitScore);
+        dialog.setMyHighestScore(ScoresManager.bestUserDigitScore);
+        dialog.setCurrentScore(getScores());
     }
 }

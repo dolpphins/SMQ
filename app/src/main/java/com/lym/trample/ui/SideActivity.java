@@ -7,8 +7,10 @@ import android.graphics.Rect;
 import android.os.Bundle;
 import android.view.MotionEvent;
 
+import com.lym.trample.ScoresManager;
 import com.lym.trample.base.BaseGameActivity;
 import com.lym.trample.bean.Square;
+import com.lym.trample.dialog.GameOverDialog;
 import com.lym.trample.idiom.SideGenerator;
 import com.lym.trample.utils.TextUtil;
 import com.lym.trample.widget.DropSurfaceView;
@@ -36,6 +38,8 @@ public class SideActivity extends BaseGameActivity implements DropSurfaceView.On
 
     private int mBaseline;
 
+    private int mInitSpeed;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,9 +49,9 @@ public class SideActivity extends BaseGameActivity implements DropSurfaceView.On
         config = surfaceView.getDropViewConfiguration();
         mBaseline = config.getRect().bottom - config.getSquareHeight() / 5;
 
-        int speed = 18 * config.getRect().height() / 1920;
-        setInitSpeed(speed);
-        setSpeed(speed);
+        mInitSpeed = 18 * config.getRect().height() / 1920;
+        setInitSpeed(mInitSpeed);
+        setSpeed(mInitSpeed);
     }
 
     @Override
@@ -159,13 +163,20 @@ public class SideActivity extends BaseGameActivity implements DropSurfaceView.On
 
     private int calculateSpeed(int scores) {
         if(scores < 400) {
-            return 18;
+            return mInitSpeed;
         }
-        return (scores - 400) / 100 + 18;
+        return (scores - 400) / 100 + mInitSpeed;
     }
 
     @Override
     protected String createColumnName() {
         return "best_line_score";
+    }
+
+    @Override
+    protected void setScores(GameOverDialog dialog) {
+        dialog.setGlobalHighestScoe(ScoresManager.bestLineScore);
+        dialog.setMyHighestScore(ScoresManager.bestUserLineScore);
+        dialog.setCurrentScore(getScores());
     }
 }
