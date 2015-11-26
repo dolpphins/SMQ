@@ -78,9 +78,9 @@ public class ScoresManager {
         sp.putInt(context, SpConfig.sBestDigitScore, ScoresManager.bestDigitScore);
         sp.putInt(context, SpConfig.sBestLineScore, ScoresManager.bestLineScore);
 
-        sp.getInt(context, SpConfig.sColorScore, ScoresManager.bestUserColorScore);
-        sp.getInt(context, SpConfig.sDigitScore, ScoresManager.bestUserDigitScore);
-        sp.getInt(context, SpConfig.sLineScore, ScoresManager.bestUserLineScore);
+        sp.putInt(context, SpConfig.sColorScore, ScoresManager.bestUserColorScore);
+        sp.putInt(context, SpConfig.sDigitScore, ScoresManager.bestUserDigitScore);
+        sp.putInt(context, SpConfig.sLineScore, ScoresManager.bestUserLineScore);
     }
 
 }

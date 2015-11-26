@@ -27,20 +27,11 @@ public class SpConfig {
     /**踩颜色中历史最高分*/
     public final static String sColorScore = "ColorsScore";
 
-    /**踩颜色历史最高排名*/
-    public final static String sColorRanking = "ColorsRanking";
-
     /**踩数字中历史最高分*/
     public final static String sDigitScore = "DigitsScore";
 
-    /**踩数字历史最高排名*/
-    public final static String sDigitRanking = "DigitsRanking";
-
     /**踩边线中历史最高分*/
     public final static String sLineScore = "LinesScore";
-
-    /**踩边线历史最高排名*/
-    public final static String sLineRanking = "LinesRanking";
 
 }
 

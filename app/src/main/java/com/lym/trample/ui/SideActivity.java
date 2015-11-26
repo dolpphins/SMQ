@@ -53,7 +53,6 @@ public class SideActivity extends BaseGameActivity implements DropSurfaceView.On
         mBaseline = config.getRect().bottom - config.getSquareHeight() / 5;
 
         mInitSpeed = 18 * config.getRect().height() / 1920;
-        mInitSpeed = 3;
         setInitSpeed(mInitSpeed);
         setSpeed(mInitSpeed);
     }
