@@ -20,15 +20,18 @@ import com.lym.trample.base.BaseDialog;
  */
 public class GameReadyDialog extends BaseDialog implements View.OnClickListener {
 
-    private TextView number_of_participants = null;
     private TextView global_highest_score = null;
     private TextView my_highest_score = null;
-    private TextView my_rank = null;
     private Button start_game = null;
     private Button go_back = null;
 
+    private int mGlobalHighestScore = 0;
+    private int mMyHighestScore = 0;
+
     public GameReadyDialog(Context context) {
         super(context);
+        mGlobalHighestScore = 1200;
+        mMyHighestScore = 100;
     }
 
     @Override
@@ -41,17 +44,13 @@ public class GameReadyDialog extends BaseDialog implements View.OnClickListener 
         mDialog.setContentView(R.layout.dlg_game_ready);
         Window window = mDialog.getWindow();
 
-        number_of_participants = (TextView) window.findViewById(R.id.number_of_participants);
         global_highest_score = (TextView) window.findViewById(R.id.global_highest_score);
         my_highest_score = (TextView) window.findViewById(R.id.my_highest_score);
-        my_rank = (TextView) window.findViewById(R.id.my_rank);
         start_game = (Button) window.findViewById(R.id.start_game);
         go_back = (Button) window.findViewById(R.id.go_back);
 
-        number_of_participants.setText("1000");
         global_highest_score.setText("100");
         my_highest_score.setText("50");
-        my_rank.setText("600");
         start_game.setOnClickListener(this);
         go_back.setOnClickListener(this);
     }
@@ -67,5 +66,21 @@ public class GameReadyDialog extends BaseDialog implements View.OnClickListener 
                 mListener.onDialogButtonClick(OnCustomDialogListener.GAME_READY_DIALOG_GO_BACK);
                 break;
         }
+    }
+
+    public int getGlobalHighestScore() {
+        return mGlobalHighestScore;
+    }
+
+    public void setGlobalHighestScore(int mGlobalHighestScore) {
+        this.mGlobalHighestScore = mGlobalHighestScore;
+    }
+
+    public int getMyHighestScore() {
+        return mMyHighestScore;
+    }
+
+    public void setMyHighestScore(int mMyHighestScore) {
+        this.mMyHighestScore = mMyHighestScore;
     }
 }

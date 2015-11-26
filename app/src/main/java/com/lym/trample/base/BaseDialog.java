@@ -21,6 +21,7 @@ public class BaseDialog {
      * 显示对话框
      */
     public void show() {
+        mDialog.getWindow().setWindowAnimations(R.style.dialogWindowAnim);
         mDialog.setCanceledOnTouchOutside(false);
         mDialog.show();
     }
