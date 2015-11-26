@@ -89,6 +89,10 @@ public abstract class BaseGameActivity extends BaseActivity implements DropSurfa
                 showGamePauseDialog();
             }
         }
+        if(isShowingGameOverDialog) {
+            Log.i(TAG, "isShowingGameOverDialog");
+            mGameOverDialog.setRunningManPos();
+        }
     }
 
     //显示暂停对话框
