@@ -3,6 +3,7 @@ package com.lym.trample.dialog;
 import android.content.Context;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.AsyncTask;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.Window;
@@ -66,12 +67,11 @@ public class GameOverDialog extends BaseDialog implements View.OnClickListener {
      * 设置小人停留在动画结束时的位置
      */
     public void setRunningManPos() {
-        mLeft = running_man_layout.getLeft() + mDistance;
+        mLeft = ranking_progress.getLeft() + mDistance - running_man_layout.getWidth()/2;
         mTop= running_man_layout.getTop();
         int width = running_man_layout.getWidth();
         int height = running_man_layout.getHeight();
         running_man_layout.clearAnimation();
-
         running_man_layout.layout(mLeft, mTop, mLeft + width, mTop + height);
     }
 
@@ -133,7 +133,7 @@ public class GameOverDialog extends BaseDialog implements View.OnClickListener {
             //计算进度条该到达的位置
             mDesPosition = mCurrentScore;
             //计算其增量
-            mGap = mCurrentScore / (mDuration / 10);
+            mGap = mDesPosition / (mDuration / 10);
             mGap = mGap == 0 ? 1 : mGap;
 
             //设置小人奔跑动画
@@ -173,7 +173,6 @@ public class GameOverDialog extends BaseDialog implements View.OnClickListener {
                         public void onAnimationRepeat(Animation animation) {
                         }
                     });
-                    moveToRight.setStartOffset(150);
                     running_man_layout.startAnimation(moveToRight);
                     return true;
                 }
@@ -214,11 +213,8 @@ public class GameOverDialog extends BaseDialog implements View.OnClickListener {
         else if (mCurrentScore >= mGlobalHighestScore - 10) {
             game_over_tip.setText(mContext.getString(R.string.not_far_to_break_record));
         }
-        else if (mCurrentScore > mMyHighestScore) {
+        else if (mCurrentScore == mMyHighestScore) {
             game_over_tip.setText(mContext.getString(R.string.good_job));
-        }
-        else if (mCurrentScore >= mMyHighestScore - 10) {
-            game_over_tip.setText(mContext.getString(R.string.not_far_to_break_record));
         }
         else {
             game_over_tip.setText(mContext.getString(R.string.need_work_hard));

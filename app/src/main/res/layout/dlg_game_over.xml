@@ -60,6 +60,7 @@
             android:id="@+id/running_man_layout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
             android:gravity="center"
             android:orientation="vertical">
 
@@ -82,8 +83,7 @@
             android:layout_width="match_parent"
             android:layout_height="15dp"
             android:layout_marginLeft="30dp"
-            android:layout_marginRight="30dp"
-            android:progress="40"/>
+            android:layout_marginRight="30dp"/>
     </LinearLayout>
 
     <TextView
