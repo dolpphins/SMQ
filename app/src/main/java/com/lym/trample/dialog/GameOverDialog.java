@@ -44,6 +44,11 @@ public class GameOverDialog extends BaseDialog implements View.OnClickListener {
     private int mGlobalHighestScore = 0;
     private int mMyHighestScore = 0;
     private int mCurrentScore = 0;
+    /** 保存小人最后停留的位置信息 */
+    private int mLeft;
+    private int mTop;
+    /** 小人需要奔跑的距离 */
+    int mDistance;
 
     public GameOverDialog(Context context) {
         super(context);
@@ -55,6 +60,18 @@ public class GameOverDialog extends BaseDialog implements View.OnClickListener {
         super.show();
         init();
         new RankingTask().execute();
+    }
+
+    /**
+     * 设置小人停留在动画结束时的位置
+     */
+    public void setRunningManPos() {
+        mLeft = running_man_layout.getLeft() + mDistance;
+        mTop= running_man_layout.getTop();
+        int width = running_man_layout.getWidth();
+        int height = running_man_layout.getHeight();
+        running_man_layout.clearAnimation();
+        running_man_layout.layout(mLeft, mTop, mLeft + width, mTop + height);
     }
 
     private void init() {
@@ -106,8 +123,6 @@ public class GameOverDialog extends BaseDialog implements View.OnClickListener {
         int mDesPosition;
         /** 进度条位移增量 */
         int mGap;
-        /** 小人需要奔跑的距离 */
-        int mDistance;
 
         @Override
         protected void onPreExecute() {
@@ -147,13 +162,7 @@ public class GameOverDialog extends BaseDialog implements View.OnClickListener {
 
                         @Override
                         public void onAnimationEnd(Animation animation) {
-                            int left = running_man_layout.getLeft() + mDistance;
-                            int top = running_man_layout.getTop();
-                            int width = running_man_layout.getWidth();
-                            int height = running_man_layout.getHeight();
-                            running_man_layout.clearAnimation();
-                            running_man_layout.layout(left, top, left + width, top + height);
-
+                            setRunningManPos();
                             //开始提示文字动画
                             game_over_tip.setVisibility(View.VISIBLE);
                             game_over_tip.startAnimation(AnimationUtils.loadAnimation(mContext, R.anim.dialog_font_animation));

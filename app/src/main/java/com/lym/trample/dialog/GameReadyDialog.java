@@ -30,8 +30,6 @@ public class GameReadyDialog extends BaseDialog implements View.OnClickListener 
 
     public GameReadyDialog(Context context) {
         super(context);
-        mGlobalHighestScore = 1200;
-        mMyHighestScore = 100;
     }
 
     @Override
@@ -49,8 +47,8 @@ public class GameReadyDialog extends BaseDialog implements View.OnClickListener 
         start_game = (Button) window.findViewById(R.id.start_game);
         go_back = (Button) window.findViewById(R.id.go_back);
 
-        global_highest_score.setText("100");
-        my_highest_score.setText("50");
+        global_highest_score.setText(mGlobalHighestScore + "");
+        my_highest_score.setText(mMyHighestScore + "");
         start_game.setOnClickListener(this);
         go_back.setOnClickListener(this);
     }
