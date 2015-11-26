@@ -1,23 +1,33 @@
 package com.lym.trample.ui;
 
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SyncStatusObserver;
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.lym.trample.App;
 import com.lym.trample.R;
-import com.lym.trample.ScoreManager;
 import com.lym.trample.base.BaseActivity;
 import com.lym.trample.base.BaseDialog;
-import com.lym.trample.conf.SpConfig;
+import com.lym.trample.bean.UpdateBean;
+import com.lym.trample.crash.CrashHandler;
 import com.lym.trample.dialog.GameReadyDialog;
-import com.lym.trample.utils.SharePreferencesManager;
 
 
 public class MainActivity extends BaseActivity implements OnClickListener,BaseDialog.OnCustomDialogListener {
+
+    private final static String TAG = "MainActivity";
 
     /**
      * 怎么玩图标
@@ -49,40 +59,36 @@ public class MainActivity extends BaseActivity implements OnClickListener,BaseDi
 
     private GameReadyDialog mGameReadyDialog;
 
+    //更新相关
+    private AlertDialog mUpdateDialog;
+    private TextView app_update_ignore;
+    private TextView app_update_ok;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.app_main_menu_activity);
-        initData();
-        initView();
-    }
-
-    public void initData() {
-        int cScore = SharePreferencesManager.getInstance().getInt(this, SpConfig.getInstance().colorScore, -1);
-        int cRanking = SharePreferencesManager.getInstance().getInt(this, SpConfig.getInstance().colorRanking,-1);
-        if(cScore!=-1&&cRanking!=-1)
-            ScoreManager.getInstance().setColors(cScore,cRanking);
-        else
-            ScoreManager.getInstance().setColors(0,0);
-        int fScore = SharePreferencesManager.getInstance().getInt(this, SpConfig.getInstance().digitScore,-1);
-        int fRanking = SharePreferencesManager.getInstance().getInt(this, SpConfig.getInstance().digitRanking,-1);
-        if(fScore!=-1&&fRanking!=-1)
-            ScoreManager.getInstance().setColors(fScore,fRanking);
-        else
-            ScoreManager.getInstance().setColors(0,0);
-        int wScore = SharePreferencesManager.getInstance().getInt(this, SpConfig.getInstance().wordScore,-1);
-        int wRanking = SharePreferencesManager.getInstance().getInt(this, SpConfig.getInstance().wordRanking,-1);
-        if(wScore!=-1&&wRanking!=-1)
-            ScoreManager.getInstance().setColors(wScore,wRanking);
-        else
-            ScoreManager.getInstance().setColors(0,0);
-
 
         isClickColor = false;
         isClickDigit = false;
         isClickWord = false;
 
+        initView();
 
+        //异常处理器
+        CrashHandler.getInstance().registerUncaughtExceptionHandler(this);
+
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        //判断是否有更新
+        if(App.sCanUpdate && App.sUpdateItem != null) {
+            showUpdateDialog();
+        }
     }
 
     public void initView() {
@@ -120,7 +126,7 @@ public class MainActivity extends BaseActivity implements OnClickListener,BaseDi
                 startActivity(intentSetting);
                 break;
             case R.id.menu_iv_exit:
-                this.finish();
+                confirmExit();
                 break;
             case R.id.menu_bt_colors:
                 mGameReadyDialog.show();
@@ -163,11 +169,69 @@ public class MainActivity extends BaseActivity implements OnClickListener,BaseDi
                 }
                 if(isClickWord){
                     isClickWord = false;
-                    Intent gameWordsIntent = new Intent(MainActivity.this, WordsActivity.class);
+                    Intent gameWordsIntent = new Intent(MainActivity.this, SideActivity.class);
                     startActivity(gameWordsIntent);
                 }
                 mGameReadyDialog.dismiss();
                 break;
+        }
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if(keyCode == KeyEvent.KEYCODE_BACK) {
+            confirmExit();
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
+    private void confirmExit() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("你真的要退出吗？");
+        builder.setNegativeButton("取消", null);
+        builder.setPositiveButton("确定", new AlertDialog.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                MainActivity.this.finish();
+            }
+        });
+        builder.show();
+    }
+
+    private void showUpdateDialog() {
+        if(mUpdateDialog == null) {
+            mUpdateDialog = new AlertDialog.Builder(this).create();
+            View v = LayoutInflater.from(this).inflate(R.layout.update_dialog_layout, null);
+            mUpdateDialog.setView(v);
+
+            app_update_ignore = (TextView) v.findViewById(R.id.app_update_ignore);
+            app_update_ok = (TextView) v.findViewById(R.id.app_update_ok);
+            app_update_ignore.setOnClickListener(new OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+                    mUpdateDialog.cancel();
+                    App.sCanUpdate = false;
+                    App.sUpdateItem = null;
+                }
+            });
+            app_update_ok.setOnClickListener(new OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent();
+                    intent.setAction(Intent.ACTION_VIEW);
+                    intent.setData(Uri.parse(App.sUpdateItem.getUpdateLink()));
+                    startActivity(intent);
+                }
+            });
+        }
+
+        //再次判断
+        if(App.sCanUpdate && App.sUpdateItem != null) {
+            mUpdateDialog.show();
         }
     }
 }

@@ -23,6 +23,7 @@ public class BaseDialog {
     public void show() {
         mDialog.getWindow().setWindowAnimations(R.style.dialogWindowAnim);
         mDialog.setCanceledOnTouchOutside(false);
+        mDialog.setCancelable(false);
         mDialog.show();
     }
 

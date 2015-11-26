@@ -19,4 +19,6 @@
     <dimen name="words_drop_main_scores_marginRight">40dp</dimen>
     <dimen name="words_drop_main_scores_textSize">50sp</dimen>
 
+    <dimen name="about_textSize">20sp</dimen>
+
 </resources>

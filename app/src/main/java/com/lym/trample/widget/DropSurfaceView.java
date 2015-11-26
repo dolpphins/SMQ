@@ -33,21 +33,29 @@ import java.util.List;
  *
  * @author 麦灿标
  */
-public class DropSurfaceView extends SurfaceView implements SurfaceHolder.Callback{
+public class DropSurfaceView extends SurfaceView implements SurfaceHolder.Callback {
 
     //DropSurfaceView状态枚举类
-    public enum Status{
+    public enum Status {
 
-        /** 未开始 */
+        /**
+         * 未开始
+         */
         STOPPED,
 
-        /** 准备开始 */
+        /**
+         * 准备开始
+         */
         READY,
 
-        /** 正在执行 */
+        /**
+         * 正在执行
+         */
         RUNNING,
 
-        /** 暂停 */
+        /**
+         * 暂停
+         */
         PAUSE
     }
 
@@ -58,7 +66,9 @@ public class DropSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 
     private SurfaceHolder mSurfaceHolder;
 
-    /** DropSurfaceView配置 */
+    /**
+     * DropSurfaceView配置
+     */
     private DropViewConfiguration mDropViewConfiguration;
 
     //要绘制的数据
@@ -68,7 +78,7 @@ public class DropSurfaceView extends SurfaceView implements SurfaceHolder.Callba
     private volatile Status mStatus;
     //SurfaceView是否已被创建
     private boolean mIsCreated;
-//    //记录是否有请求等待执行
+    //    //记录是否有请求等待执行
 //    private boolean mPendingThread;
     //当前绘制进程
     private Thread mDropThread;
@@ -87,12 +97,16 @@ public class DropSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 
     //游戏结束监听器
     private OnGameOverListener mGameOverListener;
-    /** 保存游戏结束点区域 */
+    /**
+     * 保存游戏结束点区域
+     */
     private Square mGameOverSquare;
     //标记游戏是否结束
     private boolean mIsGameOver;
     //游戏结束方块闪烁次数
     private int mGameOverTwinkleCount;
+    //游戏结束回退距离
+    private int mGameOverBackDistance;
 
     private Handler mSurfaceViewHandler;
 
@@ -111,7 +125,6 @@ public class DropSurfaceView extends SurfaceView implements SurfaceHolder.Callba
     }
 
     private void init() {
-        Log.i(TAG, "DropSurfaceView init");
         mSurfaceHolder = getHolder();
         mSurfaceHolder.addCallback(this);
         //默认配置
@@ -129,6 +142,7 @@ public class DropSurfaceView extends SurfaceView implements SurfaceHolder.Callba
         mSpeed = 0;
 
         mGameOverTwinkleCount = 2;
+        mGameOverBackDistance = mDropViewConfiguration.getSquareHeight();
 
         mSurfaceViewHandler = new SurfaceViewHandler();
     }
@@ -149,6 +163,8 @@ public class DropSurfaceView extends SurfaceView implements SurfaceHolder.Callba
         mSquareGeneratorConfiguration.setNum(1);
         mSquareGeneratorConfiguration.setWidth(config.getSquareWidth());
         mSquareGeneratorConfiguration.setHeight(config.getSquareHeight());
+
+        mGameOverBackDistance = mDropViewConfiguration.getSquareHeight();
     }
 
     public DropViewConfiguration getDropViewConfiguration() {
@@ -157,13 +173,14 @@ public class DropSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
-        Log.i(TAG, "surfaceCreated");
         mIsCreated = true;
         //如果是未开始状态，那么绘制游戏初始布局
-        if(mStatus == Status.STOPPED) {
+        if (mStatus == Status.STOPPED || mStatus == Status.READY) {
+            mSquareList.clear();
+            mSquareListTemp.clear();
             drawStartLayout();
 
-        //如果是暂停状态
+            //如果是暂停状态
         } else if(mStatus == Status.PAUSE) {
             drawOnce();//绘制一次，否则会黑屏
         }
@@ -172,19 +189,16 @@ public class DropSurfaceView extends SurfaceView implements SurfaceHolder.Callba
     @Override
     public void surfaceChanged(SurfaceHolder holder, int format, int width,
                                int height) {
-        Log.i(TAG, "surfaceChanged");
     }
 
     @Override
     public void surfaceDestroyed(SurfaceHolder holder) {
-        Log.i(TAG, "surfaceDestroyed");
         mIsCreated = false;
         pause();
     }
 
     private void startDropThread() {
-        if(mStatus == Status.READY) {
-            Log.i(TAG, "start to execute a drop thread");
+        if (mStatus == Status.READY) {
             mDropThread = new DropThread();
             mDropThread.start();
         }
@@ -192,14 +206,14 @@ public class DropSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 
     /**
      * 重置
-     * */
+     */
     public void reset() {
-        if(mSquareList == null) {
+        if (mSquareList == null) {
             mSquareList = new LinkedList<Square>();
         } else {
             mSquareList.clear();
         }
-        if(mSquareListTemp == null) {
+        if (mSquareListTemp == null) {
             mSquareListTemp = new LinkedList<Square>();
         } else {
             mSquareListTemp.clear();
@@ -210,10 +224,10 @@ public class DropSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 
     /**
      * 开始执行绘制线程,只有在当前处于停止状态时才会执行绘制线程
-     * */
+     */
     public void start() {
-        if(mStatus == Status.READY) {
-            if(mIsCreated) {
+        if (mStatus == Status.READY) {
+            if (mIsCreated) {
                 startDropThread();
             } else {
 
@@ -223,18 +237,18 @@ public class DropSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 
     /**
      * 暂停绘制线程
-     * */
+     */
     public void pause() {
-        if(mStatus == Status.RUNNING) {
+        if (mStatus == Status.RUNNING) {
             mStatus = Status.PAUSE;
         }
     }
 
     /**
      * 恢复暂停绘制线程
-     * */
+     */
     public void resume() {
-        if(mStatus == Status.PAUSE) {
+        if (mStatus == Status.PAUSE) {
             mStatus = Status.RUNNING;
         }
     }
@@ -243,7 +257,7 @@ public class DropSurfaceView extends SurfaceView implements SurfaceHolder.Callba
      * 获取游戏状态
      *
      * @return 返回游戏状态
-     * */
+     */
     public Status getStatus() {
         return mStatus;
     }
@@ -252,9 +266,9 @@ public class DropSurfaceView extends SurfaceView implements SurfaceHolder.Callba
      * 停止绘制线程
      *
      * @param type 游戏结束类型
-     * */
+     */
     public void stop(Square square, int type) {
-        if(mStatus == Status.RUNNING) {
+        if (mStatus == Status.RUNNING) {
             mStatus = Status.STOPPED;
         }
         switch (type) {
@@ -281,7 +295,7 @@ public class DropSurfaceView extends SurfaceView implements SurfaceHolder.Callba
      * 设置SurfaceView绘制监听接口
      *
      * @param l 指定的要设置的SurfaceView绘制监听接口
-     * */
+     */
     public void setOnDrawSurfaceViewListener(OnDrawSurfaceViewListener l) {
         mDrawSurfaceViewListener = l;
     }
@@ -290,7 +304,7 @@ public class DropSurfaceView extends SurfaceView implements SurfaceHolder.Callba
      * 获取SurfaceView绘制监听接口
      *
      * @return 返回SurfaceView绘制监听接口
-     * */
+     */
     public OnDrawSurfaceViewListener getOnDrawSurfaceViewListener() {
         return mDrawSurfaceViewListener;
     }
@@ -299,7 +313,7 @@ public class DropSurfaceView extends SurfaceView implements SurfaceHolder.Callba
      * 设置SurfaceView触摸监听器
      *
      * @param l 指定的要设置的SurfaceView触摸监听器
-     * */
+     */
     public void setOnSurfaceViewTouchListener(OnSurfaceViewTouchListener l) {
         mSurfaceViewTouchListener = l;
     }
@@ -308,7 +322,7 @@ public class DropSurfaceView extends SurfaceView implements SurfaceHolder.Callba
      * 获取SurfaceView触摸监听器
      *
      * @return 返回SurfaceView触摸监听器
-     * */
+     */
     public OnSurfaceViewTouchListener getOnSurfaceViewTouchListener() {
         return mSurfaceViewTouchListener;
     }
@@ -317,7 +331,7 @@ public class DropSurfaceView extends SurfaceView implements SurfaceHolder.Callba
      * 设置游戏结束监听器
      *
      * @param l 指定的监听器
-     * */
+     */
     public void setOnGameOverListener(OnGameOverListener l) {
         mGameOverListener = l;
     }
@@ -326,7 +340,7 @@ public class DropSurfaceView extends SurfaceView implements SurfaceHolder.Callba
      * 获取游戏结束监听器
      *
      * @return 返回游戏结束监听器
-     * */
+     */
     public OnGameOverListener getOnGameOverListener() {
         return mGameOverListener;
     }
@@ -334,13 +348,32 @@ public class DropSurfaceView extends SurfaceView implements SurfaceHolder.Callba
     /**
      * 设置速度
      *
-     * @param  speed 要设置的下落速度
-     * */
+     * @param speed 要设置的下落速度
+     */
     public void setSpeed(int speed) {
         mSpeed = speed;
     }
 
+    /**
+     * 设置游戏结束回退距离
+     *
+     * @param distance 指定要回退的距离
+     */
+    public void setGameOverBackDistance(int distance) {
+        mGameOverBackDistance = distance;
+    }
+
+    /**
+     * 获取游戏结束回退距离
+     *
+     * @return 返回游戏结束回退距离
+     */
+    public int getGameOverBackDistance() {
+        return mGameOverBackDistance;
+    }
+
     private void drawStartLayout() {
+        System.out.println("drawStartLayout");
         //开始产生1个
         int squareWidth = mSquareGeneratorConfiguration.getWidth();
         int squareHeight = mSquareGeneratorConfiguration.getHeight();
@@ -472,6 +505,7 @@ public class DropSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 
     //前进一步
     private void moveOneStep(List<Square> squareList) {
+        System.out.println("moveOneStep:speed:" + mSpeed);
         for(Square square : squareList) {
             square.setStartY(square.getStartY() + mSpeed);
             square.setEndY(square.getEndY() + mSpeed);
@@ -687,13 +721,13 @@ public class DropSurfaceView extends SurfaceView implements SurfaceHolder.Callba
         Canvas canvas = null;
         //先回退
         int rollbackDistance = 0;
-        int squareHeight = mDropViewConfiguration.getSquareHeight();
+        //int squareHeight = mDropViewConfiguration.getSquareHeight();
         int stepDistance;
-        int backSpeed = squareHeight / 10;//回退速度
+        int backSpeed = mGameOverBackDistance / 10;//回退速度
         List<Square> squareList = getCurrentSquareList();
-        while(rollbackDistance < squareHeight) {
-            if(rollbackDistance + backSpeed > squareHeight) {
-                stepDistance = squareHeight - rollbackDistance;
+        while(rollbackDistance < mGameOverBackDistance) {
+            if(rollbackDistance + backSpeed > mGameOverBackDistance) {
+                stepDistance = mGameOverBackDistance - rollbackDistance;
             } else {
                 stepDistance = backSpeed;
             }

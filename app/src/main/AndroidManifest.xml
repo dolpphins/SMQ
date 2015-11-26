@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.lym.trample" >
+    package="com.lym.trample"
+    android:versionCode="2.0.0">
 
 
     <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
 
     <application
         android:name=".TrampleApplication"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/app_icon"
         android:label="@string/app_name"
         android:theme="@style/AppTheme">
         <!-- 主界面Activity -->
@@ -33,13 +35,16 @@
             android:label="@string/app_name" >
         </activity>
         <activity
-            android:name=".ui.WordsActivity"
+            android:name=".ui.SideActivity"
             android:label="@string/app_name" >
         </activity>
         <activity
             android:name=".ui.DigitsActivity"
             android:label="@string/app_name" >
         </activity>
+        <service android:name=".service.CrashService">
+
+        </service>
     </application>
 
 

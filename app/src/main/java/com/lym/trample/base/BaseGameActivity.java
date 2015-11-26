@@ -1,5 +1,6 @@
 package com.lym.trample.base;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Bundle;
@@ -8,7 +9,10 @@ import android.view.KeyEvent;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
+import com.lym.trample.NetworkDataManager;
 import com.lym.trample.R;
+import com.lym.trample.ScoresManager;
+import com.lym.trample.bean.TUser;
 import com.lym.trample.dialog.GameOverDialog;
 import com.lym.trample.dialog.GamePauseDialog;
 import com.lym.trample.widget.DropSurfaceView;
@@ -37,6 +41,11 @@ public abstract class BaseGameActivity extends BaseActivity implements DropSurfa
     private GameOverDialog mGameOverDialog;
     private GamePauseDialog mGamePauseDialog;
 
+    private boolean isShowingGameOverDialog;
+    private boolean isShowingGamePauseDialog;
+
+    /** 初始速度 */
+    private int mInitSpeed;
     /** 速度 */
     private int mSpeed;
 
@@ -64,7 +73,6 @@ public abstract class BaseGameActivity extends BaseActivity implements DropSurfa
         drop_main_surfaceview.setOnSurfaceViewTouchListener(this);
         drop_main_surfaceview.setOnGameOverListener(this);
 
-        mSpeed = 18 * config.getRect().height() / 1920;
         drop_main_surfaceview.setSpeed(mSpeed);
     }
 
@@ -73,7 +81,9 @@ public abstract class BaseGameActivity extends BaseActivity implements DropSurfa
         super.onResume();
         if(drop_main_surfaceview != null
                 && DropSurfaceView.Status.PAUSE == drop_main_surfaceview.getStatus()) {
-            showGamePauseDialog();
+            if(!isShowingGamePauseDialog) {
+                showGamePauseDialog();
+            }
         }
     }
 
@@ -85,6 +95,7 @@ public abstract class BaseGameActivity extends BaseActivity implements DropSurfa
         }
         drop_main_surfaceview.pause();
         mGamePauseDialog.show();
+        isShowingGamePauseDialog = true;
     }
 
     //显示游戏结束对话框
@@ -94,7 +105,29 @@ public abstract class BaseGameActivity extends BaseActivity implements DropSurfa
             mGameOverDialog.setOnCustomDialogListener(new GameOverDialogListener());
         }
         mGameOverDialog.show();
+        isShowingGameOverDialog = true;
+        //传递数据
+
+        //上传数据
+        TUser user = new TUser();
+        user.setBest_color_score(ScoresManager.bestUserColorScore);
+        user.setBest_digit_score(ScoresManager.bestUserDigitScore);
+        user.setBest_line_score(ScoresManager.bestUserLineScore);
+        user.setGuid(ScoresManager.guid);
+        int temp = user.getScore(createColumnName());
+        if(mScores > temp) {
+            user.setScore(mScores, createColumnName());
+            NetworkDataManager ndm = new NetworkDataManager(getApplicationContext());
+            ndm.updateOneUserToBmob(user);
+        }
     }
+
+    /**
+     * Bmob列名
+     *
+     * @return 列名，不能为空
+     */
+    protected abstract String createColumnName();
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
@@ -113,6 +146,7 @@ public abstract class BaseGameActivity extends BaseActivity implements DropSurfa
         }
         if(mGamePauseDialog != null) {
             mGamePauseDialog.dismiss();
+            isShowingGamePauseDialog = false;
         }
     }
 
@@ -121,7 +155,7 @@ public abstract class BaseGameActivity extends BaseActivity implements DropSurfa
             drop_main_surfaceview.reset();
             drop_main_parent.removeView(drop_main_surfaceview);
             drop_main_parent.addView(drop_main_surfaceview, 0);
-            drop_main_surfaceview.setSpeed(mSpeed);
+            drop_main_surfaceview.setSpeed(mInitSpeed);
             mGameOverDialog.dismiss();
         }
         mScores = 0;
@@ -140,6 +174,43 @@ public abstract class BaseGameActivity extends BaseActivity implements DropSurfa
         if(drop_main_scores != null) {
             drop_main_scores.setText(mScores + "");
         }
+    }
+
+    /**
+     * 设置下落速度
+     *
+     * @param speed
+     */
+    public void setSpeed(int speed) {
+        this.mSpeed = speed;
+        drop_main_surfaceview.setSpeed(mSpeed);
+    }
+
+    /**
+     * 获取下落速度
+     *
+     * @return
+     */
+    public int getSpeed() {
+        return mSpeed;
+    }
+
+    /**
+     * 设置初始速度
+     *
+     * @param initSpeed
+     */
+    public void setInitSpeed(int initSpeed) {
+        this.mInitSpeed = initSpeed;
+    }
+
+    /**
+     * 获取初始速度
+     *
+     * @return
+     */
+    public int getInitSpeed() {
+        return mInitSpeed;
     }
 
     public DropSurfaceView getDropSurfaceview() {

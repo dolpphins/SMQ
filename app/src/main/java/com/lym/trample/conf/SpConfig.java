@@ -5,33 +5,43 @@ package com.lym.trample.conf;
  */
 public class SpConfig {
 
-    private static SpConfig mSpConfig = new SpConfig();
+    public final static String GUID = "guid";
 
-    public SpConfig(){
+    /** 总用户数 */
+    public final static String sTotalUserCount = "TotalUserCount";
 
-    }
+    /** 踩颜色最高分 */
+    public final static String sBestColorScore = "BestColorScore";
 
-    public static SpConfig getInstance(){
-        return mSpConfig;
-    }
+    /** 踩数字最高分 */
+    public final static String sBestDigitScore = "BestDigitScore";
+
+    /** 踩边线最高分 */
+    public final static String sBestLineScore = "BestLineScore";
+
+
+    /**
+     * 个人相关
+     */
 
     /**踩颜色中历史最高分*/
-    public String colorScore = "ColorsScore";
+    public final static String sColorScore = "ColorsScore";
 
     /**踩颜色历史最高排名*/
-    public String colorRanking = "ColorsRanking";
+    public final static String sColorRanking = "ColorsRanking";
 
     /**踩数字中历史最高分*/
-    public String digitScore = "DigitsScore";
+    public final static String sDigitScore = "DigitsScore";
 
     /**踩数字历史最高排名*/
-    public String digitRanking = "DigitsRanking";
+    public final static String sDigitRanking = "DigitsRanking";
 
-    /**踩单词中历史最高分*/
-    public String wordScore = "WordsScore";
+    /**踩边线中历史最高分*/
+    public final static String sLineScore = "LinesScore";
 
-    /**踩单词历史最高排名*/
-    public String wordRanking = "WordsRanking";
+    /**踩边线历史最高排名*/
+    public final static String sLineRanking = "LinesRanking";
+
 }
 
 
