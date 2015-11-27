@@ -71,6 +71,9 @@ public abstract class BaseGameActivity extends BaseActivity implements DropSurfa
         super.onResume();
         if(drop_main_surfaceview != null
                 && DropSurfaceView.Status.PAUSE == drop_main_surfaceview.getStatus()) {
+            if(!isShowingGamePauseDialog) {
+                showGamePauseDialog();
+            }
         }
     }
 
