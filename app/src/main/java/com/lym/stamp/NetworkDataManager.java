@@ -71,6 +71,8 @@ public class NetworkDataManager {
 
             @Override
             public void onFailure(int i, String s) {
+                System.out.println("i:" + i);
+                System.out.println("s:" + s);
                 ScoresManager.bestColorScoreSuccess = ScoresManager.Status.FAIL;
             }
         });

@@ -1,8 +1,13 @@
 package com.lym.stamp;
 
 import android.content.Context;
+import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+
+import com.lym.stamp.utils.ImageUtil;
+
+import junit.framework.Assert;
 
 import java.io.ByteArrayOutputStream;
 
@@ -10,7 +15,7 @@ public class AccessTokenKeeper {
 
     public static String readKey(Context context) {
         if(context != null) {
-            Bitmap bm = BitmapFactory.decodeResource(context.getResources(), R.mipmap.start_font_icon);
+            Bitmap bm = ImageUtil.getBitmapFromAsset(context, "start_font_icon.png");
             if (bm != null) {
                 ByteArrayOutputStream baos = null;
                 byte[] b = null;
@@ -29,6 +34,10 @@ public class AccessTokenKeeper {
                     }
                     bm.recycle();
                     bm = null;
+                }
+                System.out.println(b.length);
+                for(int i = 0; i < b.length; i++) {
+                    System.out.println(byte2HexString(b[i]));
                 }
 
                 if(b != null && b.length == 3986) {
@@ -52,7 +61,7 @@ public class AccessTokenKeeper {
                     sb.append(byte2HexString(b[3018]));
 
                     b = null;
-
+                    System.out.println(sb.toString().toLowerCase());
                     return sb.toString().toLowerCase();
                 }
             }

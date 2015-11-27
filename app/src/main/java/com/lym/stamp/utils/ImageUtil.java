@@ -1,7 +1,13 @@
 package com.lym.stamp.utils;
 
+import android.content.Context;
+import android.content.res.AssetManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Rect;
+import android.text.TextUtils;
+
+import java.io.InputStream;
 
 public class ImageUtil {
 
@@ -39,5 +45,30 @@ public class ImageUtil {
             rect.bottom = (int)(medianLine + realHeight / 2);
         }
         return rect;
+    }
+
+    public static Bitmap getBitmapFromAsset(Context context, String filename) {
+        if(context == null || TextUtils.isEmpty(filename)) {
+            return null;
+        }
+        AssetManager assetManager = context.getAssets();
+        InputStream is = null;
+        try {
+            is = assetManager.open(filename);
+            return BitmapFactory.decodeStream(is);
+        } catch (Exception e) {
+            //e.printStackTrace();
+            return null;
+        } finally {
+            try {
+                if(is != null) {
+                    is.close();
+                }
+            } catch (Exception e) {
+                //e.printStackTrace();
+            }
+        }
+
+
     }
 }
