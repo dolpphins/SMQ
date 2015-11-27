@@ -19,8 +19,11 @@ import com.lym.stamp.R;
 import com.lym.stamp.ScoresManager;
 import com.lym.stamp.base.BaseActivity;
 import com.lym.stamp.base.BaseDialog;
+import com.lym.stamp.bean.UpdateBean;
 import com.lym.stamp.crash.CrashHandler;
 import com.lym.stamp.dialog.GameReadyDialog;
+
+import org.w3c.dom.Text;
 
 
 public class MainActivity extends BaseActivity implements OnClickListener,BaseDialog.OnCustomDialogListener {
@@ -187,6 +190,11 @@ public class MainActivity extends BaseActivity implements OnClickListener,BaseDi
             mUpdateDialog = new AlertDialog.Builder(this).create();
             View v = LayoutInflater.from(this).inflate(R.layout.update_dialog_layout, null);
             mUpdateDialog.setView(v);
+
+            TextView app_update_title = (TextView) v.findViewById(R.id.app_update_title);
+            TextView app_update_text = (TextView) v.findViewById(R.id.app_update_text);
+            app_update_title.setText(app_update_title.getText().toString() + App.sUpdateItem.getVersion());
+            app_update_text.setText(App.sUpdateItem.getMessage());
 
             app_update_ignore = (TextView) v.findViewById(R.id.app_update_ignore);
             app_update_ok = (TextView) v.findViewById(R.id.app_update_ok);

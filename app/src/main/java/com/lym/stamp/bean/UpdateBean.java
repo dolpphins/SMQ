@@ -8,6 +8,10 @@ public class UpdateBean extends BmobObject {
 
     private String updateLink;
 
+    private String version;
+
+    private String message;
+
     public long getSerialNumber() {
         return serialNumber;
     }
@@ -22,5 +26,21 @@ public class UpdateBean extends BmobObject {
 
     public void setUpdateLink(String updateLink) {
         this.updateLink = updateLink;
+    }
+
+    public String getVersion() {
+        return version;
+    }
+
+    public void setVersion(String version) {
+        this.version = version;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
     }
 }

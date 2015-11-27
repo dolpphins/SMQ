@@ -7,14 +7,15 @@
     android:padding="20dip">
 
     <TextView
+        android:id="@+id/app_update_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/app_update_title"
         android:textSize="20sp"/>
     <TextView
+        android:id="@+id/app_update_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="343243242"
         android:layout_gravity="left"
         android:layout_marginTop="10dip"
         android:layout_marginBottom="10dip"/>
