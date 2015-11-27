@@ -3,7 +3,7 @@
     android:layout_width="match_parent" android:layout_height="match_parent"
     android:id="@+id/drop_main_parent">
 
-    <com.lym.trample.widget.DropSurfaceView
+    <com.lym.stamp.widget.DropSurfaceView
         android:id="@+id/colors_drop_main_surfaceview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>

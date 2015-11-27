@@ -2,7 +2,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="match_parent">
 
-    <com.lym.trample.widget.DropSurfaceView
+    <com.lym.stamp.widget.DropSurfaceView
         android:id="@+id/digits_drop_main_surfaceview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
