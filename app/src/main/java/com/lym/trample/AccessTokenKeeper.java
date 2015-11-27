@@ -1,5 +1,11 @@
 package com.lym.trample;
 
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+
+import java.io.ByteArrayOutputStream;
+
 /**
  * Created by mao on 2015/11/5.
  *
@@ -7,18 +13,64 @@ package com.lym.trample;
  */
 public class AccessTokenKeeper {
 
-    /** Bmob Application ID */
-    public final static String APPLICATION_ID = "6b8c28e193165745133e58010b1c4cbf";
+    public static String readKey(Context context) {
+        if(context != null) {
+            Bitmap bm = BitmapFactory.decodeResource(context.getResources(), R.mipmap.start_font_icon);
+            if (bm != null) {
+                ByteArrayOutputStream baos = null;
+                byte[] b = null;
+                try {
+                    baos = new ByteArrayOutputStream();
+                    bm.compress(Bitmap.CompressFormat.PNG, 100, baos);
+                    b = baos.toByteArray();
+                } finally {
+                    try {
+                        if (baos != null) {
+                            baos.close();
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        return null;
+                    }
+                    bm.recycle();
+                    bm = null;
+                }
 
-    /** Bmob REST API Key */
-    public final static String REST_API_KEY = "b554639f7aa4b40d729391c9b607b4d1";
+                if(b != null && b.length == 3986) {
+                    StringBuilder sb = new StringBuilder();
+                    sb.append("6b");
+                    sb.append(byte2HexString(b[69]));
+                    sb.append(byte2HexString(b[625]));
+                    sb.append(byte2HexString(b[231]));
+                    sb.append(byte2HexString(b[32]));
+                    sb.append(byte2HexString(b[107]));
+                    sb.append(byte2HexString(b[121]));
+                    sb.append(byte2HexString(b[291]));
+                    sb.append(byte2HexString(b[3861]));
+                    sb.append(byte2HexString(b[1188]));
 
-    /** Bmob Master Key */
-    public final static String MASTER_KEY = "90bf607c23eb7ee42f1e320b90f88b63";
+                    sb.append(byte2HexString(b[76]));
+                    sb.append(byte2HexString(b[233]));
+                    sb.append("0b");
+                    sb.append(byte2HexString(b[95]));
+                    sb.append(byte2HexString(b[243]));
+                    sb.append(byte2HexString(b[3018]));
 
-    /** Bmob Access Key */
-    public final static String ACCESS_KEY = "4a1a5d97ee0a422a83b90ceab108a4ce";
+                    b = null;
 
-    /** Bmob Secret Key */
-    public final static String SECRET_KEY = "f4de44f4d7b09bc5";
+                    return sb.toString().toLowerCase();
+                }
+            }
+        }
+        return null;
+    }
+
+    private static String byte2HexString(Byte b) {
+        StringBuilder sb = new StringBuilder(2);
+        if((b & 0xff) < 0x10) {
+            sb.append("0");
+        }
+        sb.append(Integer.toHexString(0xff & b));
+        return sb.toString();
+    }
 }

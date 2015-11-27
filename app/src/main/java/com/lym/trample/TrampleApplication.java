@@ -22,7 +22,7 @@ public class TrampleApplication extends Application {
         super.onCreate();
 
         //初始化Bmob配置
-        Bmob.initialize(getApplicationContext(), AccessTokenKeeper.APPLICATION_ID);
+        Bmob.initialize(getApplicationContext(), AccessTokenKeeper.readKey(getApplicationContext()));
 
         //初始化本地数据
         UserManager.getInstance().init(getApplicationContext());
@@ -38,5 +38,6 @@ public class TrampleApplication extends Application {
 
         //检查更新
         App.checkUpdate(getApplicationContext());
+
     }
 }

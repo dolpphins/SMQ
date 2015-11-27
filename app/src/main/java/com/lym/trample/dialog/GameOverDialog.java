@@ -238,15 +238,15 @@ public class GameOverDialog extends BaseDialog implements View.OnClickListener {
         if (mCurrentScore > mGlobalHighestScore) {
             game_over_tip.setText(mContext.getString(R.string.over_global_score));
         }
-        else if (mCurrentScore >= mGlobalHighestScore - 10) {
-            game_over_tip.setText(mContext.getString(R.string.not_far_to_break_record));
-        }
-        else if (mCurrentScore == mMyHighestScore) {
-            game_over_tip.setText(mContext.getString(R.string.good_job));
-        }
-        else {
-            game_over_tip.setText(mContext.getString(R.string.need_work_hard));
-        }
+//        else if (mCurrentScore >= mGlobalHighestScore - 10) {
+//            game_over_tip.setText(mContext.getString(R.string.not_far_to_break_record));
+//        }
+//        else if (mCurrentScore == mMyHighestScore) {
+//            game_over_tip.setText(mContext.getString(R.string.good_job));
+//        }
+//        else {
+//            game_over_tip.setText(mContext.getString(R.string.need_work_hard));
+//        }
     }
 
     public int getMyHighestScore() {
