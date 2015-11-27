@@ -24,8 +24,6 @@ import cn.bmob.v3.listener.SaveListener;
 
 public class NetworkDataManager {
 
-    private final static String TAG = "NetworkDataManager";
-
     private Context mContext;
 
     public NetworkDataManager(Context context) {
@@ -57,6 +55,7 @@ public class NetworkDataManager {
         //
         BmobQuery<TUser> colorQuery = new BmobQuery<TUser>();
         colorQuery.max(new String[]{"best_color_score"});
+        ScoresManager.bestColorScoreSuccess = ScoresManager.Status.GETTING;
         colorQuery.findStatistics(context, TUser.class, new FindStatisticsListener() {
 
             @Override
@@ -69,6 +68,7 @@ public class NetworkDataManager {
                         if (maxscore >= 0) {
                             ScoresManager.bestColorScore = maxscore;
                         }
+                        ScoresManager.bestColorScoreSuccess = ScoresManager.Status.SUCCESS;
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -77,10 +77,12 @@ public class NetworkDataManager {
 
             @Override
             public void onFailure(int i, String s) {
+                ScoresManager.bestColorScoreSuccess = ScoresManager.Status.FAIL;
             }
         });
         BmobQuery<TUser> digitQuery = new BmobQuery<TUser>();
         digitQuery.max(new String[]{"best_digit_score"});
+        ScoresManager.bestDigitScoreSuccess = ScoresManager.Status.GETTING;
         digitQuery.findStatistics(context, TUser.class, new FindStatisticsListener() {
 
             @Override
@@ -93,6 +95,7 @@ public class NetworkDataManager {
                         if (maxscore >= 0) {
                             ScoresManager.bestDigitScore = maxscore;
                         }
+                        ScoresManager.bestDigitScoreSuccess = ScoresManager.Status.SUCCESS;
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -101,10 +104,12 @@ public class NetworkDataManager {
 
             @Override
             public void onFailure(int i, String s) {
+                ScoresManager.bestDigitScoreSuccess = ScoresManager.Status.FAIL;
             }
         });
         BmobQuery<TUser> lineQuery = new BmobQuery<TUser>();
         lineQuery.max(new String[]{"best_line_score"});
+        ScoresManager.bestLineScoreSuccess = ScoresManager.Status.GETTING;
         lineQuery.findStatistics(context, TUser.class, new FindStatisticsListener() {
 
             @Override
@@ -117,6 +122,7 @@ public class NetworkDataManager {
                         if (maxscore >= 0) {
                             ScoresManager.bestLineScore = maxscore;
                         }
+                        ScoresManager.bestLineScoreSuccess = ScoresManager.Status.SUCCESS;
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -125,6 +131,7 @@ public class NetworkDataManager {
 
             @Override
             public void onFailure(int i, String s) {
+                ScoresManager.bestLineScoreSuccess = ScoresManager.Status.FAIL;
             }
         });
         BmobQuery<TUser> personalScoreQuery = new BmobQuery<TUser>();

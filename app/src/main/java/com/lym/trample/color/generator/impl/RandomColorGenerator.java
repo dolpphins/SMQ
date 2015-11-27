@@ -7,7 +7,7 @@ import java.util.Random;
 
 public class RandomColorGenerator extends BaseColorGenerator{
 
-    public RandomColorGenerator(Map<String, String> colorsMap) {
+    public RandomColorGenerator(Map<String, Integer> colorsMap) {
         super(colorsMap);
     }
 

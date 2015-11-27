@@ -174,4 +174,9 @@ public class DigitsActivity extends BaseGameActivity{
         dialog.setMyHighestScore(ScoresManager.bestUserDigitScore);
         dialog.setCurrentScore(getScores());
     }
+
+    @Override
+    protected ScoresManager.Status getBestScoreStatus() {
+        return ScoresManager.bestDigitScoreSuccess;
+    }
 }

@@ -9,7 +9,7 @@ public interface IColorGenerator {
 
         private String text;
 
-        private String value;
+        private Integer value;
 
         private boolean same;
 
@@ -23,11 +23,11 @@ public interface IColorGenerator {
             this.text = text;
         }
 
-        public String getValue() {
+        public Integer getValue() {
             return value;
         }
 
-        public void setValue(String value) {
+        public void setValue(Integer value) {
             this.value = value;
         }
 

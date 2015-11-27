@@ -12,8 +12,6 @@ import cn.bmob.v3.Bmob;
 
 public class TrampleApplication extends Application {
 
-    private final static String TAG = "TrampleApplication";
-
     @Override
     public void onCreate() {
         super.onCreate();

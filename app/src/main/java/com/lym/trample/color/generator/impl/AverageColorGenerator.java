@@ -12,7 +12,7 @@ public class AverageColorGenerator extends BaseColorGenerator {
 
     private int mCriticalValue = 4;
 
-    public AverageColorGenerator(Map<String, String> colorsMap) {
+    public AverageColorGenerator(Map<String, Integer> colorsMap) {
         super(colorsMap);
     }
 
@@ -32,7 +32,7 @@ public class AverageColorGenerator extends BaseColorGenerator {
         if(entry == null) {
             return null;
         }
-        String value = entry.getValue();
+        Integer value = entry.getValue();
         mTotalCount++;
         int newValueCount = mValueCountMap.get(value) + 1;
         mValueCountMap.put(value, newValueCount);

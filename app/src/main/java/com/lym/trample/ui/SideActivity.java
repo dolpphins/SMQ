@@ -173,4 +173,9 @@ public class SideActivity extends BaseGameActivity implements DropSurfaceView.On
         dialog.setMyHighestScore(ScoresManager.bestUserLineScore);
         dialog.setCurrentScore(getScores());
     }
+
+    @Override
+    protected ScoresManager.Status getBestScoreStatus() {
+        return ScoresManager.bestLineScoreSuccess;
+    }
 }

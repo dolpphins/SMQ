@@ -18,6 +18,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.lym.trample.R;
+import com.lym.trample.ScoresManager;
 import com.lym.trample.base.BaseDialog;
 
 public class GameOverDialog extends BaseDialog implements View.OnClickListener {
@@ -47,10 +48,9 @@ public class GameOverDialog extends BaseDialog implements View.OnClickListener {
         mContext = context;
     }
 
-    @Override
-    public void show() {
+    public void show(ScoresManager.Status status) {
         super.show();
-        init();
+        init(status);
         new RankingTask().execute();
     }
 
@@ -68,7 +68,7 @@ public class GameOverDialog extends BaseDialog implements View.OnClickListener {
 
     }
 
-    private void init() {
+    private void init(ScoresManager.Status status) {
         mDialog.setContentView(R.layout.dlg_game_over);
         Window window = mDialog.getWindow();
 
@@ -82,10 +82,17 @@ public class GameOverDialog extends BaseDialog implements View.OnClickListener {
         running_man = (ImageView)window.findViewById(R.id.running_man);
         running_man_layout = (LinearLayout)window.findViewById(R.id.running_man_layout);
 
-        game_over_global_highest_score.setText(String.valueOf(mGlobalHighestScore));
+        if(status == ScoresManager.Status.SUCCESS) {
+            game_over_global_highest_score.setText(mGlobalHighestScore + "");
+        } else if(status == ScoresManager.Status.FAIL) {
+            game_over_global_highest_score.setText(mContext.getResources().getString(R.string.game_dialog_score_fail_tip));
+        } else if(status == ScoresManager.Status.GETTING) {
+            game_over_global_highest_score.setText(mContext.getResources().getString(R.string.game_dialog_score_getting_tip));
+        }
+
         game_over_my_highest_score.setText(String.valueOf(mMyHighestScore));
         current_score.setText(String.valueOf(mCurrentScore));
-        setGameOverTip();
+        setGameOverTip(status);
 
         play_again.setOnClickListener(this);
         go_to_main_activity.setOnClickListener(this);
@@ -202,8 +209,8 @@ public class GameOverDialog extends BaseDialog implements View.OnClickListener {
 
     }
 
-    private void setGameOverTip() {
-        if (mCurrentScore > mGlobalHighestScore) {
+    private void setGameOverTip(ScoresManager.Status status) {
+        if (status == ScoresManager.Status.SUCCESS && mCurrentScore > mGlobalHighestScore) {
             game_over_tip.setText(mContext.getString(R.string.over_global_score));
         }
 //        else if (mCurrentScore >= mGlobalHighestScore - 10) {

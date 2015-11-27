@@ -1,7 +1,12 @@
 package com.lym.trample.conf;
 
+import android.content.Context;
+import android.content.res.Resources;
+import android.graphics.Color;
 import android.text.TextUtils;
 import android.util.Log;
+
+import com.lym.trample.R;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -10,19 +15,22 @@ import java.util.Map;
 
 public class ColorsKeeper {
 
-    private final static Map<String, String> colorsMap = new HashMap<String, String>();
+    private static Map<String, Integer> colorsMap;
 
-    static {
-        colorsMap.put("黑", "#000000");
-        colorsMap.put("红", "#ff0000");
-        colorsMap.put("蓝", "#0000ff");
-        colorsMap.put("橙", "#ff7d00");
-        colorsMap.put("棕", "#802a2a");
-        colorsMap.put("紫", "#8b00ff");
-    }
+    public static Map<String, Integer> getColorsMap(Context context) {
+        if(colorsMap == null && context != null) {
+            colorsMap = new HashMap<String, Integer>();
 
-    public static Map<String, String> getColorsMap() {
+            Resources res = context.getResources();
+            colorsMap.put(res.getString(R.string.black_color_text), res.getColor(R.color.black));
+            colorsMap.put(res.getString(R.string.red_color_text), res.getColor(R.color.red));
+            colorsMap.put(res.getString(R.string.blue_color_text), res.getColor(R.color.blue));
+            colorsMap.put(res.getString(R.string.orange_color_text), res.getColor(R.color.orange));
+            colorsMap.put(res.getString(R.string.palm_color_text), res.getColor(R.color.palm));
+            colorsMap.put(res.getString(R.string.purple_color_text), res.getColor(R.color.purple));
+        }
         return colorsMap;
+
     }
 }
 

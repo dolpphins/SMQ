@@ -7,9 +7,12 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.lym.trample.R;
+import com.lym.trample.ScoresManager;
 import com.lym.trample.base.BaseDialog;
 
 public class GameReadyDialog extends BaseDialog implements View.OnClickListener {
+
+    private Context mContext;
 
     private TextView global_highest_score = null;
     private TextView my_highest_score = null;
@@ -21,15 +24,15 @@ public class GameReadyDialog extends BaseDialog implements View.OnClickListener 
 
     public GameReadyDialog(Context context) {
         super(context);
+        mContext = context;
     }
 
-    @Override
-    public void show() {
+    public void show(ScoresManager.Status status) {
         super.show();
-        init();
+        init(status);
     }
 
-    private void init() {
+    private void init(ScoresManager.Status status) {
         mDialog.setContentView(R.layout.dlg_game_ready);
         Window window = mDialog.getWindow();
 
@@ -38,7 +41,14 @@ public class GameReadyDialog extends BaseDialog implements View.OnClickListener 
         start_game = (Button) window.findViewById(R.id.start_game);
         go_back = (Button) window.findViewById(R.id.go_back);
 
-        global_highest_score.setText(mGlobalHighestScore + "");
+        if(status == ScoresManager.Status.SUCCESS) {
+            global_highest_score.setText(mGlobalHighestScore + "");
+        } else if(status == ScoresManager.Status.FAIL) {
+            global_highest_score.setText(mContext.getResources().getString(R.string.game_dialog_score_fail_tip));
+        } else if(status == ScoresManager.Status.GETTING) {
+            global_highest_score.setText(mContext.getResources().getString(R.string.game_dialog_score_getting_tip));
+        }
+
         my_highest_score.setText(mMyHighestScore + "");
         start_game.setOnClickListener(this);
         go_back.setOnClickListener(this);

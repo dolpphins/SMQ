@@ -32,7 +32,8 @@
     <string name="terminate">终止</string>
     <string name="resume">继续</string>
 
-
+    <string name="game_dialog_score_getting_tip">获取中</string>
+    <string name="game_dialog_score_fail_tip">获取失败</string>
 
 
     <string name="game_color">踩颜色</string>
@@ -61,4 +62,16 @@
             在下落的方块的下边线不超过指定的边线时，越接近所得分数越多，如果下落的方块的下边
             线超过了指定的边线，或者点击方块外区域则游戏结束。
     </string>
+
+    <string name="black_color_text">黑</string>
+    <string name="red_color_text">红</string>
+    <string name="blue_color_text">蓝</string>
+    <string name="orange_color_text">橙</string>
+    <string name="palm_color_text">棕</string>
+    <string name="purple_color_text">紫</string>
+
+    <string name="app_exit_tip">你真的要退出吗？</string>
+    <string name="ok">确定</string>
+    <string name="cancel">取消</string>
+
 </resources>

@@ -13,5 +13,11 @@
     <color name="bg_of_viewfliper">#77438301</color>
     <color name="bg_of_menu">#045a7d</color>
 
+    <color name="black">#000000</color>
+    <color name="red">#ff0000</color>
+    <color name="blue">#0000ff</color>
+    <color name="orange">#ff7d00</color>
+    <color name="palm">#802a2a</color>
+    <color name="purple">#8b00ff</color>
 
 </resources>

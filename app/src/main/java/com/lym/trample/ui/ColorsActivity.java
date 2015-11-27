@@ -1,5 +1,6 @@
 package com.lym.trample.ui;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -40,8 +41,6 @@ import java.util.List;
 
 public class ColorsActivity extends BaseGameActivity {
 
-    private final static String TAG = "ColorsActivity";
-
     private Paint paint = new Paint();
 
     private IColorGenerator mColorGenerator;
@@ -56,7 +55,7 @@ public class ColorsActivity extends BaseGameActivity {
         setInitSpeed(mInitSpeed);
         setSpeed(mInitSpeed);
 
-        mColorGenerator = new AverageColorGenerator(ColorsKeeper.getColorsMap());
+        mColorGenerator = new AverageColorGenerator(ColorsKeeper.getColorsMap(getApplicationContext()));
     }
 
     @Override
@@ -81,7 +80,7 @@ public class ColorsActivity extends BaseGameActivity {
                 square.setBundle(entry);
             }
 
-            paint.setColor(Color.parseColor(entry.getValue()));
+            paint.setColor(entry.getValue());
 
             if(entry.isAlreadyTouch()) {
                 paint.setAlpha(128);
@@ -103,12 +102,9 @@ public class ColorsActivity extends BaseGameActivity {
 
     @Override
     public boolean onSurfaceViewTouchOutsideDown(MotionEvent event, Square square) {
-        System.out.println("onSurfaceViewTouchOutsideDown");
-
-        System.out.println(square);
 
         IColorGenerator.ColorMapEntry entry = new IColorGenerator.ColorMapEntry();
-        entry.setValue("#ff0000");
+        entry.setValue(Color.RED);
         square.setBundle(entry);
         getDropSurfaceview().stop(square, DropSurfaceView.OnGameOverListener.GAME_OVER_OUT_SQUARE_TYPE);
 
@@ -117,7 +113,6 @@ public class ColorsActivity extends BaseGameActivity {
 
     @Override
     public boolean onSurfaceViewTouchSquareDown(MotionEvent event, Square square) {
-        System.out.println("onSurfaceViewTouchSquareDown");
         IColorGenerator.ColorMapEntry entry = castToColorMapEntryFromObject(square.getBundle());
 
         if(entry == null) {
@@ -186,6 +181,11 @@ public class ColorsActivity extends BaseGameActivity {
         dialog.setGlobalHighestScoe(ScoresManager.bestColorScore);
         dialog.setMyHighestScore(ScoresManager.bestUserColorScore);
         dialog.setCurrentScore(getScores());
+    }
+
+    @Override
+    protected ScoresManager.Status getBestScoreStatus() {
+        return ScoresManager.bestColorScoreSuccess;
     }
 }
 

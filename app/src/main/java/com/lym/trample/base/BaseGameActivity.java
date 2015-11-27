@@ -109,7 +109,7 @@ public abstract class BaseGameActivity extends BaseActivity implements DropSurfa
 
         setScores(mGameOverDialog);
 
-        mGameOverDialog.show();
+        mGameOverDialog.show(getBestScoreStatus());
         isShowingGameOverDialog = true;
 
         ScoresManager.updateBestScores(user);
@@ -242,4 +242,6 @@ public abstract class BaseGameActivity extends BaseActivity implements DropSurfa
             }
         }
     }
+
+    protected abstract ScoresManager.Status getBestScoreStatus();
 }

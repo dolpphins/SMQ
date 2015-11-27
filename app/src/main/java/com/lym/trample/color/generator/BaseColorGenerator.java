@@ -13,38 +13,36 @@ import java.util.Set;
 
 public abstract  class BaseColorGenerator implements IColorGenerator {
 
-    private final static String TAG = "BaseColorGenerator";
-
-    protected Map<String, String> mColorsMap;
+    protected Map<String, Integer> mColorsMap;
 
     protected List<String> mColorsTextList;
 
-    protected List<String> mColorsValueList;
+    protected List<Integer> mColorsValueList;
 
-    protected Map<String, Integer> mValueCountMap;
+    protected Map<Integer, Integer> mValueCountMap;
 
-    protected Map<String, Integer> mMatchCountMap;
+    protected Map<Integer, Integer> mMatchCountMap;
 
     protected int mTotalCount;
 
     protected int mMatchCount;
 
-    public BaseColorGenerator(Map<String, String> colorsMap) {
+    public BaseColorGenerator(Map<String, Integer> colorsMap) {
         mColorsMap = colorsMap;
         init();
     }
 
     private void init() {
         mColorsTextList = new ArrayList<String>();
-        mColorsValueList = new ArrayList<String>();
-        mValueCountMap = new HashMap<String, Integer>();
-        mMatchCountMap = new HashMap<String, Integer>();
+        mColorsValueList = new ArrayList<Integer>();
+        mValueCountMap = new HashMap<Integer, Integer>();
+        mMatchCountMap = new HashMap<Integer, Integer>();
         if(mColorsMap != null) {
             Set<String> keys = mColorsMap.keySet();
-            Collection<String> values = mColorsMap.values();
+            Collection<Integer> values = mColorsMap.values();
             mColorsTextList.addAll(keys);
             mColorsValueList.addAll(values);
-            for(String s : values) {
+            for(Integer s : values) {
                 mValueCountMap.put(s, 0);
                 mMatchCountMap.put(s, 0);
             }
@@ -61,7 +59,7 @@ public abstract  class BaseColorGenerator implements IColorGenerator {
         Random random = new Random();
         ColorMapEntry entry = new ColorMapEntry();
         String text = getColorText(random.nextInt(Integer.MAX_VALUE));
-        String value = getColorValue(random.nextInt(Integer.MAX_VALUE));
+        Integer value = getColorValue(random.nextInt(Integer.MAX_VALUE));
         entry.setText(text);
         entry.setValue(value);
 
@@ -81,19 +79,19 @@ public abstract  class BaseColorGenerator implements IColorGenerator {
         return mColorsTextList.get(index % mColorsTextList.size());
     }
 
-    public String getColorValue(int index) {
+    public Integer getColorValue(int index) {
         if(mColorsValueList.size() <= 0) {
             return null;
         }
         return mColorsValueList.get(index % mColorsValueList.size());
     }
 
-    public boolean isColorSame(String text, String value) {
-        if(TextUtils.isEmpty(text) || TextUtils.isEmpty(value)) {
+    public boolean isColorSame(String text, Integer value) {
+        if(TextUtils.isEmpty(text)) {
             return false;
         }
         if(mColorsMap.containsKey(text)) {
-            String v = mColorsMap.get(text);
+            Integer v = mColorsMap.get(text);
             if(value.equals(v)) {
                 return true;
             }

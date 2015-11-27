@@ -115,12 +115,6 @@ public class DropSurfaceView extends SurfaceView implements SurfaceHolder.Callba
         mSquareGeneratorConfiguration.setHeight(config.getSquareHeight());
 
         mGameOverBackDistance = mDropViewConfiguration.getSquareHeight();
-
-
-        System.out.println(mDropViewConfiguration.getPipeWidth());
-        System.out.println(mDropViewConfiguration.getSquareWidth());
-        System.out.println(mDropViewConfiguration.getSquareHeight());
-        System.out.println(mDropViewConfiguration.getPipeCount());
     }
 
     public DropViewConfiguration getDropViewConfiguration() {

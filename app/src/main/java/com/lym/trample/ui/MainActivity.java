@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.SyncStatusObserver;
 import android.net.Uri;
 import android.os.Bundle;
+import android.security.KeyChain;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -28,8 +29,6 @@ import com.lym.trample.dialog.GameReadyDialog;
 
 public class MainActivity extends BaseActivity implements OnClickListener,BaseDialog.OnCustomDialogListener {
 
-    private final static String TAG = "MainActivity";
-
     private ImageView how_to_play;
     private ImageView setting;
     private ImageView exit;
@@ -37,12 +36,6 @@ public class MainActivity extends BaseActivity implements OnClickListener,BaseDi
     private Button gameWord;
     private Button gameColor;
     private Button gameDigit;
-
-
-    private int mCurrentLayoutState = 0;
-
-    private static final int FLING_MIN_DISTANCE = 80;
-    private static final int FLING_MIN_VELOCITY = 100;
 
     private Boolean isClickColor;
     private Boolean isClickWord;
@@ -118,19 +111,19 @@ public class MainActivity extends BaseActivity implements OnClickListener,BaseDi
             case R.id.menu_bt_colors:
                 mGameReadyDialog.setMyHighestScore(ScoresManager.bestUserColorScore);
                 mGameReadyDialog.setGlobalHighestScore(ScoresManager.bestColorScore);
-                mGameReadyDialog.show();
+                mGameReadyDialog.show(ScoresManager.bestColorScoreSuccess);
                 isClickColor = true;
                 break;
             case R.id.menu_bt_digits:
                 mGameReadyDialog.setMyHighestScore(ScoresManager.bestUserDigitScore);
                 mGameReadyDialog.setGlobalHighestScore(ScoresManager.bestDigitScore);
-                mGameReadyDialog.show();
+                mGameReadyDialog.show(ScoresManager.bestDigitScoreSuccess);
                 isClickDigit = true;
                 break;
             case R.id.menu_bt_words:
                 mGameReadyDialog.setMyHighestScore(ScoresManager.bestUserLineScore);
                 mGameReadyDialog.setGlobalHighestScore(ScoresManager.bestLineScore);
-                mGameReadyDialog.show();
+                mGameReadyDialog.show(ScoresManager.bestLineScoreSuccess);
                 isClickWord = true;
                 break;
 
@@ -181,9 +174,9 @@ public class MainActivity extends BaseActivity implements OnClickListener,BaseDi
 
     private void confirmExit() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("你真的要退出吗？");
-        builder.setNegativeButton("取消", null);
-        builder.setPositiveButton("确定", new AlertDialog.OnClickListener() {
+        builder.setTitle(getResources().getString(R.string.app_exit_tip));
+        builder.setNegativeButton(getResources().getString(R.string.cancel), null);
+        builder.setPositiveButton(getResources().getString(R.string.ok), new AlertDialog.OnClickListener() {
 
             @Override
             public void onClick(DialogInterface dialog, int which) {

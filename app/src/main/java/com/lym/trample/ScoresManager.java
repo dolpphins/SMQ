@@ -10,13 +10,24 @@ import java.util.UUID;
 
 public class ScoresManager {
 
+    public static enum Status {
+        NONE, GETTING, FAIL,SUCCESS
+    }
+
+
     public static int totalUserCount;
 
     public static int bestColorScore;
 
+    public static Status bestColorScoreSuccess = Status.NONE;
+
     public static int bestDigitScore;
 
+    public static Status bestDigitScoreSuccess = Status.NONE;
+
     public static int bestLineScore;
+
+    public static Status bestLineScoreSuccess = Status.NONE;
 
     public static String guid;
 
@@ -59,9 +70,9 @@ public class ScoresManager {
     public static void updateCacheSp(Context context) {
         SharePreferencesManager sp = SharePreferencesManager.getInstance();
 
-        sp.putInt(context, SpConfig.sBestColorScore, ScoresManager.bestColorScore);
-        sp.putInt(context, SpConfig.sBestDigitScore, ScoresManager.bestDigitScore);
-        sp.putInt(context, SpConfig.sBestLineScore, ScoresManager.bestLineScore);
+        //sp.putInt(context, SpConfig.sBestColorScore, ScoresManager.bestColorScore);
+        //sp.putInt(context, SpConfig.sBestDigitScore, ScoresManager.bestDigitScore);
+       // sp.putInt(context, SpConfig.sBestLineScore, ScoresManager.bestLineScore);
 
         sp.putInt(context, SpConfig.sColorScore, ScoresManager.bestUserColorScore);
         sp.putInt(context, SpConfig.sDigitScore, ScoresManager.bestUserDigitScore);
