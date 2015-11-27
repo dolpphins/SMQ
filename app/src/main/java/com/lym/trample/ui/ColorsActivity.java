@@ -19,7 +19,7 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
-import com.lym.trample.R;
+import com.lym.stamp.R;
 import com.lym.trample.ScoresManager;
 import com.lym.trample.base.BaseActivity;
 import com.lym.trample.base.BaseDialog;
@@ -32,6 +32,7 @@ import com.lym.trample.conf.ColorsKeeper;
 import com.lym.trample.dialog.GameOverDialog;
 import com.lym.trample.dialog.GamePauseDialog;
 import com.lym.trample.dialog.GameReadyDialog;
+import com.lym.trample.screen.DisplayUitls;
 import com.lym.trample.utils.ImageUtil;
 import com.lym.trample.utils.TextUtil;
 import com.lym.trample.widget.DropSurfaceView;
@@ -51,7 +52,7 @@ public class ColorsActivity extends BaseGameActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mInitSpeed = 18 * getConfig().getRect().height() / 1920;
+        mInitSpeed = DisplayUitls.dp2px(getApplicationContext(), 5);
         setInitSpeed(mInitSpeed);
         setSpeed(mInitSpeed);
 
@@ -106,6 +107,7 @@ public class ColorsActivity extends BaseGameActivity {
         IColorGenerator.ColorMapEntry entry = new IColorGenerator.ColorMapEntry();
         entry.setValue(Color.RED);
         square.setBundle(entry);
+        getDropSurfaceview().setGameOverBackDistance(0);
         getDropSurfaceview().stop(square, DropSurfaceView.OnGameOverListener.GAME_OVER_OUT_SQUARE_TYPE);
 
         return true;
@@ -127,6 +129,7 @@ public class ColorsActivity extends BaseGameActivity {
                int temp = calculateSpeed(getScores());
                setSpeed(temp);
            } else {
+               getDropSurfaceview().setGameOverBackDistance(0);
                getDropSurfaceview().stop(square, DropSurfaceView.OnGameOverListener.GAME_OVER_SQUARE_ERROR_TYPE);
            }
         }
@@ -139,6 +142,7 @@ public class ColorsActivity extends BaseGameActivity {
             if(square.getStartY() > getConfig().getRect().bottom) {
                 IColorGenerator.ColorMapEntry entry = castToColorMapEntryFromObject(square.getBundle());
                 if(entry != null && entry.isSame() && !entry.isAlreadyTouch()) {
+                    getDropSurfaceview().setGameOverBackDistance(getConfig().getSquareHeight());
                     getDropSurfaceview().setGameOverRect(square);
                     return true;
                 }
@@ -165,10 +169,11 @@ public class ColorsActivity extends BaseGameActivity {
     }
 
     private int calculateSpeed(int scores) {
-        if(scores < 400) {
+        if(scores < 150) {
             return mInitSpeed;
         }
-        return (scores - 400) / 100 + mInitSpeed;
+        int temp = (scores - 150) / 100;
+        return mInitSpeed + DisplayUitls.dp2px(getApplicationContext(), temp);
     }
 
     @Override

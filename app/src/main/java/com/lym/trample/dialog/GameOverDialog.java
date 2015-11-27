@@ -17,7 +17,7 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.lym.trample.R;
+import com.lym.stamp.R;
 import com.lym.trample.ScoresManager;
 import com.lym.trample.base.BaseDialog;
 

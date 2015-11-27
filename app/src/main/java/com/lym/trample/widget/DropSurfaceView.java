@@ -165,6 +165,9 @@ public class DropSurfaceView extends SurfaceView implements SurfaceHolder.Callba
         }
         mStatus = Status.STOPPED;
         mSpeed = 0;
+
+        mGameOverTwinkleCount = 2;
+        mGameOverBackDistance = mDropViewConfiguration.getSquareHeight();
     }
 
     public void start() {

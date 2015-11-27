@@ -3,7 +3,7 @@ package com.lym.trample.base;
 import android.app.AlertDialog;
 import android.content.Context;
 
-import com.lym.trample.R;
+import com.lym.stamp.R;
 
 public class BaseDialog {
 

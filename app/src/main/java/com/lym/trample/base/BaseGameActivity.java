@@ -1,16 +1,13 @@
 package com.lym.trample.base;
 
-import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.Paint;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.lym.trample.NetworkDataManager;
-import com.lym.trample.R;
+import com.lym.stamp.R;
 import com.lym.trample.ScoresManager;
 import com.lym.trample.bean.TUser;
 import com.lym.trample.dialog.GameOverDialog;

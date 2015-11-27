@@ -96,7 +96,7 @@ public class DropViewConfiguration {
             mPipeWidth = mRect.width() / mPipeCount;
             mSquareWidth = mRect.width() / mPipeCount;
             mCanvasColor = Color.TRANSPARENT;
-            mPipeBorderWidth = 1.0f;
+            mPipeBorderWidth = DisplayUitls.dp2px(context, 1.0f);
         }
 
         public Builder setRect(Rect r) {

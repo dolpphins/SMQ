@@ -5,7 +5,6 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MotionEvent;
 
 import com.lym.trample.ScoresManager;
@@ -15,6 +14,7 @@ import com.lym.trample.dialog.GameOverDialog;
 import com.lym.trample.digit.generator.BaseDigitGenerator;
 import com.lym.trample.digit.generator.IDigitGenerator;
 import com.lym.trample.digit.generator.impl.RandomDigitGenerator;
+import com.lym.trample.screen.DisplayUitls;
 import com.lym.trample.utils.TextUtil;
 import com.lym.trample.widget.DropSurfaceView;
 
@@ -34,7 +34,7 @@ public class DigitsActivity extends BaseGameActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mInitSpeed = 18 * getConfig().getRect().height() / 1920;
+        mInitSpeed = DisplayUitls.dp2px(getApplicationContext(), 4);
         setInitSpeed(mInitSpeed);
         setSpeed(mInitSpeed);
 
@@ -89,6 +89,7 @@ public class DigitsActivity extends BaseGameActivity{
         entry.setNum(1);
         entry.setDrawDigitFlag(false);
         square.setBundle(entry);
+        getDropSurfaceview().setGameOverBackDistance(0);
         getDropSurfaceview().stop(square, DropSurfaceView.OnGameOverListener.GAME_OVER_OUT_SQUARE_TYPE);
 
         return true;
@@ -106,13 +107,14 @@ public class DigitsActivity extends BaseGameActivity{
             if(num < 0) {
                 entry.setNum(1);
                 entry.setDrawDigitFlag(false);
+                getDropSurfaceview().setGameOverBackDistance(0);
                 getDropSurfaceview().stop(square, GAME_OVER_OUT_SQUARE_TYPE);
             } else {
                 entry.setNum(num);
                 updateScores(getScores() + getSpeed());
                 int speed = calculateSpeed(getScores());
                 setSpeed(speed);
-                int maxValue = calculateMaxValue(getScores());
+                mMaxValue = calculateMaxValue(getScores());
             }
         }
         return true;
@@ -124,6 +126,7 @@ public class DigitsActivity extends BaseGameActivity{
             if(square.getStartY() > getConfig().getRect().bottom) {
                 IDigitGenerator.DigitMapEntry entry = castToDigitMapEntryFromObject(square.getBundle());
                 if(entry != null && entry.getNum() > 0) {
+                    getDropSurfaceview().setGameOverBackDistance(getConfig().getSquareHeight());
                     getDropSurfaceview().setGameOverRect(square);
                     return true;
                 }
@@ -153,14 +156,15 @@ public class DigitsActivity extends BaseGameActivity{
         if(scores < 400) {
             return mInitSpeed;
         }
-        return (scores - 400) / 100 + mInitSpeed;
+        int temp = (scores - 400) / 100;
+        return mInitSpeed + DisplayUitls.dp2px(getApplicationContext(), temp);
     }
 
     private int calculateMaxValue(int scores) {
         if(scores < 300) {
             return 4;
         }
-        return (scores - 300) / 100 + 4;
+        return (scores - 300) / 300 + 4;
     }
 
     @Override

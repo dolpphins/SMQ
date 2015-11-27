@@ -9,9 +9,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.lym.trample.App;
-import com.lym.trample.BuildConfig;
-import com.lym.trample.R;
+import com.lym.stamp.BuildConfig;
+import com.lym.stamp.R;
 import com.lym.trample.ScoresManager;
 import com.lym.trample.base.BaseActivity;
 import com.lym.trample.bean.Feedback;

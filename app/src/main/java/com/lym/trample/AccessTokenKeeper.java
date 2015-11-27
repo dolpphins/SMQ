@@ -6,6 +6,8 @@ import android.graphics.BitmapFactory;
 
 import java.io.ByteArrayOutputStream;
 
+import com.lym.stamp.R;
+
 public class AccessTokenKeeper {
 
     public static String readKey(Context context) {

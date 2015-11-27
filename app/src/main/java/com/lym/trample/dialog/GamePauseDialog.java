@@ -5,7 +5,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 
-import com.lym.trample.R;
+import com.lym.stamp.R;
 import com.lym.trample.base.BaseDialog;
 
 public class GamePauseDialog extends BaseDialog implements View.OnClickListener {

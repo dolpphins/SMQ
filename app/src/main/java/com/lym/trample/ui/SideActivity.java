@@ -12,6 +12,7 @@ import com.lym.trample.ScoresManager;
 import com.lym.trample.base.BaseGameActivity;
 import com.lym.trample.bean.Square;
 import com.lym.trample.dialog.GameOverDialog;
+import com.lym.trample.screen.DisplayUitls;
 import com.lym.trample.side.SideGenerator;
 import com.lym.trample.utils.TextUtil;
 import com.lym.trample.widget.DropSurfaceView;
@@ -43,7 +44,7 @@ public class SideActivity extends BaseGameActivity implements DropSurfaceView.On
         config = surfaceView.getDropViewConfiguration();
         mBaseline = config.getRect().bottom - config.getSquareHeight() / 5;
 
-        mInitSpeed = 18 * config.getRect().height() / 1920;
+        mInitSpeed = DisplayUitls.dp2px(getApplicationContext(), 5);
         setInitSpeed(mInitSpeed);
         setSpeed(mInitSpeed);
     }
@@ -81,6 +82,7 @@ public class SideActivity extends BaseGameActivity implements DropSurfaceView.On
             float endY = mBaseline;
             paint.setColor(Color.BLUE);
             paint.setAlpha(255);
+            paint.setStrokeWidth(DisplayUitls.dp2px(getApplicationContext(), 1.0f));
             canvas.drawLine(startX, startY, endX, endY, paint);
         }
     }
@@ -89,6 +91,7 @@ public class SideActivity extends BaseGameActivity implements DropSurfaceView.On
     public boolean onSurfaceViewTouchOutsideDown(MotionEvent event, Square square) {
         SideGenerator.SideMapEntry entry = new SideGenerator.SideMapEntry();
         square.setBundle(entry);
+        getDropSurfaceview().setGameOverBackDistance(0);
         getDropSurfaceview().stop(square, DropSurfaceView.OnGameOverListener.GAME_OVER_OUT_SQUARE_TYPE);
         return true;
     }
@@ -118,6 +121,7 @@ public class SideActivity extends BaseGameActivity implements DropSurfaceView.On
             if(square.getEndY() >= mBaseline) {
                 SideGenerator.SideMapEntry entry = castToIdiomMapEntryFromObject(square.getBundle());
                 if(entry != null && !entry.isAlreadyTouch()) {
+                    getDropSurfaceview().setGameOverBackDistance(0);
                     getDropSurfaceview().setGameOverRect(square);
                     return true;
                 }
@@ -159,7 +163,8 @@ public class SideActivity extends BaseGameActivity implements DropSurfaceView.On
         if(scores < 400) {
             return mInitSpeed;
         }
-        return (scores - 400) / 100 + mInitSpeed;
+        int temp = (scores - 400) / 100;
+        return mInitSpeed + DisplayUitls.dp2px(getApplicationContext(), temp);
     }
 
     @Override
