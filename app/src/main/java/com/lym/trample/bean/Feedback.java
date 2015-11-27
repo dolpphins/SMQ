@@ -2,9 +2,6 @@ package com.lym.trample.bean;
 
 import cn.bmob.v3.BmobObject;
 
-/**
- * Created by mao on 2015/11/25.
- */
 public class Feedback extends BmobObject {
 
     private String guid;

@@ -3,22 +3,8 @@ package com.lym.trample.utils;
 import android.graphics.Bitmap;
 import android.graphics.Rect;
 
-/**
- * Created by mao on 2015/11/8.
- *
- * 图片(包括Drawable，位图等)工具类
- *
- */
 public class ImageUtil {
 
-    /**
-     * 获取某一位图按比例填充指定的Rect区域时占用的Rect区域
-     *
-     * @param bm 位图
-     * @param r 指定的Rect区域
-     *
-     * @return 计算成功返回相应的Rect区域，失败返回null.
-     * */
     public static Rect getFillRectForBitmap(Bitmap bm, Rect r) {
         int width = r.width();
         int height = r.height();

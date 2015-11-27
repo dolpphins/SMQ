@@ -8,15 +8,6 @@ import android.widget.Button;
 import com.lym.trample.R;
 import com.lym.trample.base.BaseDialog;
 
-/**
- * 游戏暂停对话框。
- * 用户可以选择终止游戏或者继续游戏。
- * 实现OnCustomDialogListener接口，即可监听用户的选择。
- * onDialogButtonClick事件的参数有以下两个取值：
- * BaseDialog.OnCustomDialogListener.TERMINATE表示用户选择终止游戏。
- * BaseDialog.OnCustomDialogListener.RESUME表示用户选择继续游戏。
- * Created by 卢沛东 on 2015/11/9.
- */
 public class GamePauseDialog extends BaseDialog implements View.OnClickListener {
 
     private Button terminal = null;

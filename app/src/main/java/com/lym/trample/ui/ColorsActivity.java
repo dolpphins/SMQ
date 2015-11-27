@@ -38,13 +38,6 @@ import com.lym.trample.widget.DropViewConfiguration;
 
 import java.util.List;
 
-/**
- * Created by mao on 2015/11/5.
- *
- * 踩颜色游戏界面
- *
- * @author 麦灿标
- */
 public class ColorsActivity extends BaseGameActivity {
 
     private final static String TAG = "ColorsActivity";
@@ -77,7 +70,7 @@ public class ColorsActivity extends BaseGameActivity {
             paint.setTextAlign(Paint.Align.CENTER);
             paint.setTextSize(rect.width());
             Paint.FontMetrics metrics = paint.getFontMetrics();
-            //注意metrics的所有值都是以基线(0)为参照
+
             float baseline = (rect.top + rect.bottom -  metrics.ascent) / 2;
             canvas.drawText("GO", (rect.left + rect.right) / 2, baseline, paint);
 
@@ -89,7 +82,7 @@ public class ColorsActivity extends BaseGameActivity {
             }
 
             paint.setColor(Color.parseColor(entry.getValue()));
-            //已经被点击
+
             if(entry.isAlreadyTouch()) {
                 paint.setAlpha(128);
             }
@@ -100,7 +93,7 @@ public class ColorsActivity extends BaseGameActivity {
             paint.setColor(Color.parseColor("#ffffff"));
             paint.setTextSize(rect.width());
             Paint.FontMetrics metrics = paint.getFontMetrics();
-            //注意metrics的所有值都是以基线(0)为参照
+
             float baseline = (rect.top + rect.bottom -  metrics.ascent) / 2;
             canvas.drawText(entry.getText(), (rect.left + rect.right) / 2, baseline, paint);
 
@@ -126,16 +119,16 @@ public class ColorsActivity extends BaseGameActivity {
     public boolean onSurfaceViewTouchSquareDown(MotionEvent event, Square square) {
         System.out.println("onSurfaceViewTouchSquareDown");
         IColorGenerator.ColorMapEntry entry = castToColorMapEntryFromObject(square.getBundle());
-        //开始
+
         if(entry == null) {
             getDropSurfaceview().start();
             updateScores(0);
         } else {
            if(entry.isSame() && !entry.isAlreadyTouch()) {
-               entry.setAlreadyTouch(true);//设置为已点击
-               //计算分数
+               entry.setAlreadyTouch(true);
+
                updateScores(getScores() + getSpeed());
-               //计算速度
+
                int temp = calculateSpeed(getScores());
                setSpeed(temp);
            } else {
@@ -161,8 +154,6 @@ public class ColorsActivity extends BaseGameActivity {
 
     @Override
     public void onHandleGameOver(Square square, int type) {
-        Log.i(TAG, "onHandleGameOver");
-
         showGameOverDialiog();
     }
 

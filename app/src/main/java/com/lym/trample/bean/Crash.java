@@ -4,24 +4,16 @@ import java.io.Serializable;
 
 import cn.bmob.v3.BmobObject;
 
-/**
- * Created by mao on 2015/11/24.
- */
 public class Crash extends BmobObject implements Serializable{
 
-    /** 屏幕宽度 */
     private int width;
 
-    /** 屏幕高度 */
     private int height;
 
-    /** Android版本 */
     private int sdkVersion;
 
-    /** 手机型号 */
     private String phoneType;
 
-    /** 异常信息 */
     private String message;
 
     public int getWidth() {

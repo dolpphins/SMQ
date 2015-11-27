@@ -10,16 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-/**
- * Created by mao on 2015/11/8.
- *
- * 默认的方块产生器实现类
- *
- * @author 麦灿标
- */
 public class DefaultSquareGenerator extends BaseSquareGenerator{
-
-    private final static String TAG = "DefaultSquareGenerator";
 
     @Override
     protected List<Square> generateSquareList(SquareGeneratorConfiguration config) {
@@ -29,7 +20,7 @@ public class DefaultSquareGenerator extends BaseSquareGenerator{
         int height = config.getHeight();
         int num = config.getNum();
         int count = 0;
-        long totalTryCount = 5 * num;//总尝试次数
+        long totalTryCount = 5 * num;
         List<Square> squareList = new ArrayList<Square>();
         int i = 0;
         while(count < num && i < totalTryCount) {
@@ -58,14 +49,12 @@ public class DefaultSquareGenerator extends BaseSquareGenerator{
         return square;
     }
 
-    //判断是否与之前生成的方块冲突(有交集或者相邻道且边线相交)
     private boolean hasConflict(List<Square> squareList, Square square, int width) {
         for(Square item : squareList) {
             if(item.isIntersection(square)) {
                 return true;
             } else {
                 float intervalWidth = Math.abs(item.getStartX() - square.getStartX());
-                //相邻道
                 if(Math.abs(intervalWidth - width) < 10e-4) {
                     if(item.getEndY() < square.getStartY() && item.getStartY() > square.getEndY()) {
                         return true;

@@ -8,45 +8,26 @@ import android.text.TextUtils;
 import java.util.Map;
 import java.util.Set;
 
-/**
- * <p>
- * 	SharePreferences管理类
- * </p>
- *
- * <p>该类采用单例模式</p>
- *
- * @author 麦灿标
- * */
 public class SharePreferencesManager {
 
     private final static String TAG = "SharePreferenceManager";
 
-    /** SharePreferenceManager唯一实例对象 */
     private static SharePreferencesManager sSpManager = new SharePreferencesManager();
 
-    /** 默认的SharePreferences文件名 */
     private final String defaultSpName = "default_sharepreferences";
 
-    /** 创建SharePreference文件默认的操作模式,私有模式,只能
-     *  由当前应用和与当前应用相同UserID的Application使用 */
     private final int defaultSpMode = Context.MODE_PRIVATE;
 
-    /** 设置SharePreferences文件名 */
     private final String settingsSpName = "settings";
 
-    /** 设置SharePreferences文件模式 */
     private final int settingsSpMode = Context.MODE_PRIVATE;
 
-    /** 登录信息SharePreferences文件名 */
     private final String loginSpName = "loginmessage";
 
-    /** 登录信息SharePreferences文件模式 */
     private final int loginSpMode = Context.MODE_PRIVATE;
 
-    /** 位置SharePreferences文件名 */
     private final String locationSpName = "location";
 
-    /** 位置SharePreferences文件模式 */
     private final int locationSpMode = Context.MODE_PRIVATE;
 
 

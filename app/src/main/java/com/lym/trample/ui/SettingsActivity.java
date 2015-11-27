@@ -16,12 +16,7 @@ import com.lym.trample.ScoresManager;
 import com.lym.trample.base.BaseActivity;
 import com.lym.trample.bean.Feedback;
 
-/**
- * Created by mao on 2015/11/5.
- */
 public class SettingsActivity extends BaseActivity {
-
-    private final static String TAG = "SettingsActivity";
 
     private Button app_setting_feedback;
 
@@ -52,7 +47,6 @@ public class SettingsActivity extends BaseActivity {
 
         initWriteFeedbackDialog();
         initAboutDialog();
-        //意见反馈
         app_setting_feedback.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -60,7 +54,6 @@ public class SettingsActivity extends BaseActivity {
                 mFeedbackDialog.show();
             }
         });
-        //关于
         app_setting_about.setOnClickListener(new View.OnClickListener() {
 
             @Override

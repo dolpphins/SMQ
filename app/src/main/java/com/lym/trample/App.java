@@ -11,25 +11,14 @@ import java.util.List;
 import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.listener.FindListener;
 
-/**
- * Created by mao on 2015/11/5.
- */
 public class App {
 
-    /** 当前版本序列号 */
     private final static long APP_SERIAL_NUMBER = 1;
 
-    /** 标记是否有新的版本可以更新 */
     public static boolean sCanUpdate = false;
 
-    /** 可更新的信息 */
     public static UpdateBean sUpdateItem;
 
-    /**
-     * 检查更新
-     *
-     * @param context 上下文
-     */
     public static void checkUpdate(Context context) {
         BmobQuery<UpdateBean> query = new BmobQuery<UpdateBean>();
         query.findObjects(context, new FindListener<UpdateBean>() {

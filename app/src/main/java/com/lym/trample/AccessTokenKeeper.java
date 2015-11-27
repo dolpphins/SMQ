@@ -6,11 +6,6 @@ import android.graphics.BitmapFactory;
 
 import java.io.ByteArrayOutputStream;
 
-/**
- * Created by mao on 2015/11/5.
- *
- * 该App使用到的密钥
- */
 public class AccessTokenKeeper {
 
     public static String readKey(Context context) {

@@ -20,16 +20,7 @@ import com.lym.trample.widget.DropSurfaceView;
 
 import java.util.List;
 
-/**
- * Created by mao on 2015/11/5.
- *
- * 踩数字游戏界面
- *
- * @author 麦灿标
- */
 public class DigitsActivity extends BaseGameActivity{
-
-    private final static String TAG = "DigitsActivity";
 
     private Paint paint = new Paint();
 
@@ -52,7 +43,6 @@ public class DigitsActivity extends BaseGameActivity{
 
     @Override
     public void onDrawSurfaceViewSquareItem(Canvas canvas, Square square, boolean started) {
-        Log.i(TAG, "onDrawSurfaceViewSquareItem");
         paint.reset();
         if(started) {
             paint.setColor(Color.BLACK);
@@ -63,7 +53,6 @@ public class DigitsActivity extends BaseGameActivity{
             paint.setTextAlign(Paint.Align.CENTER);
             paint.setTextSize(rect.width());
             Paint.FontMetrics metrics = paint.getFontMetrics();
-            //注意metrics的所有值都是以基线(0)为参照
             float baseline = (rect.top + rect.bottom -  metrics.ascent) / 2;
             canvas.drawText("GO", (rect.left + rect.right) / 2, baseline, paint);
         } else {
@@ -74,7 +63,6 @@ public class DigitsActivity extends BaseGameActivity{
             }
 
             int num = entry.getNum();
-                //Game Over
             if(num > 0) {
                 paint.setColor(Color.parseColor("#000000"));
                 canvas.drawRect(square.toRect(), paint);
@@ -88,7 +76,6 @@ public class DigitsActivity extends BaseGameActivity{
                 paint.setTextAlign(Paint.Align.CENTER);
                 paint.setTextSize(rect.width());
                 Paint.FontMetrics metrics = paint.getFontMetrics();
-                //注意metrics的所有值都是以基线(0)为参照
                 float baseline = (rect.top + rect.bottom -  metrics.ascent) / 2;
                 canvas.drawText(num + "", (rect.left + rect.right) / 2, baseline, paint);
             }
@@ -99,7 +86,7 @@ public class DigitsActivity extends BaseGameActivity{
     public boolean onSurfaceViewTouchOutsideDown(MotionEvent event, Square square) {
 
         IDigitGenerator.DigitMapEntry entry = new IDigitGenerator.DigitMapEntry();
-        entry.setNum(1);//大于0就行
+        entry.setNum(1);
         entry.setDrawDigitFlag(false);
         square.setBundle(entry);
         getDropSurfaceview().stop(square, DropSurfaceView.OnGameOverListener.GAME_OVER_OUT_SQUARE_TYPE);
@@ -117,19 +104,15 @@ public class DigitsActivity extends BaseGameActivity{
             int num = entry.getNum();
             num--;
             if(num < 0) {
-                //游戏结束
                 entry.setNum(1);
                 entry.setDrawDigitFlag(false);
                 getDropSurfaceview().stop(square, GAME_OVER_OUT_SQUARE_TYPE);
             } else {
                 entry.setNum(num);
                 updateScores(getScores() + getSpeed());
-                //计算速度
                 int speed = calculateSpeed(getScores());
                 setSpeed(speed);
-                //计算最大值
                 int maxValue = calculateMaxValue(getScores());
-                maxValue = maxValue;
             }
         }
         return true;

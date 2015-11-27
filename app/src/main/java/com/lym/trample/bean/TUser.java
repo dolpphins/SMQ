@@ -4,11 +4,6 @@ import android.text.TextUtils;
 
 import cn.bmob.v3.BmobObject;
 
-/**
- * Created by mao on 2015/11/24.
- *
- * @author 麦灿标
- */
 public class TUser extends BmobObject {
 
     private int id;
@@ -53,13 +48,6 @@ public class TUser extends BmobObject {
         this.best_digit_score = best_digit_score;
     }
 
-    /**
-     * 设置指定的分数
-     *
-     * @param score
-     * @param column
-     * @return 设置成功返回true,失败返回false.
-     */
     public boolean updateScore(int score, String column) {
         if(score < 0 || TextUtils.isEmpty(column)) {
             return false;
@@ -79,12 +67,6 @@ public class TUser extends BmobObject {
         return false;
     }
 
-    /**
-     * 获取指定的分数
-     *
-     * @param column
-     * @return 返回指定的分数,column不存在时返回-1.
-     */
     public int getScore(String column) {
         if(TextUtils.isEmpty(column)) {
             return -1;

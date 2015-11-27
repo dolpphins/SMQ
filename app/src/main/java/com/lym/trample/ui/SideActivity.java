@@ -12,24 +12,15 @@ import com.lym.trample.ScoresManager;
 import com.lym.trample.base.BaseGameActivity;
 import com.lym.trample.bean.Square;
 import com.lym.trample.dialog.GameOverDialog;
-import com.lym.trample.idiom.SideGenerator;
+import com.lym.trample.side.SideGenerator;
 import com.lym.trample.utils.TextUtil;
 import com.lym.trample.widget.DropSurfaceView;
 import com.lym.trample.widget.DropViewConfiguration;
 
 import java.util.List;
 
-/**
- * Created by mao on 2015/11/5.
- *
- * 踩边线游戏界面
- *
- * @author 麦灿标
- */
 public class SideActivity extends BaseGameActivity implements DropSurfaceView.OnDrawSurfaceViewListener,
                                                     DropSurfaceView.OnSurfaceViewTouchListener, DropSurfaceView.OnGameOverListener{
-
-    private final static String TAG = "SideActivity";
 
     private final static int DISTANCE_SCORE_HEIGHT = 720;
 
@@ -68,7 +59,6 @@ public class SideActivity extends BaseGameActivity implements DropSurfaceView.On
             paint.setTextAlign(Paint.Align.CENTER);
             paint.setTextSize(rect.width());
             Paint.FontMetrics metrics = paint.getFontMetrics();
-            //注意metrics的所有值都是以基线(0)为参照
             float baseline = (rect.top + rect.bottom -  metrics.ascent) / 2;
             canvas.drawText("GO", (rect.left + rect.right) / 2, baseline, paint);
 
@@ -80,13 +70,11 @@ public class SideActivity extends BaseGameActivity implements DropSurfaceView.On
             }
 
             paint.setColor(Color.BLACK);
-            //已经被点击
             if(entry.isAlreadyTouch()) {
                 paint.setAlpha(0);
             }
             canvas.drawRect(square.toRect(), paint);
 
-            //baseline
             float startX = config.getRect().left;
             float startY = mBaseline;
             float endX = config.getRect().right;
@@ -113,13 +101,11 @@ public class SideActivity extends BaseGameActivity implements DropSurfaceView.On
             mScores = 0;
             updateScores(mScores);
         } else {
-            //计算分数
             float distance = mBaseline - square.getEndY();
             int scores = calculateScore((int) distance);
             mScores += scores;
             updateScores(mScores);
             entry.setAlreadyTouch(true);
-            //计算速度
             int temp = calculateSpeed(mScores);
             setSpeed(temp);
         }
@@ -158,7 +144,6 @@ public class SideActivity extends BaseGameActivity implements DropSurfaceView.On
     }
 
     private int calculateScore(int distance) {
-        Log.i(TAG, "distance:" + distance);
         if(distance < 0) {
             return 0;
         } else if(distance == 0) {

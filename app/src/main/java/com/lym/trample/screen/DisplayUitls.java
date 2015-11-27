@@ -4,11 +4,6 @@ import android.content.Context;
 import android.app.Activity;
 import android.util.DisplayMetrics;
 
-/**
- * Created by mao on 2015/11/5.
- *
- * 屏幕适配工具类
- */
 public class DisplayUitls {
 
     /**

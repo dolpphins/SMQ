@@ -7,9 +7,6 @@ import com.lym.trample.bean.Crash;
 
 import cn.bmob.v3.listener.SaveListener;
 
-/**
- * Created by mao on 2015/11/25.
- */
 public class CrashService extends IntentService {
 
     private final static String sDefaultName = "CrashService";

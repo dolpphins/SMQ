@@ -30,17 +30,8 @@ public class MainActivity extends BaseActivity implements OnClickListener,BaseDi
 
     private final static String TAG = "MainActivity";
 
-    /**
-     * 怎么玩图标
-     */
     private ImageView how_to_play;
-    /**
-     * 设置图标
-     */
     private ImageView setting;
-    /**
-     * 退出游戏图标
-     */
     private ImageView exit;
 
     private Button gameWord;
@@ -60,7 +51,6 @@ public class MainActivity extends BaseActivity implements OnClickListener,BaseDi
 
     private GameReadyDialog mGameReadyDialog;
 
-    //更新相关
     private AlertDialog mUpdateDialog;
     private TextView app_update_ignore;
     private TextView app_update_ok;
@@ -76,17 +66,13 @@ public class MainActivity extends BaseActivity implements OnClickListener,BaseDi
 
         initView();
 
-        //异常处理器
         CrashHandler.getInstance().registerUncaughtExceptionHandler(this);
-
-
     }
 
     @Override
     protected void onResume() {
         super.onResume();
 
-        //判断是否有更新
         if(App.sCanUpdate && App.sUpdateItem != null) {
             showUpdateDialog();
         }
@@ -236,7 +222,6 @@ public class MainActivity extends BaseActivity implements OnClickListener,BaseDi
             });
         }
 
-        //再次判断
         if(App.sCanUpdate && App.sUpdateItem != null) {
             mUpdateDialog.show();
         }

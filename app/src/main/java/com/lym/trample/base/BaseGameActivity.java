@@ -18,17 +18,8 @@ import com.lym.trample.dialog.GamePauseDialog;
 import com.lym.trample.widget.DropSurfaceView;
 import com.lym.trample.widget.DropViewConfiguration;
 
-/**
- * Created by mao on 2015/11/12.
- *
- * 基本的游戏Activity
- *
- * @author 麦灿标
- */
 public abstract class BaseGameActivity extends BaseActivity implements DropSurfaceView.OnDrawSurfaceViewListener,
         DropSurfaceView.OnSurfaceViewTouchListener, DropSurfaceView.OnGameOverListener{
-
-    private final static String TAG = "BaseGameActivity";
 
     private DropSurfaceView drop_main_surfaceview;
     private DropViewConfiguration config;
@@ -44,9 +35,8 @@ public abstract class BaseGameActivity extends BaseActivity implements DropSurfa
     private boolean isShowingGameOverDialog;
     private boolean isShowingGamePauseDialog;
 
-    /** 初始速度 */
     private int mInitSpeed;
-    /** 速度 */
+
     private int mSpeed;
 
     @Override
@@ -56,7 +46,6 @@ public abstract class BaseGameActivity extends BaseActivity implements DropSurfa
 
         init();
 
-        //重新获取数据
         NetworkDataManager ndm = new NetworkDataManager(getApplicationContext());
         ndm.requestUpdateData();
     }
@@ -85,17 +74,9 @@ public abstract class BaseGameActivity extends BaseActivity implements DropSurfa
         super.onResume();
         if(drop_main_surfaceview != null
                 && DropSurfaceView.Status.PAUSE == drop_main_surfaceview.getStatus()) {
-            if(!isShowingGamePauseDialog) {
-                //showGamePauseDialog();
-            }
-        }
-        if(isShowingGameOverDialog) {
-            Log.i(TAG, "isShowingGameOverDialog");
-            mGameOverDialog.requestSetRunningManFillAfter();
         }
     }
 
-    //显示暂停对话框
     public void showGamePauseDialog() {
         if(mGamePauseDialog == null) {
             mGamePauseDialog = new GamePauseDialog(this);
@@ -106,7 +87,6 @@ public abstract class BaseGameActivity extends BaseActivity implements DropSurfa
         isShowingGamePauseDialog = true;
     }
 
-    //显示游戏结束对话框
     public void showGameOverDialiog() {
         if(mGameOverDialog == null) {
             mGameOverDialog = new GameOverDialog(this);
@@ -117,32 +97,26 @@ public abstract class BaseGameActivity extends BaseActivity implements DropSurfa
         user.setBest_digit_score(ScoresManager.bestUserDigitScore);
         user.setBest_line_score(ScoresManager.bestUserLineScore);
         user.setGuid(ScoresManager.guid);
-        //上传数据
+
         int temp = user.getScore(createColumnName());
         if(mScores > temp) {
             user.setScore(mScores, createColumnName());
             NetworkDataManager ndm = new NetworkDataManager(getApplicationContext());
             ndm.updateOneUserToBmob(user);
         }
-        //更新数据
+
         ScoresManager.updateUserScores(user);
-        //传递数据
+
         setScores(mGameOverDialog);
 
         mGameOverDialog.show();
         isShowingGameOverDialog = true;
 
-        //更新数据
         ScoresManager.updateBestScores(user);
-        //更新缓存
+
         ScoresManager.updateCacheSp(this);
     }
 
-    /**
-     * Bmob列名
-     *
-     * @return 列名，不能为空
-     */
     protected abstract String createColumnName();
 
     protected void setScores(GameOverDialog dialog) {
@@ -183,11 +157,6 @@ public abstract class BaseGameActivity extends BaseActivity implements DropSurfa
         }
     }
 
-    /**
-     * 更新分数
-     *
-     * @param score 分数
-     * */
     public void updateScores(int score) {
         mScores = score;
         if(drop_main_scores != null) {
@@ -195,39 +164,19 @@ public abstract class BaseGameActivity extends BaseActivity implements DropSurfa
         }
     }
 
-    /**
-     * 设置下落速度
-     *
-     * @param speed
-     */
     public void setSpeed(int speed) {
         this.mSpeed = speed;
         drop_main_surfaceview.setSpeed(mSpeed);
     }
 
-    /**
-     * 获取下落速度
-     *
-     * @return
-     */
     public int getSpeed() {
         return mSpeed;
     }
 
-    /**
-     * 设置初始速度
-     *
-     * @param initSpeed
-     */
     public void setInitSpeed(int initSpeed) {
         this.mInitSpeed = initSpeed;
     }
 
-    /**
-     * 获取初始速度
-     *
-     * @return
-     */
     public int getInitSpeed() {
         return mInitSpeed;
     }
@@ -269,11 +218,9 @@ public abstract class BaseGameActivity extends BaseActivity implements DropSurfa
         @Override
         public void onDialogButtonClick(int userChoose) {
             switch (userChoose) {
-                //返回主菜单
                 case GameOverDialog.OnCustomDialogListener.GAME_OVER_DIALOG_GO_TO_MAIN_ACTIVITY:
                     finish();
                     break;
-                //再玩一次
                 case GameOverDialog.OnCustomDialogListener.GAME_OVER_DIALOG_PLAY_AGAIN:
                     restart();
                     break;

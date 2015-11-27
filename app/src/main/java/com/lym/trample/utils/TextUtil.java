@@ -3,11 +3,6 @@ package com.lym.trample.utils;
 import android.graphics.Rect;
 import android.text.TextUtils;
 
-/**
- * Created by mao on 2015/11/8.
- *
- * 文本相关工具类
- */
 public class TextUtil {
 
 
@@ -28,12 +23,6 @@ public class TextUtil {
         return r;
     }
 
-    /**
-     * String转String数组，String每一个字符对应数组中一个元素
-     *
-     * @param s 要转换的String对象
-     * @return 转换成功返回相应的String数组，转换失败返回null.
-     */
     public static String[] string2StringArray(String s) {
         if(TextUtils.isEmpty(s)) {
             return null;

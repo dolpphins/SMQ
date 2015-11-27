@@ -5,13 +5,6 @@ import android.graphics.Rect;
 import java.io.Serializable;
 import java.util.Objects;
 
-/**
- * Created by mao on 2015/11/6.
- *
- * 方块实体类
- *
- * @author 麦灿标
- */
 public class Square implements Serializable{
 
     private float startX;
@@ -22,7 +15,6 @@ public class Square implements Serializable{
 
     private float endY;
 
-    /** 用于保存额外数据 */
     private Object bundle;
 
     public Square() {
@@ -85,13 +77,6 @@ public class Square implements Serializable{
         return r;
     }
 
-    /**
-     * 判断当前Square对象与指定的Square对象是否有交集
-     *
-     * @param square 要比较的对象
-     *
-     * @return 有交集返回true,否则返回false.
-     * */
     public boolean isIntersection(Square square) {
         if(square == null) {
             return false;
@@ -99,14 +84,6 @@ public class Square implements Serializable{
         return Rect.intersects(toRect(), square.toRect());
     }
 
-    /**
-     * 判断某一点是否在当前对象表示的方块中，如果在边线上也认为在方块中
-     *
-     * @param x 指定点的x
-     * @param y 指定点的y
-     *
-     * @return 指定点在当前对象表示的方块中返回true,否则返回false.
-     * */
     public boolean isInSquare(float x, float y) {
         if(x >= startX && x <= endX && y >= startY && y <= endY) {
             return true;

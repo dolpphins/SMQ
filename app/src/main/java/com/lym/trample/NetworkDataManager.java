@@ -22,11 +22,6 @@ import cn.bmob.v3.listener.FindListener;
 import cn.bmob.v3.listener.FindStatisticsListener;
 import cn.bmob.v3.listener.SaveListener;
 
-/**
- * Created by mao on 2015/11/24.
- *
- * 网络数据管理类
- */
 public class NetworkDataManager {
 
     private final static String TAG = "NetworkDataManager";
@@ -37,12 +32,7 @@ public class NetworkDataManager {
         mContext = context;
     }
 
-    /**
-     * 初始化总体网络数据，注意该方法使异步的.
-     *
-     */
     public void requestUpdateData() {
-        //当context为null或者网络不可用都会返回false
         if(!NetworkHelper.isAvailable(mContext)) {
             return;
         }
@@ -51,7 +41,6 @@ public class NetworkDataManager {
 
     private void queryInitDataFromNetwork(Context context) {
         BmobQuery<TUser> query = new BmobQuery<TUser>();
-        //总人数
         query.count(context, TUser.class, new CountListener() {
 
             @Override

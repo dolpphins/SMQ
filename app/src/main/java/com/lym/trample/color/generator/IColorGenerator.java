@@ -1,26 +1,10 @@
 package com.lym.trample.color.generator;
 
-/**
- * Created by mao on 2015/11/9.
- *
- * 颜色生成器接口
- *
- * @author 麦灿标
- */
 public interface IColorGenerator {
 
-    /**
-     * 生成一个ColorMapEntry
-     *
-     * @return 生成成功返回一个ColorMapEntry对象，失败返回null.
-     * */
     ColorMapEntry generate();
 
 
-
-    /**
-     * 颜色map entry
-     * */
     class ColorMapEntry {
 
         private String text;

@@ -11,14 +11,7 @@ import java.io.File;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
-/**
- * Created by mao on 2015/11/24.
- *
- * @author 麦灿标
- */
 public class CrashHandler implements Thread.UncaughtExceptionHandler {
-
-    private final static String TAG = "CrashHandler";
 
     private Activity mActivity;
 
@@ -26,19 +19,12 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
 
     private Thread.UncaughtExceptionHandler defaultUncaughtExceptionHandler;
 
-    private final static String crash_log = "crash_log.txt";
-
     private CrashHandler() {}
 
     public static CrashHandler getInstance() {
         return mCrashHandler;
     }
 
-    /**
-     * 将当前异常处理器作为默认的异常处理器
-     *
-     * @param at
-     */
     public void registerUncaughtExceptionHandler(Activity at) {
         mActivity = at;
         defaultUncaughtExceptionHandler = Thread.getDefaultUncaughtExceptionHandler();

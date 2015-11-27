@@ -6,9 +6,6 @@ import android.widget.TextView;
 import com.lym.trample.R;
 import com.lym.trample.base.BaseActivity;
 
-/**
- * Created by mao on 2015/11/5.
- */
 public class HelpActivity extends BaseActivity {
 
 

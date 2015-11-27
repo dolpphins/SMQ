@@ -9,15 +9,6 @@ import android.widget.TextView;
 import com.lym.trample.R;
 import com.lym.trample.base.BaseDialog;
 
-/**
- * 游戏开始前，给用户提供一些游戏相关信息的对话框。
- * 用户可以选择开始游戏或者返回主菜单。
- * 实现OnCustomDialogListener接口，即可监听用户的选择。
- * onDialogButtonClick事件的参数有以下两个取值：
- * BaseDialog.OnCustomDialogListener.START_GAME表示用户选择开始游戏。
- * BaseDialog.OnCustomDialogListener.GO_BACK表示用户选择返回。
- * Created by 卢沛东 on 2015/11/7.
- */
 public class GameReadyDialog extends BaseDialog implements View.OnClickListener {
 
     private TextView global_highest_score = null;
