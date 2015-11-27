@@ -1,6 +1,7 @@
 package com.lym.stamp.base;
 
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.widget.FrameLayout;
@@ -52,6 +53,8 @@ public abstract class BaseGameActivity extends BaseActivity implements DropSurfa
         drop_main_scores = (TextView) findViewById(R.id.drop_main_scores);
         drop_main_parent = (FrameLayout) findViewById(R.id.drop_main_parent);
 
+        setScoresFont();
+
         drop_main_scores.setText(mScores + "");
         config = new DropViewConfiguration.Builder(this)
                 .setPipeBorderColor(Color.parseColor("#0000ff"))
@@ -64,6 +67,15 @@ public abstract class BaseGameActivity extends BaseActivity implements DropSurfa
         drop_main_surfaceview.setOnGameOverListener(this);
 
         drop_main_surfaceview.setSpeed(mSpeed);
+    }
+
+    private void setScoresFont() {
+        try {
+            Typeface tf = Typeface.createFromAsset(getAssets(), "scores_font.ttf");
+            drop_main_scores.setTypeface(tf);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -155,6 +167,7 @@ public abstract class BaseGameActivity extends BaseActivity implements DropSurfa
         if(drop_main_scores != null) {
             drop_main_scores.setText(mScores + "");
         }
+        reset();
     }
 
     public void updateScores(int score) {
@@ -244,4 +257,7 @@ public abstract class BaseGameActivity extends BaseActivity implements DropSurfa
     }
 
     protected abstract ScoresManager.Status getBestScoreStatus();
+
+    protected void reset(){
+    }
 }

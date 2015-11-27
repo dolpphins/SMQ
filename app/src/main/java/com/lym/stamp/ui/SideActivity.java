@@ -182,4 +182,9 @@ public class SideActivity extends BaseGameActivity implements DropSurfaceView.On
     protected ScoresManager.Status getBestScoreStatus() {
         return ScoresManager.bestLineScoreSuccess;
     }
+
+    @Override
+    protected void reset() {
+        mScores = 0;
+    }
 }

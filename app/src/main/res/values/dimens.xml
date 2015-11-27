@@ -4,7 +4,7 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
 
     <dimen name="drop_main_scores_marginTop">15dp</dimen>
-    <dimen name="drop_main_scores_textSize">50sp</dimen>
+    <dimen name="drop_main_scores_textSize">60sp</dimen>
 
     <dimen name="colors_drop_main_scores_marginTop">15dp</dimen>
     <dimen name="colors_drop_main_scores_textSize">50sp</dimen>

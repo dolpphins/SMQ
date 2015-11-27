@@ -29,12 +29,14 @@ public class DigitsActivity extends BaseGameActivity{
     private int mMaxValue = 4;
 
     private int mInitSpeed;
+    private int mMaxSpeed;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         mInitSpeed = DisplayUitls.dp2px(getApplicationContext(), 4);
+        mMaxSpeed = DisplayUitls.dp2px(getApplicationContext(), 7);
         setInitSpeed(mInitSpeed);
         setSpeed(mInitSpeed);
 
@@ -113,6 +115,9 @@ public class DigitsActivity extends BaseGameActivity{
                 entry.setNum(num);
                 updateScores(getScores() + getSpeed());
                 int speed = calculateSpeed(getScores());
+                if(speed > mMaxSpeed) {
+                    speed = mMaxSpeed;
+                }
                 setSpeed(speed);
                 mMaxValue = calculateMaxValue(getScores());
             }
@@ -153,18 +158,22 @@ public class DigitsActivity extends BaseGameActivity{
     }
 
     private int calculateSpeed(int scores) {
-        if(scores < 400) {
+        if(scores < 100) {
             return mInitSpeed;
         }
-        int temp = (scores - 400) / 100;
-        return mInitSpeed + DisplayUitls.dp2px(getApplicationContext(), temp);
+        int temp = (scores - 100) / 100;
+        return mInitSpeed + DisplayUitls.dp2px(getApplicationContext(), temp) / 2;
     }
 
     private int calculateMaxValue(int scores) {
         if(scores < 300) {
             return 4;
         }
-        return (scores - 300) / 300 + 4;
+        int temp =  (scores - 300) / 300 + 4;
+        if(temp > 6) {
+            temp = 6;
+        }
+        return temp;
     }
 
     @Override
@@ -182,5 +191,10 @@ public class DigitsActivity extends BaseGameActivity{
     @Override
     protected ScoresManager.Status getBestScoreStatus() {
         return ScoresManager.bestDigitScoreSuccess;
+    }
+
+    @Override
+    protected void reset() {
+        mMaxValue = 4;
     }
 }
