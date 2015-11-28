@@ -43,13 +43,16 @@ public class SideActivity extends BaseGameActivity implements DropSurfaceView.On
         config = surfaceView.getDropViewConfiguration();
         mBaseline = config.getRect().bottom - config.getSquareHeight() / 5;
 
-        mInitSpeed = DisplayUitls.dp2px(getApplicationContext(), 5);
+        mInitSpeed = DisplayUitls.dp2px(getApplicationContext(), 6);
         setInitSpeed(mInitSpeed);
         setSpeed(mInitSpeed);
     }
 
     @Override
     public void onDrawSurfaceViewSquareItem(Canvas canvas, Square square, boolean started) {
+        if(square == null) {
+            return;
+        }
         paint.reset();
         if(started) {
             paint.setColor(Color.BLACK);
@@ -108,6 +111,8 @@ public class SideActivity extends BaseGameActivity implements DropSurfaceView.On
             mScores += scores;
             updateScores(mScores);
             entry.setAlreadyTouch(true);
+            square.setEndX(square.getStartX());
+            square.setEndY(square.getEndY());
             int temp = calculateSpeed(mScores);
             setSpeed(temp);
         }
@@ -153,8 +158,10 @@ public class SideActivity extends BaseGameActivity implements DropSurfaceView.On
             return 15;
         } else if(distance < 15) {
             return (int) ((DISTANCE_SCORE_HEIGHT) / 15);
-        } else {
+        } else if(distance <= getConfig().getSquareHeight()) {
             return (int) ((DISTANCE_SCORE_HEIGHT) / distance);
+        } else {
+            return 0;
         }
     }
 
@@ -185,6 +192,7 @@ public class SideActivity extends BaseGameActivity implements DropSurfaceView.On
 
     @Override
     protected void reset() {
+        super.reset();
         mScores = 0;
     }
 }

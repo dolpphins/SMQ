@@ -5,11 +5,14 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.MotionEvent;
 
 import com.lym.stamp.ScoresManager;
 import com.lym.stamp.base.BaseGameActivity;
 import com.lym.stamp.bean.Square;
+import com.lym.stamp.calculator.ColorCalculator;
+import com.lym.stamp.calculator.ICalculate;
 import com.lym.stamp.color.generator.IColorGenerator;
 import com.lym.stamp.color.generator.impl.AverageColorGenerator;
 import com.lym.stamp.conf.ColorsKeeper;
@@ -26,21 +29,27 @@ public class ColorsActivity extends BaseGameActivity {
 
     private IColorGenerator mColorGenerator;
 
-    private int mInitSpeed;
+    private ICalculate mCalculator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mInitSpeed = DisplayUitls.dp2px(getApplicationContext(), 5);
-        setInitSpeed(mInitSpeed);
-        setSpeed(mInitSpeed);
-
         mColorGenerator = new AverageColorGenerator(ColorsKeeper.getColorsMap(getApplicationContext()));
+        try {
+            mCalculator = new ColorCalculator(getApplicationContext());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        setInitSpeed(mCalculator.generateInitSpeed());
+        setSpeed(mCalculator.generateInitSpeed());
     }
 
     @Override
     public void onDrawSurfaceViewSquareItem(Canvas canvas, Square square, boolean started) {
+        if(square == null) {
+            return;
+        }
         paint.reset();
         if(started) {
             paint.setColor(Color.BLACK);
@@ -75,8 +84,10 @@ public class ColorsActivity extends BaseGameActivity {
             Paint.FontMetrics metrics = paint.getFontMetrics();
 
             float baseline = (rect.top + rect.bottom -  metrics.ascent) / 2;
-            canvas.drawText(entry.getText(), (rect.left + rect.right) / 2, baseline, paint);
-
+            String text = entry.getText();
+            if(!TextUtils.isEmpty(text)) {
+                canvas.drawText(entry.getText(), (rect.left + rect.right) / 2, baseline, paint);
+            }
         }
     }
 
@@ -104,10 +115,11 @@ public class ColorsActivity extends BaseGameActivity {
            if(entry.isSame() && !entry.isAlreadyTouch()) {
                entry.setAlreadyTouch(true);
 
-               updateScores(getScores() + getSpeed());
+               setSpeed(mCalculator.calculateSpeed());
 
-               int temp = calculateSpeed(getScores());
-               setSpeed(temp);
+               updateScores(mCalculator.calculateScore());
+
+
            } else {
                getDropSurfaceview().setGameOverBackDistance(0);
                getDropSurfaceview().stop(square, DropSurfaceView.OnGameOverListener.GAME_OVER_SQUARE_ERROR_TYPE);
@@ -148,14 +160,6 @@ public class ColorsActivity extends BaseGameActivity {
         }
     }
 
-    private int calculateSpeed(int scores) {
-        if(scores < 150) {
-            return mInitSpeed;
-        }
-        int temp = (scores - 150) / 100;
-        return mInitSpeed + DisplayUitls.dp2px(getApplicationContext(), temp);
-    }
-
     @Override
     protected String createColumnName() {
         return "best_color_score";
@@ -171,6 +175,14 @@ public class ColorsActivity extends BaseGameActivity {
     @Override
     protected ScoresManager.Status getBestScoreStatus() {
         return ScoresManager.bestColorScoreSuccess;
+    }
+
+    @Override
+    protected void reset() {
+        super.reset();
+        if(mCalculator != null) {
+            mCalculator.reset();
+        }
     }
 }
 

@@ -10,6 +10,8 @@ import android.view.MotionEvent;
 import com.lym.stamp.ScoresManager;
 import com.lym.stamp.base.BaseGameActivity;
 import com.lym.stamp.bean.Square;
+import com.lym.stamp.calculator.DigitCalculator;
+import com.lym.stamp.calculator.ICalculate;
 import com.lym.stamp.dialog.GameOverDialog;
 import com.lym.stamp.digit.generator.BaseDigitGenerator;
 import com.lym.stamp.digit.generator.IDigitGenerator;
@@ -26,25 +28,29 @@ public class DigitsActivity extends BaseGameActivity{
 
     private BaseDigitGenerator mDigitGenerator;
 
-    private int mMaxValue = 4;
+    private ICalculate mCalculator;
 
-    private int mInitSpeed;
-    private int mMaxSpeed;
+    private int mMaxValue = 4;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mInitSpeed = DisplayUitls.dp2px(getApplicationContext(), 4);
-        mMaxSpeed = DisplayUitls.dp2px(getApplicationContext(), 7);
-        setInitSpeed(mInitSpeed);
-        setSpeed(mInitSpeed);
-
         mDigitGenerator = new RandomDigitGenerator();
+        try {
+            mCalculator = new DigitCalculator(getApplicationContext());
+        } catch (Exception e) {
+
+        }
+        setInitSpeed(mCalculator.generateInitSpeed());
+        setSpeed(mCalculator.generateInitSpeed());
     }
 
     @Override
     public void onDrawSurfaceViewSquareItem(Canvas canvas, Square square, boolean started) {
+        if(square == null) {
+            return;
+        }
         paint.reset();
         if(started) {
             paint.setColor(Color.BLACK);
@@ -113,12 +119,8 @@ public class DigitsActivity extends BaseGameActivity{
                 getDropSurfaceview().stop(square, GAME_OVER_OUT_SQUARE_TYPE);
             } else {
                 entry.setNum(num);
-                updateScores(getScores() + getSpeed());
-                int speed = calculateSpeed(getScores());
-                if(speed > mMaxSpeed) {
-                    speed = mMaxSpeed;
-                }
-                setSpeed(speed);
+                updateScores(mCalculator.calculateScore());
+                setSpeed(mCalculator.calculateSpeed());
                 mMaxValue = calculateMaxValue(getScores());
             }
         }
@@ -157,14 +159,6 @@ public class DigitsActivity extends BaseGameActivity{
         }
     }
 
-    private int calculateSpeed(int scores) {
-        if(scores < 100) {
-            return mInitSpeed;
-        }
-        int temp = (scores - 100) / 100;
-        return mInitSpeed + DisplayUitls.dp2px(getApplicationContext(), temp) / 2;
-    }
-
     private int calculateMaxValue(int scores) {
         if(scores < 300) {
             return 4;
@@ -195,6 +189,10 @@ public class DigitsActivity extends BaseGameActivity{
 
     @Override
     protected void reset() {
+        super.reset();
         mMaxValue = 4;
+        if(mCalculator != null) {
+            mCalculator.reset();
+        }
     }
 }

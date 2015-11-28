@@ -21,7 +21,7 @@ public abstract class BaseDigitGenerator implements IDigitGenerator{
         if(maxValue <= 0) {
             return null;
         }
-        int digit = random.nextInt(maxValue) + 1;
+        int digit = random.nextInt(maxValue - 1) + 2;
         DigitMapEntry entry = new DigitMapEntry();
         entry.setNum(digit);
         return entry;

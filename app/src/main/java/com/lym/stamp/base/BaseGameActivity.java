@@ -259,5 +259,7 @@ public abstract class BaseGameActivity extends BaseActivity implements DropSurfa
     protected abstract ScoresManager.Status getBestScoreStatus();
 
     protected void reset(){
+        mScores = 0;
+        mSpeed = mInitSpeed;
     }
 }

@@ -595,6 +595,20 @@ public class DropSurfaceView extends SurfaceView implements SurfaceHolder.Callba
                 }
             }
         }
+        try {
+            if(mDrawSurfaceViewListener != null && square != null) {
+                canvas = holder.lockCanvas();
+                square.setStartX(0f);
+                square.setStartY(0f);
+                square.setEndX(0f);
+                square.setEndY(0f);
+                mDrawSurfaceViewListener.onDrawSurfaceViewSquareItem(canvas, square, false);
+            }
+        } finally {
+            if(canvas != null) {
+                holder.unlockCanvasAndPost(canvas);
+            }
+        }
     }
 
     private void drawOnce() {
@@ -602,7 +616,6 @@ public class DropSurfaceView extends SurfaceView implements SurfaceHolder.Callba
         try {
 
             canvas = mSurfaceHolder.lockCanvas();
-            clearCanvas(canvas);
             drawBaseView(canvas);
             updateData();
             drawData(canvas, false);
@@ -616,7 +629,7 @@ public class DropSurfaceView extends SurfaceView implements SurfaceHolder.Callba
         }
     }
 
-    //绘制线程
+
     private class DropThread extends Thread {
 
         @Override
