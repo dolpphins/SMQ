@@ -68,3 +68,9 @@
 
 -keep class com.example.bmobexample.relation.Post{*;}
 -keep class com.example.bmobexample.relation.Comment{*;}
+
+-keep class com.lym.stamp.bean.Crash{*;}
+-keep class com.lym.stamp.bean.Feedback{*;}
+-keep class com.lym.stamp.bean.Square{*;}
+-keep class com.lym.stamp.bean.TUser{*;}
+-keep class com.lym.stamp.bean.UpdateBean{*;}

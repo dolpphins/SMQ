@@ -12,6 +12,7 @@ public class StampApplication extends Application {
     public void onCreate() {
         super.onCreate();
 
+
         Bmob.initialize(getApplicationContext(), AccessTokenKeeper.readKey(getApplicationContext()));
 
         UserManager.getInstance().init(getApplicationContext());

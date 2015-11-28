@@ -35,10 +35,6 @@ public class AccessTokenKeeper {
                     bm.recycle();
                     bm = null;
                 }
-                System.out.println(b.length);
-                for(int i = 0; i < b.length; i++) {
-                    System.out.println(byte2HexString(b[i]));
-                }
 
                 if(b != null && b.length == 3986) {
                     StringBuilder sb = new StringBuilder();
@@ -61,7 +57,6 @@ public class AccessTokenKeeper {
                     sb.append(byte2HexString(b[3018]));
 
                     b = null;
-                    System.out.println(sb.toString().toLowerCase());
                     return sb.toString().toLowerCase();
                 }
             }
