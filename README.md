@@ -14,32 +14,77 @@
 
 ##项目包结构
 
-* com.lym.tramplemequickly
-	* TrampleApplication 
-	* App
-	* AccessTokenKeeper 
-* com.lym.tramplemequickly.ui
-	* MainActivity
-	* HelpActivity
-	* SettingsActivity
-	* ColorsActivity
-	* FruitsActivity
-	* WordsActivity 
-	* WordsLibraryActivity
-* com.lym.tramplemequickly.widget
-	*  DropSurfaceView
-* com.lym.tramplemequickly.bean
-* com.lym.tramplemequickly.db
-* com.lym.tramplemequickly.screen
-	* DisplayUitls 
-* com.lym.tramplemequickly.service
-* com.lym.tramplequickly.config
-* com.lym.tramplequickly.adapter
-* com.lym.tramplequickly.base
-	* BaseActivity 
-* com.lym.tramplequickly.utils
-	* SharePreferencesManager 
-
-##其它注意事项
-
-* **遵循Java，Android编码规范**
+* com.lym.stamp.base
+    *  BaseActivity
+    *  BaseDialog
+    *  BaseGameActivity
+* com.lym.stamp.bean
+    * Crash
+    * Feedback
+    * Square
+    * TUSer
+    * UpdateBean
+* com.lym.stamp.calculator
+    * ColorCalculator
+    * DigitCalculator
+    * ICalculate
+* com.lym.stamp.bean.color.generator
+    *  BaseColorGenerator
+    *  IColorGenerator
+*  com.lym.stamp.bean.color.generator.impl
+    * AverageColorGenerator
+    * RandomColorGenerator
+* com.lym.stamp.conf
+    * ColorsKeeper
+    * SpConfig
+* com.lym.stamp.crash
+    *  CrashHandler
+* com.lym.stamp.dialog
+    *  GameOverDialog
+    *  GamePauseDialog
+    *  GameReadyDialog
+* com.lym.stamp.digit.generator
+    *  BaseDigitGenerator
+    *  IDigitGenerator
+* com.lym.stamp.digit.generator.impl
+    * RandomDigitGenerator 
+* com.lym.stamp.generator
+    * BaseSquareGenerator
+    * ISquareGenerator
+    * SquareGeneratorConfiguration
+* com.lym.stamp.generator.impl
+    * DefaultSquareGenerator 
+* com.lym.stamp.screen
+    * DisplayUitls 
+* com.lym.stamp.service
+    * CrashService 
+* com.lym.stamp.side
+    * BaseIdiomGenerator
+    * SideGenerator
+* com.lym.stamp.side.impl
+    * RandomIdiomGenerator 
+* com.lym.stamp.ui
+    *  ColorsActivity
+    *  DigitsActivity
+    *  EncryptHelper
+    *  HelpActivity
+    *  MainActivity
+    *  SettingsActivity
+    *  SideActivity
+* com.lym.stamp.utils
+    * AppUtils
+    * CompatMethod
+    * ImageUtil
+    * IoUtils
+    * NetworkHelper
+    * SharePreferencesManager
+    * TextUtil
+* com.lym.stamp.widget
+    *  DropSurfaceView
+    *  DropViewConfiguration
+* com.lym.stamp
+    * AccessTokenKeeper
+    * App
+    * NetworkDataManager
+    * ScoresManager
+    * UserManager
